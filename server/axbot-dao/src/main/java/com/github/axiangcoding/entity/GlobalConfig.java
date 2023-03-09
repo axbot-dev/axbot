@@ -14,7 +14,9 @@ public class GlobalConfig {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
     String key;
+
     @Column(columnDefinition = "TEXT")
     String value;
 
