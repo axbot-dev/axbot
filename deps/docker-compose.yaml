@@ -1,0 +1,23 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: axbot
+      POSTGRES_PASSWORD: AxbotP@ssword.
+      POSTGRES_DB: axbot
+    volumes:
+      - ./volume/postgres:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  cqhttp:
+    image: ghcr.io/mrs4s/go-cqhttp:1.0.0-rc4
+    ports:
+      - "5700:5700"
+    volumes:
+      - "./volume/cqhttp/:/data/"
+    # entrypoint: [ "tail", "-f", "/dev/null" ]

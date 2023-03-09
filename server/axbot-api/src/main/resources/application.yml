@@ -1,0 +1,26 @@
+server:
+  port: 8888
+
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/axbot
+    username: axbot
+    password: AxbotP@ssword.
+  data:
+    redis:
+      url: redis://localhost:6379
+      lettuce:
+        pool:
+          enabled: true
+
+
+logging:
+  file:
+    name: ./logs/axbot.log
+    path: ./logs/
