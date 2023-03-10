@@ -18,6 +18,7 @@
         <module>axbot-dao</module>
         <module>axbot-service</module>
         <module>axbot-api</module>
+        <module>axbot-crawler</module>
     </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
