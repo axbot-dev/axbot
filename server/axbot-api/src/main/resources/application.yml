@@ -1,12 +1,13 @@
 server:
   port: 8888
+  servlet:
+    context-path: /api
 
 spring:
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: update
-    show-sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/axbot
