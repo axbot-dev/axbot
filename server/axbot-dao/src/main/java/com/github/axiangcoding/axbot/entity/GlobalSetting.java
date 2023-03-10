@@ -1,4 +1,4 @@
-package com.github.axiangcoding.entity;
+package com.github.axiangcoding.axbot.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class GlobalConfig {
+public class GlobalSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
