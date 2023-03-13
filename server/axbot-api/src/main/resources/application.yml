@@ -19,6 +19,8 @@ spring:
       lettuce:
         pool:
           enabled: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
 
 logging:

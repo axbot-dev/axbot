@@ -19,6 +19,7 @@
         <module>axbot-service</module>
         <module>axbot-api</module>
         <module>axbot-crawler</module>
+        <module>axbot-bot</module>
     </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -51,6 +52,16 @@
             <dependency>
                 <groupId>com.github.axiangcoding</groupId>
                 <artifactId>axbot-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.axiangcoding</groupId>
+                <artifactId>axbot-bot</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.axiangcoding</groupId>
+                <artifactId>axbot-crawler</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
