@@ -8,7 +8,6 @@ import undetected_chromedriver as uc
 queue_in = "crawler_mission"
 queue_out = "crawler_result"
 
-driver = uc.Chrome(headless=True)
 
 # demo to use redis stream
 def main():
@@ -16,10 +15,17 @@ def main():
     redis_port = int(os.getenv("REDIS_PORT"))
 
     rc = redis.StrictRedis(host=redis_host, port=redis_port)
+
+    options = uc.ChromeOptions()
+    options.add_argument("--disable-gpu")
+    driver = uc.Chrome(version_main=110, options=options, headless=True, driver_executable_path="/usr/bin/chromedriver")
+
     last_id = 0
+
     print("start consuming")
     while True:
-        resp = rc.xread(streams={queue_in: last_id}, count=1, block=1000)
+        print("waiting for message...")
+        resp = rc.xread(streams={queue_in: last_id}, count=1)
         if resp:
             key, messages = resp[0]
             last_id, data = messages[0]
@@ -45,6 +51,3 @@ if __name__ == '__main__':
             sys.exit(0)
         except SystemExit:
             os.close(0)
-    finally:
-        driver.quit()
-
