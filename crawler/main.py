@@ -16,27 +16,30 @@ def main():
 
     rc = redis.StrictRedis(host=redis_host, port=redis_port)
 
-    options = uc.ChromeOptions()
-    options.add_argument("--disable-gpu")
-    driver = uc.Chrome(version_main=110, options=options, headless=True, driver_executable_path="/usr/bin/chromedriver")
-
     last_id = 0
-
     print("start consuming")
     while True:
         print("waiting for message...")
-        resp = rc.xread(streams={queue_in: last_id}, count=1)
+        resp = rc.xread(streams={queue_in: last_id}, count=1, block=1000)
         if resp:
+            options = uc.ChromeOptions()
+            options.add_argument("--disable-gpu")
+            options.add_argument('--no-sandbox')
+            driver = uc.Chrome(version_main=111, options=options, headless=True,
+                               driver_executable_path="/usr/bin/chromedriver")
             key, messages = resp[0]
             last_id, data = messages[0]
-            print("REDIS ID: ", last_id)
-            print(data[b'url'].decode('utf-8'))
+            print("redis id", last_id)
+            url = data[b'url'].decode('utf-8')
+            task_id = data[b'task_id'].decode('utf-8')
+            print("task_id", task_id, " url", url)
 
-            driver.get(data[b'url'].decode('utf-8'))
+            driver.get(url)
             sleep(12)
             page_source = driver.page_source
             print("page source code convert, add to queue")
-            rc.xadd(queue_out, {'page_source': page_source})
+            rc.xadd(queue_out, {'page_source': page_source,
+                                'task_id': task_id})
             print("delete the message")
             rc.xdel(queue_in, last_id)
             driver.close()
