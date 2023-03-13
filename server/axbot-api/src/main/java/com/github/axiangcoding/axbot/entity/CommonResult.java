@@ -43,6 +43,18 @@ public class CommonResult {
         return new CommonResult(CommonError.ERROR);
     }
 
+    public static CommonResult error(CommonError ce, Map<String, Object> data) {
+        CommonResult commonResult = new CommonResult(ce);
+        commonResult.setData(data);
+        return commonResult;
+    }
+
+    public static CommonResult error(Map<String, Object> data) {
+        CommonResult commonResult = new CommonResult(CommonError.ERROR);
+        commonResult.setData(data);
+        return commonResult;
+    }
+
     public static CommonResult error(Throwable e) {
         CommonResult commonResult = new CommonResult(CommonError.ERROR);
         commonResult.setMessage(e.getMessage());

@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum CommonError {
     SUCCESS(0, "success"),
+    INVALID_PARAM(10000, "invalid param"),
     ERROR(-1, "error");
 
     private final int code;

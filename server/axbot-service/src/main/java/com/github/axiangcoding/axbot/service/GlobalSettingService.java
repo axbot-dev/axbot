@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GlobalSettingService {
@@ -27,5 +28,13 @@ public class GlobalSettingService {
             map.put(globalSetting.getKey(), globalSetting.getValue());
         }
         return map;
+    }
+
+    public Optional<GlobalSetting> findByKey(String key) {
+        return globalSettingRepository.findByKey(key);
+    }
+
+    public void save(GlobalSetting gs) {
+        globalSettingRepository.save(gs);
     }
 }

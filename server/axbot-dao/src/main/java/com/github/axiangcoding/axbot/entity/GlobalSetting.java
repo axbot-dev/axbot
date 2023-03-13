@@ -20,4 +20,5 @@ public class GlobalSetting {
     @Column(columnDefinition = "TEXT")
     String value;
 
+    String remark;
 }
