@@ -2,21 +2,25 @@ package com.github.axiangcoding.axbot.controller.v1;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONReader;
+import com.github.axiangcoding.axbot.entity.CommonResult;
+import com.github.axiangcoding.axbot.entity.vo.KookListGuild;
 import com.github.axiangcoding.axbot.entity.vo.KookWebhookEvent;
+import com.github.axiangcoding.axbot.kook.service.entity.GuildListResp;
 import com.github.axiangcoding.axbot.service.BotKookService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("v1/bot/kook")
 @Slf4j
+
 public class BotKookController {
     @Resource
     BotKookService botKookService;
@@ -29,5 +33,14 @@ public class BotKookController {
         HashMap<String, Object> map = new HashMap<>();
         map.put("challenge", challenge);
         return map;
+    }
+
+    @GetMapping("/guild/list")
+    public CommonResult listGuild(@Valid @ParameterObject KookListGuild query) {
+        List<GuildListResp.Item> items =
+                botKookService.listGuild(query.getPage(),
+                        query.getPageSize(),
+                        query.getSort());
+        return CommonResult.success("guilds", items);
     }
 }

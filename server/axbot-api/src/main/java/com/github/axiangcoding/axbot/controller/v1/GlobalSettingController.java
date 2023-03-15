@@ -13,7 +13,6 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("v1/settings")
-
 public class GlobalSettingController {
     @Resource
     GlobalSettingService globalSettingService;

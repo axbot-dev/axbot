@@ -1,3 +1,4 @@
+# All sections containing keys in this configuration file are intended for testing purposes only and should never be used in a production environment!
 server:
   port: 8888
   servlet:
@@ -24,3 +25,6 @@ logging:
   file:
     name: ./logs/axbot.log
     path: ./logs/
+
+kook:
+  bot-token: 
