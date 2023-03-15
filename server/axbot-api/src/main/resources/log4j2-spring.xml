@@ -12,7 +12,7 @@
         </Console>
         <RollingFile name="File" fileName="${sys:LOG_FILE}"
                      filePattern="${sys:LOG_PATH}/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
-            <JsonLayout compact="true" eventEol="true" includeTimeMillis="true"/>
+            <JsonLayout compact="true" eventEol="true" includeTimeMillis="true" stacktraceAsString="true"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>

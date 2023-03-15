@@ -1,14 +1,19 @@
 package com.github.axiangcoding.axbot.kook;
 
+import com.github.axiangcoding.axbot.kook.service.GuildService;
+
 public class KookClient {
-    private static final String BASE_URL = "https://www.kookapp.cn/api";
-    private static final String V3_API_URL = BASE_URL + "/v3";
-
-
-    private final String botToken;
+    private final GuildService guildService;
 
     public KookClient(String botToken) {
-        this.botToken = botToken;
+        if (!botToken.startsWith("Bot")) {
+            botToken = "Bot " + botToken;
+        }
+        this.guildService = KookServiceGenerator.createService(GuildService.class, botToken);
+    }
+
+    public GuildService guildService() {
+        return guildService;
     }
 
 }

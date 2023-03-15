@@ -3,6 +3,8 @@ package com.github.axiangcoding.axbot.controller.v1;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONReader;
 import com.github.axiangcoding.axbot.entity.vo.KookWebhookEvent;
+import com.github.axiangcoding.axbot.service.BotKookService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,8 @@ import java.util.Map;
 @RequestMapping("v1/bot/kook")
 @Slf4j
 public class BotKookController {
+    @Resource
+    BotKookService botKookService;
 
     @PostMapping("webhook")
     public Map<String, Object> webhook(@RequestBody String body) {

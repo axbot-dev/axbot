@@ -15,5 +15,9 @@
             <groupId>com.github.axiangcoding</groupId>
             <artifactId>axbot-dao</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.axiangcoding</groupId>
+            <artifactId>axbot-bot</artifactId>
+        </dependency>
     </dependencies>
 </project>

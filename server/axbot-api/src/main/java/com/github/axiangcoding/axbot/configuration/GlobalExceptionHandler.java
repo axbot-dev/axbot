@@ -30,11 +30,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public CommonResult exceptionHandler(RuntimeException e) {
+        log.warn(e.getMessage(), e);
         return CommonResult.error(e);
     }
 
     @ExceptionHandler(Exception.class)
     public CommonResult exceptionHandler(Exception e) {
+        log.warn(e.getMessage(), e);
         return CommonResult.error(e);
     }
 }
