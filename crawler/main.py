@@ -2,12 +2,14 @@ import json
 import logging
 import os
 import sys
-from time import sleep
+import time
 
 import pika
-
 import undetected_chromedriver as uc
 from pika import PlainCredentials
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 queue_in = "crawler_task"
 queue_out = "crawler_result"
@@ -29,6 +31,7 @@ def main():
     channel.queue_declare(queue=queue_out, durable=True)
 
     def callback(ch, method, properties, body):
+
         logging.info("received a message from queue %s", queue_in)
         logging.info("starting chromedriver")
         options = uc.ChromeOptions()
@@ -42,11 +45,16 @@ def main():
         url = json_obj["url"]
         task_id = json_obj["task_id"]
         logging.info("task_id is %s, url is %s", task_id, url)
-
+        start_time = time.time()
         driver.get(url)
-        sleep(12)
+
+        wait = WebDriverWait(driver, 15, 1)
+
+        wait.until(EC.presence_of_element_located((By.XPATH, '//li[@class="user-profile__data-nick"]')))
+
         page_source = driver.page_source
-        logging.info("get page_source success")
+        end_time = time.time()
+        logging.info("get page_source success, use %.2f sec", end_time - start_time)
 
         out_obj = {
             "task_id": task_id,
