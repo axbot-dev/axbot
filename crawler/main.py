@@ -15,7 +15,6 @@ queue_in = "crawler_task"
 queue_out = "crawler_result"
 
 logging.basicConfig(level=logging.INFO)
-# demo to use redis stream
 def main():
     pika_host = os.getenv("PIKA_HOST")
     pika_port = int(os.getenv("PIKA_PORT"))
