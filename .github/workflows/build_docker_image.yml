@@ -44,8 +44,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ server.image.name }}
-            ghcr.io/${{ server.image.name }}
+            ${{SERVER_IMAGE_NAME }}
+            ghcr.io/${{ SERVER_IMAGE_NAME }}
           tags: |
             type=schedule,pattern=nightly
             type=edge
@@ -96,8 +96,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ crawler.image.name }}
-            ghcr.io/${{ crawler.image.name }}
+            ${{ CRAWLER_IMAGE_NAME }}
+            ghcr.io/${{ CRAWLER_IMAGE_NAME }}
           tags: |
             type=schedule,pattern=nightly
             type=edge
