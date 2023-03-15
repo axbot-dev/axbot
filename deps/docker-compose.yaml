@@ -21,3 +21,13 @@ services:
     volumes:
       - "./volume/cqhttp/:/data/"
     # entrypoint: [ "tail", "-f", "/dev/null" ]
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "./volume/rabbitmq/:/var/lib/rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password

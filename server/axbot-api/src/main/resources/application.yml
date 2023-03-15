@@ -20,6 +20,11 @@ spring:
       lettuce:
         pool:
           enabled: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
 
 logging:
   file:
