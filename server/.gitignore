@@ -18,6 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
+.jpb/
 
 ### NetBeans ###
 /nbproject/private/
@@ -32,4 +33,7 @@ build/
 ### VS Code ###
 .vscode/
 logs/
-.jpb/
+
+### 测试用的html源文件，需要排除 ###
+/axbot-crawler/src/test/resources/user_exist_origin.html
+/axbot-crawler/src/test/resources/user_not_exist_origin.html

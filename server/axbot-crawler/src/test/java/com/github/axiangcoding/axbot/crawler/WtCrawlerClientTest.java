@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 public class WtCrawlerClientTest {
     @Test
     public void getProfileFromHtml1() throws IOException {
-        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("user_not_exist.html");
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("user_not_exist_origin.html");
         Assert.assertNotNull(resourceAsStream);
         String pageSource = new String(resourceAsStream.readAllBytes(), StandardCharsets.UTF_8);
 
@@ -25,7 +25,7 @@ public class WtCrawlerClientTest {
 
     @Test
     public void getProfileFromHtml2() throws IOException {
-        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("user_exist.html");
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("user_exist_origin.html");
         Assert.assertNotNull(resourceAsStream);
         String pageSource = new String(resourceAsStream.readAllBytes(), StandardCharsets.UTF_8);
 
