@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-queue_in = "crawler_task"
+queue_in = "crawler_mission"
 queue_out = "crawler_result"
 
 logging.basicConfig(level=logging.INFO)
@@ -42,22 +42,23 @@ def main():
         json_obj = json.loads(body)
 
         url = json_obj["url"]
-        task_id = json_obj["task_id"]
-        logging.info("task_id is %s, url is %s", task_id, url)
+        mission_id = json_obj["missionId"]
+        xpath_condition = json_obj["xpathCondition"]
+        logging.info("missionId is %s, url is %s, xpath condition is %s", mission_id, url, xpath_condition)
         start_time = time.time()
         driver.get(url)
 
         wait = WebDriverWait(driver, 15, 1)
 
-        wait.until(EC.presence_of_element_located((By.XPATH, '//li[@class="user-profile__data-nick"]')))
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath_condition)))
 
         page_source = driver.page_source
         end_time = time.time()
         logging.info("get page_source success, use %.2f sec", end_time - start_time)
 
         out_obj = {
-            "task_id": task_id,
-            "page_source": page_source
+            "missionId": mission_id,
+            "pageSource": page_source
         }
         channel.basic_publish(exchange='', routing_key=queue_out, body=json.dumps(out_obj, ensure_ascii=False))
         logging.info("send message to queue %s", queue_out)

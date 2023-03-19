@@ -1,8 +1,8 @@
 package com.github.axiangcoding.axbot.controller.v1;
 
-import com.github.axiangcoding.axbot.entity.vo.GlobalSetting;
-import com.github.axiangcoding.axbot.service.GlobalSettingService;
 import com.github.axiangcoding.axbot.entity.CommonResult;
+import com.github.axiangcoding.axbot.entity.vo.req.GlobalSetting;
+import com.github.axiangcoding.axbot.service.GlobalSettingService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +13,10 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("v1/settings")
+
 public class GlobalSettingController {
     @Resource
     GlobalSettingService globalSettingService;
-
 
     @GetMapping("")
     public CommonResult listAll() {

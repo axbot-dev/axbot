@@ -19,5 +19,13 @@
             <groupId>com.github.axiangcoding</groupId>
             <artifactId>axbot-bot</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.axiangcoding</groupId>
+            <artifactId>axbot-crawler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
     </dependencies>
 </project>

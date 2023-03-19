@@ -9,10 +9,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class GlobalSetting {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class GlobalSetting extends BasicEntity {
+    public static final String KEY_WT_PROFILE_CRAWLER_MODE = "WTProfileCrawlerMode";
 
     @Column(unique = true)
     String key;

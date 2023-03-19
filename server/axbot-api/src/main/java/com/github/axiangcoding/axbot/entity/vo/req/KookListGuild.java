@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.entity.vo;
+package com.github.axiangcoding.axbot.entity.vo.req;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

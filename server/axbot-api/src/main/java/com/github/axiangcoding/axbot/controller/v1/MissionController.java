@@ -1,0 +1,36 @@
+package com.github.axiangcoding.axbot.controller.v1;
+
+import com.github.axiangcoding.axbot.entity.CommonError;
+import com.github.axiangcoding.axbot.entity.CommonResult;
+import com.github.axiangcoding.axbot.entity.Mission;
+import com.github.axiangcoding.axbot.entity.vo.req.GetMission;
+import com.github.axiangcoding.axbot.entity.vo.resp.MissionVo;
+import com.github.axiangcoding.axbot.service.MissionService;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+
+@RestController
+@Slf4j
+@RequestMapping("v1/mission")
+public class MissionController {
+    @Resource
+    MissionService missionService;
+
+    @GetMapping
+    public CommonResult getMission(@Valid @ParameterObject GetMission getMission) {
+        Optional<Mission> optMission = missionService.findByMissionId(getMission.getId());
+        if (optMission.isEmpty()) {
+            return CommonResult.error(CommonError.RESOURCE_NOT_EXIST);
+        }
+        Mission mission = optMission.get();
+        return CommonResult.success("mission", MissionVo.from(mission));
+    }
+
+}

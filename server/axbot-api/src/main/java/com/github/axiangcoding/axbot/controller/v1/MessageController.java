@@ -1,15 +1,14 @@
 package com.github.axiangcoding.axbot.controller.v1;
 
-import com.github.axiangcoding.axbot.configuration.RabbitMqConfiguration;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Slf4j
+//@RestController
 public class MessageController {
     @Resource
     private RabbitTemplate rabbitTemplate;
@@ -20,11 +19,8 @@ public class MessageController {
     @PostMapping("/messages")
     public void sendMessage(@RequestBody String message) {
         rabbitTemplate.convertAndSend(outQueue.getName(), message);
+        log.info("send a message");
         System.out.println(" [x] Sent '" + message + "' to " + outQueue.getName());
     }
 
-    @RabbitListener(queues = RabbitMqConfiguration.IN_QUEUE_NAME)
-    public void receiveMessage(String message) {
-        System.out.println("Received message: " + message);
-    }
 }
