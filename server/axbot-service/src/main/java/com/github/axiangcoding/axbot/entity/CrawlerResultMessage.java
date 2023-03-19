@@ -6,4 +6,5 @@ import lombok.Data;
 public class CrawlerResultMessage {
     String missionId;
     String pageSource;
+    Integer timeUsage;
 }

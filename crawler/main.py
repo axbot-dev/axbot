@@ -15,6 +15,8 @@ queue_in = "crawler_mission"
 queue_out = "crawler_result"
 
 logging.basicConfig(level=logging.INFO)
+
+
 def main():
     pika_host = os.getenv("PIKA_HOST")
     pika_port = int(os.getenv("PIKA_PORT"))
@@ -30,7 +32,6 @@ def main():
     channel.queue_declare(queue=queue_out, durable=True)
 
     def callback(ch, method, properties, body):
-
         logging.info("received a message from queue %s", queue_in)
         logging.info("starting chromedriver")
         options = uc.ChromeOptions()
@@ -58,7 +59,8 @@ def main():
 
         out_obj = {
             "missionId": mission_id,
-            "pageSource": page_source
+            "pageSource": page_source,
+            "timeUsage": end_time - start_time
         }
         channel.basic_publish(exchange='', routing_key=queue_out, body=json.dumps(out_obj, ensure_ascii=False))
         logging.info("send message to queue %s", queue_out)

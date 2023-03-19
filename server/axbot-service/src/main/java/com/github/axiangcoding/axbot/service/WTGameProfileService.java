@@ -53,9 +53,8 @@ public class WTGameProfileService {
         Optional<WtGamerProfile> optGp = findByNickname(nickname);
         optGp.ifPresent(item -> {
             gp.setId(item.getId());
-            gp.setCreateTime(LocalDateTime.now());
+            gp.setCreateTime(item.getCreateTime());
         });
-
         gp.setUpdateTime(LocalDateTime.now());
         wtGamerProfileRepository.save(gp);
     }
@@ -66,7 +65,7 @@ public class WTGameProfileService {
      * @param nickname
      * @return
      */
-    public Mission submitMissionUpdateProfile(String nickname) {
+    public Mission submitMissionToUpdate(String nickname) {
         Mission mission = new Mission();
         final String missionId = mission.getMissionId().toString();
         missionService.save(mission);
@@ -97,9 +96,16 @@ public class WTGameProfileService {
         if (optKey.isEmpty() || optKey.get().getValue().equals(WtCrawlerClient.MODE_DIRECT)) {
             try {
                 missionService.setRunning(missionId, 20.0);
-                ParserResult o = wtCrawlerClient.getProfileFromUrl(nickname);
-                // FIXME 保存数据到游戏数据表中
-                log.info("todo o is {}", o);
+                ParserResult pr = wtCrawlerClient.getProfileFromUrl(nickname);
+                missionService.setRunning(missionId, 50.0);
+                // 找到用户资料
+                if (pr.getFound()) {
+                    WtGamerProfile wtGamerProfile = WtGamerProfile.from(pr.getProfile());
+                    upsertByNickname(wtGamerProfile.getNickname(), wtGamerProfile);
+                } else {
+                    log.info("user not found at mission {}", missionId);
+                }
+                missionService.setSuccess(missionId, JSONObject.from(pr));
             } catch (IOException e) {
                 log.info("get wt profile failed", e);
                 missionService.setFailed(missionId, e);
@@ -117,6 +123,5 @@ public class WTGameProfileService {
             log.info("send a message to {}, missionId is {}", outQueueName, missionId);
         }
     }
-
 
 }

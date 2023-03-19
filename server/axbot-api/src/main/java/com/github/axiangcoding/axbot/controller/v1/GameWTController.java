@@ -37,7 +37,7 @@ public class GameWTController {
 
     @PostMapping("gamer/profile/update")
     public CommonResult updateGamerProfile(@Valid @ParameterObject GetOrUpdateGamerProfile obj) {
-        Mission mission = wtGameProfileService.submitMissionUpdateProfile(obj.getNickname());
+        Mission mission = wtGameProfileService.submitMissionToUpdate(obj.getNickname());
         return CommonResult.success("missionId", mission.getMissionId());
     }
 
