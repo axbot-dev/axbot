@@ -19,9 +19,9 @@ spring:
   data:
     redis:
       url: redis://localhost:6379
-      lettuce:
-        pool:
-          enabled: true
+      repositories:
+        enabled: false
+
   rabbitmq:
     host: localhost
     port: 5672
