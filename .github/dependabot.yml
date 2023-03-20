@@ -6,11 +6,11 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "maven"
-    directory: "/"
+    directory: "/server"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "pip"
-    directory: "/"
+    directory: "/crawler"
     schedule:
       interval: "weekly"
