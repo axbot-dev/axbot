@@ -1,24 +1,27 @@
 package com.github.axiangcoding.axbot.service;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.github.axiangcoding.axbot.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.crawler.WtCrawlerClient;
 import com.github.axiangcoding.axbot.crawler.entity.ParserResult;
+import com.github.axiangcoding.axbot.data.entity.GlobalSetting;
+import com.github.axiangcoding.axbot.data.entity.Mission;
+import com.github.axiangcoding.axbot.data.entity.WtGamerProfile;
+import com.github.axiangcoding.axbot.data.repository.GlobalSettingRepository;
+import com.github.axiangcoding.axbot.data.repository.WtGamerProfileRepository;
 import com.github.axiangcoding.axbot.entity.CrawlerMissionMessage;
-import com.github.axiangcoding.axbot.entity.GlobalSetting;
-import com.github.axiangcoding.axbot.entity.Mission;
-import com.github.axiangcoding.axbot.entity.WtGamerProfile;
-import com.github.axiangcoding.axbot.repository.GlobalSettingRepository;
-import com.github.axiangcoding.axbot.repository.WtGamerProfileRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -43,6 +46,9 @@ public class WTGameProfileService {
     RabbitTemplate rabbitTemplate;
 
     @Resource
+    StringRedisTemplate stringRedisTemplate;
+
+    @Resource
     Queue outQueue;
 
     public Optional<WtGamerProfile> findByNickname(String nickname) {
@@ -57,6 +63,15 @@ public class WTGameProfileService {
         });
         gp.setUpdateTime(LocalDateTime.now());
         wtGamerProfileRepository.save(gp);
+    }
+
+    public boolean canBeRefresh(String nickname) {
+        Boolean hasKey = stringRedisTemplate.hasKey(CacheKeyGenerator.getWtGamerProfileUpdateCacheKey(nickname));
+        return Boolean.FALSE.equals(hasKey);
+    }
+
+    public void putRefreshFlag(String nickname) {
+        stringRedisTemplate.opsForValue().set(CacheKeyGenerator.getWtGamerProfileUpdateCacheKey(nickname), "", 1, TimeUnit.DAYS);
     }
 
     /**

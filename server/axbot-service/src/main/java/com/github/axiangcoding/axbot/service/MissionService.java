@@ -1,8 +1,8 @@
 package com.github.axiangcoding.axbot.service;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.github.axiangcoding.axbot.entity.Mission;
-import com.github.axiangcoding.axbot.repository.MissionRepository;
+import com.github.axiangcoding.axbot.data.entity.Mission;
+import com.github.axiangcoding.axbot.data.repository.MissionRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 

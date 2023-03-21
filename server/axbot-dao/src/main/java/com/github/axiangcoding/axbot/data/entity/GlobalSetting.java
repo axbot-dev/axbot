@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.entity;
+package com.github.axiangcoding.axbot.data.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

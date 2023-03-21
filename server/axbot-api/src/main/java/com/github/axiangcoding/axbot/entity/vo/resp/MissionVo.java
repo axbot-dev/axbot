@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.entity.vo.resp;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.github.axiangcoding.axbot.entity.Mission;
+import com.github.axiangcoding.axbot.data.entity.Mission;
 import lombok.Data;
 
 import java.time.LocalDateTime;

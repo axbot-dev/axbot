@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.controller.v1;
 
 import com.github.axiangcoding.axbot.entity.CommonError;
 import com.github.axiangcoding.axbot.entity.CommonResult;
-import com.github.axiangcoding.axbot.entity.Mission;
+import com.github.axiangcoding.axbot.data.entity.Mission;
 import com.github.axiangcoding.axbot.entity.vo.req.GetMission;
 import com.github.axiangcoding.axbot.entity.vo.resp.MissionVo;
 import com.github.axiangcoding.axbot.service.MissionService;

@@ -79,8 +79,6 @@ public class WtGamerProfileParser {
         gp.setFleetRateAb(extractFleetUserRate(userRateFleetKeys, fleetElement.select("ul[class~=arcadeFightTab]>li")));
         gp.setFleetRateRb(extractFleetUserRate(userRateFleetKeys, fleetElement.select("ul[class~=historyFightTab]>li")));
         gp.setFleetRateSb(extractFleetUserRate(userRateFleetKeys, fleetElement.select("ul[class~=simulationFightTab]>li")));
-
-        // FIXME 解析更多的字段
         pr.setProfile(gp);
         return pr;
     }

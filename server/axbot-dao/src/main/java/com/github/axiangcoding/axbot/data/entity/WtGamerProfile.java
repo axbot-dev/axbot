@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.entity;
+package com.github.axiangcoding.axbot.data.entity;
 
 
 import com.alibaba.fastjson2.JSONObject;
@@ -139,7 +139,7 @@ public class WtGamerProfile extends BasicEntity {
         Integer groundDestroyCount;
         Integer fleetDestroyCount;
     }
-    
+
     public static WtGamerProfile from(ParserResult.GamerProfile gp) {
         JSONObject from = JSONObject.from(gp);
         return JSONObject.parseObject(from.toString(), WtGamerProfile.class);

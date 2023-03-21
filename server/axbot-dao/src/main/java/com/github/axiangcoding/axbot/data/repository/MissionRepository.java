@@ -1,6 +1,6 @@
-package com.github.axiangcoding.axbot.repository;
+package com.github.axiangcoding.axbot.data.repository;
 
-import com.github.axiangcoding.axbot.entity.Mission;
+import com.github.axiangcoding.axbot.data.entity.Mission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
-package com.github.axiangcoding.axbot.repository;
+package com.github.axiangcoding.axbot.data.repository;
 
-import com.github.axiangcoding.axbot.entity.WtGamerProfile;
+import com.github.axiangcoding.axbot.data.entity.WtGamerProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

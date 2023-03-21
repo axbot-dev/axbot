@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.service;
 
-import com.github.axiangcoding.axbot.entity.GlobalSetting;
-import com.github.axiangcoding.axbot.repository.GlobalSettingRepository;
+import com.github.axiangcoding.axbot.data.entity.GlobalSetting;
+import com.github.axiangcoding.axbot.data.repository.GlobalSettingRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 

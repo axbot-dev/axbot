@@ -1,9 +1,9 @@
 package com.github.axiangcoding.axbot.controller.v1;
 
+import com.github.axiangcoding.axbot.data.entity.Mission;
+import com.github.axiangcoding.axbot.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.entity.CommonError;
 import com.github.axiangcoding.axbot.entity.CommonResult;
-import com.github.axiangcoding.axbot.entity.Mission;
-import com.github.axiangcoding.axbot.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.entity.vo.req.GetOrUpdateGamerProfile;
 import com.github.axiangcoding.axbot.service.WTGameProfileService;
 import jakarta.annotation.Resource;
@@ -37,7 +37,12 @@ public class GameWTController {
 
     @PostMapping("gamer/profile/update")
     public CommonResult updateGamerProfile(@Valid @ParameterObject GetOrUpdateGamerProfile obj) {
-        Mission mission = wtGameProfileService.submitMissionToUpdate(obj.getNickname());
+        String nickname = obj.getNickname();
+        if (!wtGameProfileService.canBeRefresh(nickname)) {
+            return CommonResult.error(CommonError.WT_GAMER_PROFILE_REFRESH_TOO_OFTEN);
+        }
+        Mission mission = wtGameProfileService.submitMissionToUpdate(nickname);
+        wtGameProfileService.putRefreshFlag(nickname);
         return CommonResult.success("missionId", mission.getMissionId());
     }
 

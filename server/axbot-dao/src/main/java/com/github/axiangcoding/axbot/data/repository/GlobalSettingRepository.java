@@ -1,6 +1,6 @@
-package com.github.axiangcoding.axbot.repository;
+package com.github.axiangcoding.axbot.data.repository;
 
-import com.github.axiangcoding.axbot.entity.GlobalSetting;
+import com.github.axiangcoding.axbot.data.entity.GlobalSetting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
