@@ -79,7 +79,7 @@ public class ParserResult {
         @Data
         public static class AviationRate {
             Integer gameCount;
-            Integer fFighterGameCount;
+            Integer fighterGameCount;
             Integer bomberGameCount;
             Integer attackerGameCount;
             String gameTime;

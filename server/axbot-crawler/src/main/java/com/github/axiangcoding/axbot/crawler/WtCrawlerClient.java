@@ -28,12 +28,10 @@ public class WtCrawlerClient {
 
     public ParserResult getProfileFromUrl(String nickname) throws IOException {
         String url = formatGetProfileUrl(nickname);
-        ParserResult o = WtGamerProfileParser.parseUrl(url);
-        return o;
+        return WtGamerProfileParser.parseUrl(url);
     }
 
     public ParserResult getProfileFromHtml(String html) {
-        ParserResult o = WtGamerProfileParser.parseHtml(html);
-        return o;
+        return WtGamerProfileParser.parseHtml(html);
     }
 }

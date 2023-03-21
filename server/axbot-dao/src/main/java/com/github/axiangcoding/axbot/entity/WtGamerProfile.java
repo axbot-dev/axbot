@@ -101,7 +101,7 @@ public class WtGamerProfile extends BasicEntity {
     @Embeddable
     public static class AviationRate {
         Integer gameCount;
-        Integer fFighterGameCount;
+        Integer fighterGameCount;
         Integer bomberGameCount;
         Integer attackerGameCount;
         String gameTime;
@@ -139,9 +139,9 @@ public class WtGamerProfile extends BasicEntity {
         Integer groundDestroyCount;
         Integer fleetDestroyCount;
     }
-
+    
     public static WtGamerProfile from(ParserResult.GamerProfile gp) {
         JSONObject from = JSONObject.from(gp);
-        return from.toJavaObject(WtGamerProfile.class);
+        return JSONObject.parseObject(from.toString(), WtGamerProfile.class);
     }
 }
