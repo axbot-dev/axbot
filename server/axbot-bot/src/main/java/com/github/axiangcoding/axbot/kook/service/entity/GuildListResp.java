@@ -1,24 +1,27 @@
 package com.github.axiangcoding.axbot.kook.service.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 
-@Data
-public class GuildListResp {
-    String code;
-    String message;
+
+@Getter
+@Setter
+public class GuildListResp extends CommonResp {
     DataItem data;
 
-    @Data
+    @Getter
+    @Setter
     public static class DataItem {
         List<Item> items;
         Meta meta;
         Map<String, Integer> sort;
     }
 
-    @Data
+    @Getter
+    @Setter
     public static class Item {
         String id;
         String name;
@@ -37,7 +40,8 @@ public class GuildListResp {
         String level;
     }
 
-    @Data
+    @Getter
+    @Setter
     public static class Meta {
         Integer page;
         Integer pageTotal;
