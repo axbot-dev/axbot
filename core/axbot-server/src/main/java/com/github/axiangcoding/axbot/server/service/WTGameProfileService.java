@@ -9,7 +9,7 @@ import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.data.repository.GlobalSettingRepository;
 import com.github.axiangcoding.axbot.server.data.repository.WtGamerProfileRepository;
-import com.github.axiangcoding.axbot.server.entity.CrawlerMissionMessage;
+import com.github.axiangcoding.axbot.server.service.entity.CrawlerMissionMessage;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Queue;

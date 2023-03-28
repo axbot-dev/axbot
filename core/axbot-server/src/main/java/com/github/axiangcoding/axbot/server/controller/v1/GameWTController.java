@@ -2,9 +2,9 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
-import com.github.axiangcoding.axbot.server.entity.CommonError;
-import com.github.axiangcoding.axbot.server.entity.CommonResult;
-import com.github.axiangcoding.axbot.server.entity.vo.req.GetOrUpdateGamerProfile;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GetOrUpdateGamerProfile;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;

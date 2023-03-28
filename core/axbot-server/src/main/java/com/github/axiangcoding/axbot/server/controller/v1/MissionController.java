@@ -1,10 +1,10 @@
 package com.github.axiangcoding.axbot.server.controller.v1;
 
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
-import com.github.axiangcoding.axbot.server.entity.CommonError;
-import com.github.axiangcoding.axbot.server.entity.CommonResult;
-import com.github.axiangcoding.axbot.server.entity.vo.req.GetMission;
-import com.github.axiangcoding.axbot.server.entity.vo.resp.MissionVo;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GetMission;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.resp.MissionVo;
 import com.github.axiangcoding.axbot.server.service.MissionService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;

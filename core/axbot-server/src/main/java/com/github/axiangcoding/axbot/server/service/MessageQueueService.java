@@ -5,7 +5,7 @@ import com.github.axiangcoding.axbot.crawler.WtCrawlerClient;
 import com.github.axiangcoding.axbot.crawler.entity.ParserResult;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
-import com.github.axiangcoding.axbot.server.entity.CrawlerResultMessage;
+import com.github.axiangcoding.axbot.server.service.entity.CrawlerResultMessage;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

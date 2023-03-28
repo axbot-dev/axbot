@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.configuration;
 
-import com.github.axiangcoding.axbot.server.entity.CommonError;
-import com.github.axiangcoding.axbot.server.entity.CommonResult;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;

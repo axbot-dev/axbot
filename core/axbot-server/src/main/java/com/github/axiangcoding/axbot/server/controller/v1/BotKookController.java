@@ -3,9 +3,9 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONReader;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildListResp;
-import com.github.axiangcoding.axbot.server.entity.CommonResult;
-import com.github.axiangcoding.axbot.server.entity.vo.req.KookListGuild;
-import com.github.axiangcoding.axbot.server.entity.vo.req.KookWebhookEvent;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookListGuild;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 
 import com.github.axiangcoding.axbot.server.service.BotKookService;
 import jakarta.annotation.Resource;

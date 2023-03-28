@@ -34,6 +34,7 @@ def main():
     def callback(ch, method, properties, body):
         logging.info("received a message from queue %s", queue_in)
         logging.info("starting chromedriver")
+        start_time = time.time()
         options = uc.ChromeOptions()
         options.add_argument("--disable-gpu")
         options.add_argument('--no-sandbox')
@@ -41,12 +42,10 @@ def main():
         driver = uc.Chrome(version_main=111, options=options, headless=True,
                            driver_executable_path="/usr/bin/chromedriver")
         json_obj = json.loads(body)
-
         url = json_obj["url"]
         mission_id = json_obj["missionId"]
         xpath_condition = json_obj["xpathCondition"]
         logging.info("missionId is %s, url is %s, xpath condition is %s", mission_id, url, xpath_condition)
-        start_time = time.time()
         driver.get(url)
 
         wait = WebDriverWait(driver, 15, 1)

@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.entity.vo.req;
+package com.github.axiangcoding.axbot.server.controller.entity.vo.req;
 
 
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;

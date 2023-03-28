@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.entity.vo.resp;
+package com.github.axiangcoding.axbot.server.controller.entity.vo.resp;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
