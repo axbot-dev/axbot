@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "kook.bot-token",
+      "type": "java.lang.String",
+      "description": "Kook token."
+    }
+  ]
+}

@@ -1,13 +1,23 @@
-package com.github.axiangcoding.axbot.kook;
+package com.github.axiangcoding.axbot.bot.kook;
 
-import com.github.axiangcoding.axbot.kook.service.GuildService;
+
+import com.github.axiangcoding.axbot.bot.kook.service.GuildService;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildListResp;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
+
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.IOException;
+
+@Slf4j
 public class KookClient {
     private final GuildService guildService;
     private static final String BASE_URL = "https://www.kookapp.cn/";
@@ -44,6 +54,5 @@ public class KookClient {
     public GuildService guildService() {
         return guildService;
     }
-
 
 }

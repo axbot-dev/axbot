@@ -5,8 +5,8 @@ updates:
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "maven"
-    directory: "/server"
+  - package-ecosystem: "gradle"
+    directory: "/core"
     schedule:
       interval: "weekly"
 

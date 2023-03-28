@@ -9,12 +9,12 @@ on:
     branches: ["master"]
 
 env:
-  SERVER_IMAGE_NAME: axiangcoding/axbot-server
+  CORE_IMAGE_NAME: axiangcoding/axbot-core
   CRAWLER_IMAGE_NAME: axiangcoding/axbot-crawler
 
 jobs:
-  build-server:
-    name: build axbot-server image
+  build-core:
+    name: build axbot-core image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,8 +44,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ env.SERVER_IMAGE_NAME }}
-            ghcr.io/${{ env.SERVER_IMAGE_NAME }}
+            ${{ env.CORE_IMAGE_NAME }}
+            ghcr.io/${{ env.CORE_IMAGE_NAME }}
           tags: |
             type=schedule,pattern=nightly
             type=edge
@@ -58,7 +58,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./server
+          context: ./core
           push: true
           build-args: |
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
