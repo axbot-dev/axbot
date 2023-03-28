@@ -3,17 +3,11 @@ plugins {
     id("java-library")
 }
 
-group = "com.github.axiangcoding.axbot.bot"
+group = "com.github.axiangcoding.axbot.engine"
 version = "1.0-SNAPSHOT"
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
-    api("com.squareup.retrofit2:retrofit:2.9.0")
-    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.26")

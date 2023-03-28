@@ -3,7 +3,22 @@
     {
       "name": "kook.bot-token",
       "type": "java.lang.String",
-      "description": "Kook token."
+      "description": "Kook bot token."
+    },
+    {
+      "name": "kook.verify-token",
+      "type": "java.lang.String",
+      "description": "Kook bot verify token."
+    },
+    {
+      "name": "kook.enabled",
+      "type": "java.lang.String",
+      "description": "Enabled Kook bot or not."
+    },
+    {
+      "name": "kook.trigger-message-prefix",
+      "type": "java.lang.String",
+      "description": "Trigger message prefix for Kook bot."
     }
   ]
 }

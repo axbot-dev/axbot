@@ -2,20 +2,16 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONReader;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildListResp;
-import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookListGuild;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
-
 import com.github.axiangcoding.axbot.server.service.BotKookService;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,20 +24,14 @@ public class BotKookController {
 
     @PostMapping("webhook")
     public Map<String, Object> webhook(@RequestBody String body) {
-        KookWebhookEvent event = JSONObject.parseObject(body, KookWebhookEvent.class, JSONReader.Feature.SupportSmartMatch);
+        KookWebhookEvent event = JSONObject.parseObject(body, KookWebhookEvent.class,
+                JSONReader.Feature.SupportSmartMatch);
+        if (!botKookService.compareVerifyToken(event.getD().getVerifyToken())) {
+            log.warn("no a valid kook webhook message");
+            return new HashMap<>();
+        }
         log.info(JSONObject.toJSONString(event));
-        String challenge = event.getD().getChallenge();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("challenge", challenge);
-        return map;
+        return botKookService.DetermineMessageResponse(event);
     }
 
-    @GetMapping("/guild/list")
-    public CommonResult listGuild(@Valid @ParameterObject KookListGuild query) {
-        List<GuildListResp.Item> items =
-                botKookService.listGuild(query.getPage(),
-                        query.getPageSize(),
-                        query.getSort());
-        return CommonResult.success("guilds", items);
-    }
 }

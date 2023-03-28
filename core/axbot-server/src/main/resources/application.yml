@@ -33,4 +33,9 @@ logging:
     path: ./logs/
 
 kook:
+  enabled: true
   bot-token:
+  verify-token:
+  trigger-message-prefix:
+    - .axbot
+    - axbot
