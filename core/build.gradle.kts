@@ -9,7 +9,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 allprojects {
     repositories {
-        maven(url = "https://maven.aliyun.com/repository/public/")
+        // maven(url = "https://maven.aliyun.com/repository/public/")
         mavenCentral()
     }
 }
