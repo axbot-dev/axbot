@@ -25,9 +25,9 @@ public class GlobalExceptionHandler {
         Map<String, Object> data = new HashMap<>();
         data.put("errors", e.getConstraintViolations()
                 .stream()
-                .map(f->"%s - %s".formatted(f.getPropertyPath(), f.getMessage()))
+                .map(f -> "%s - %s".formatted(f.getPropertyPath(), f.getMessage()))
                 .collect(Collectors.toCollection(ArrayList::new)));
-        return CommonResult.error(CommonError.INVALID_PARAM,data);
+        return CommonResult.error(CommonError.INVALID_PARAM, data);
     }
 
     @ExceptionHandler(BindException.class)
