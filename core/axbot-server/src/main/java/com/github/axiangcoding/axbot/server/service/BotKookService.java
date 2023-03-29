@@ -4,21 +4,16 @@ package com.github.axiangcoding.axbot.server.service;
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
-import com.github.axiangcoding.axbot.engine.AxBotEngine;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotInputForKook;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotOutputForKook;
 import com.github.axiangcoding.axbot.server.configuration.props.KookConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
+import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotInputForKook;
+import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotOutputForKook;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -30,7 +25,7 @@ public class BotKookService {
     KookConfProps kookConfProps;
 
     @Resource
-    AxBotEngine axBotEngine;
+    AxBotService axBotService;
 
 
     public boolean compareVerifyToken(String retToken) {
@@ -49,13 +44,15 @@ public class BotKookService {
         if (Objects.equals(d.getType(), KookEvent.TYPE_TEXT) ||
                 Objects.equals(d.getType(), KookEvent.TYPE_KMARKDOWN)) {
             String content = d.getContent();
-            String command = null;
+            String[] contentSplit = StringUtils.split(content);
+
+            String command = "";
             List<String> prefixes = kookConfProps.getTriggerMessagePrefix();
             boolean isTrigger = false;
             for (String prefix : prefixes) {
-                if (StringUtils.startsWith(StringUtils.trim(content), prefix)) {
+                if (prefix.equals(contentSplit[0])) {
                     isTrigger = true;
-                    command = RegExUtils.replaceAll(StringUtils.trim(content), prefix, "");
+                    command = StringUtils.join(Arrays.copyOfRange(contentSplit, 1, contentSplit.length), " ");
                     break;
                 }
             }
@@ -65,10 +62,10 @@ public class BotKookService {
                 input.setRequestCommand(command);
                 input.setRequestMsgId(d.getMsgId());
                 input.setRequestChannel(d.getTargetId());
-                axBotEngine.generateResponseAsync(AxBotEngine.PLATFORM_KOOK, input, output -> {
+                axBotService.generateResponseAsync(AxBotService.PLATFORM_KOOK, input, output -> {
                     AxBotOutputForKook out = ((AxBotOutputForKook) output);
                     CreateMessageReq req = new CreateMessageReq();
-                    req.setType(KookEvent.TYPE_KMARKDOWN);
+                    req.setType(KookEvent.TYPE_CARD);
                     req.setQuote(out.getReplayToMsg());
                     req.setTargetId(out.getReplayToChannel());
                     req.setContent(out.getContent());

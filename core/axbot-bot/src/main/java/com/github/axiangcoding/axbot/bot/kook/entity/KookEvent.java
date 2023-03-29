@@ -13,6 +13,7 @@ public class KookEvent {
     public static final Integer TYPE_PIC = 2;
     public static final Integer TYPE_VIDEO = 3;
     public static final Integer TYPE_KMARKDOWN = 9;
+    public static final Integer TYPE_CARD = 10;
 
     public static final String CHANNEL_TYPE_WEBHOOK_CHALLENGE = "WEBHOOK_CHALLENGE";
     public static final String CHANNEL_TYPE_GROUP = "GROUP";
