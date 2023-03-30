@@ -44,24 +44,30 @@ public class AxBotService {
             out.setReplayToChannel(in.getRequestChannel());
 
             String command = in.getRequestCommand();
-            String[] commandList = StringUtils.split(command);
+            String[] cList = StringUtils.split(command);
 
-            if (commandList == null || commandList.length == 0) {
+            if (StringUtils.isBlank(command)) {
                 out.setContent(axBotHandlerForKook.getDefault());
-                return out;
+            } else {
+                AxbotCommand jc = AxbotCommand.judgeCommand(command);
+                if (jc == null) {
+                    out.setContent(axBotHandlerForKook.notMatch(command));
+                } else if (jc == AxbotCommand.COMMAND_HELP) {
+                    out.setContent(axBotHandlerForKook.getHelp());
+                } else if (jc == AxbotCommand.COMMAND_VERSION) {
+                    out.setContent(axBotHandlerForKook.getVersion());
+                } else if (jc == AxbotCommand.COMMAND_LUCKY) {
+                    String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
+                    out.setContent(axBotHandlerForKook.getTodayLucky(s.hashCode()));
+                } else if (jc == AxbotCommand.COMMAND_WT_QUERY_PROFILE) {
+                    out.setContent(axBotHandlerForKook.queryWTProfile(cList[2], out));
+                } else if (jc == AxbotCommand.COMMAND_WT_UPDATE_PROFILE) {
+                    out.setContent(axBotHandlerForKook.updateWTProfile(cList[2]));
+                } else {
+                    out.setContent(axBotHandlerForKook.notMatch(command));
+                }
             }
 
-            String c0 = commandList[0];
-            if (AxbotCommand.COMMAND_HELP.getTexts().contains(c0)) {
-                out.setContent(axBotHandlerForKook.getHelp());
-            } else if (AxbotCommand.COMMAND_VERSION.getTexts().contains(c0)) {
-                out.setContent(axBotHandlerForKook.getVersion());
-            } else if (AxbotCommand.COMMAND_LUCKY.getTexts().contains(c0)) {
-                String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
-                out.setContent(axBotHandlerForKook.getTodayLucky(s.hashCode()));
-            } else {
-                out.setContent(axBotHandlerForKook.notMatch(command));
-            }
             return out;
         } else if (replyPlatform == PLATFORM_QQ) {
             // TODO

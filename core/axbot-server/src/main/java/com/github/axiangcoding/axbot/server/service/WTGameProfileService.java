@@ -89,6 +89,7 @@ public class WTGameProfileService {
             missionService.setPending(missionId);
             executeMission(missionId, nickname);
         });
+        putRefreshFlag(nickname);
         return mission;
     }
 

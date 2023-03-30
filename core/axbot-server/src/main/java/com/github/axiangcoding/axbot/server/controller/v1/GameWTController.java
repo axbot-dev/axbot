@@ -42,7 +42,6 @@ public class GameWTController {
             return CommonResult.error(CommonError.WT_GAMER_PROFILE_REFRESH_TOO_OFTEN);
         }
         Mission mission = wtGameProfileService.submitMissionToUpdate(nickname);
-        wtGameProfileService.putRefreshFlag(nickname);
         return CommonResult.success("missionId", mission.getMissionId());
     }
 

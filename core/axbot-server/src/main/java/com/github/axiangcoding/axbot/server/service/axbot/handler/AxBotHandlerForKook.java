@@ -1,9 +1,21 @@
 package com.github.axiangcoding.axbot.server.service.axbot.handler;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
+import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookKMarkdownMessage;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
+import com.github.axiangcoding.axbot.server.data.entity.Mission;
+import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
+import com.github.axiangcoding.axbot.server.service.MissionService;
+import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
+import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotOutput;
+import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotOutputForKook;
+import com.github.axiangcoding.axbot.server.service.axbot.handler.function.WTFunction;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -14,6 +26,19 @@ import java.util.*;
 @Component
 @Slf4j
 public class AxBotHandlerForKook implements AxBotHandler {
+    @Resource
+    WTGameProfileService wtGameProfileService;
+
+    @Resource
+    MissionService missionService;
+
+    @Resource
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+    @Resource
+    KookClient kookClient;
+
+
     @Override
     public String getDefault() {
         List<KookCardMessage> messages = new ArrayList<>();
@@ -123,5 +148,58 @@ public class AxBotHandlerForKook implements AxBotHandler {
         card.setModules(modules);
         messages.add(card);
         return JSONObject.toJSONString(messages);
+    }
+
+    @Override
+    public String queryWTProfile(String nickname, AxBotOutput output) {
+        Optional<WtGamerProfile> optGp = wtGameProfileService.findByNickname(nickname);
+        if (optGp.isEmpty()) {
+            if (!wtGameProfileService.canBeRefresh(nickname)) {
+                return WTFunction.profileNotFoundMsg(nickname, "该玩家未找到，且近期已经查询过");
+            } else {
+                Mission mission = wtGameProfileService.submitMissionToUpdate(nickname);
+                UUID missionId = mission.getMissionId();
+                threadPoolTaskExecutor.execute(() -> {
+                    AxBotOutputForKook out = (AxBotOutputForKook) output;
+                    CreateMessageReq req = new CreateMessageReq();
+                    req.setType(KookEvent.TYPE_CARD);
+                    req.setQuote(out.getReplayToMsg());
+                    req.setTargetId(out.getReplayToChannel());
+                    int i = 0;
+                    while (i < 10) {
+                        Optional<Mission> m = missionService.findByMissionId(missionId.toString());
+                        if (m.isEmpty() || (!Objects.equals(m.get().getStatus(), Mission.STATUS_FAILED) && !Objects.equals(m.get().getStatus(), Mission.STATUS_SUCCESS))) {
+                            log.info("not found {}, still in queue", nickname);
+                            continue;
+                        }
+                        Optional<WtGamerProfile> opt = wtGameProfileService.findByNickname(nickname);
+                        if (opt.isPresent()) {
+                            req.setContent(WTFunction.profileFound(nickname, opt.get()));
+                            kookClient.createMessage(req);
+                            break;
+                        }
+
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        i++;
+                    }
+                    if (i == 10) {
+                        req.setContent(WTFunction.profileNotFoundMsg(nickname));
+                        kookClient.createMessage(req);
+                    }
+                });
+                return WTFunction.profileInQuery(nickname);
+            }
+        } else {
+            return WTFunction.profileFound(nickname, optGp.get());
+        }
+    }
+
+    @Override
+    public String updateWTProfile(String nickname) {
+        return null;
     }
 }

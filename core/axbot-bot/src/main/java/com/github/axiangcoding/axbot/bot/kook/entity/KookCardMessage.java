@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,19 @@ public class KookCardMessage {
     KookCardMessage text;
     String mode;
     KookCardMessage accessory;
+
+    public static List<KookCardMessage> defaultMsg(String title){
+        List<KookCardMessage> messages = new ArrayList<>();
+        KookCardMessage card = KookCardMessage.newCard("info", "lg");
+        ArrayList<KookCardMessage> modules = new ArrayList<>();
+
+        modules.add(KookCardMessage.newHeader(title));
+        modules.add(KookCardMessage.newDivider());
+
+        card.setModules(modules);
+        messages.add(card);
+        return messages;
+    }
 
     public static KookCardMessage newCard(String theme, String size) {
         KookCardMessage cardMessage = new KookCardMessage();
