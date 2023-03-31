@@ -74,6 +74,10 @@ public class WTGameProfileService {
         stringRedisTemplate.opsForValue().set(CacheKeyGenerator.getWtGamerProfileUpdateCacheKey(nickname), "", 1, TimeUnit.DAYS);
     }
 
+    public void deleteRefreshFlag(String nickname) {
+        stringRedisTemplate.opsForValue().getAndDelete(CacheKeyGenerator.getWtGamerProfileUpdateCacheKey(nickname));
+    }
+
     /**
      * 更新游戏数据
      *

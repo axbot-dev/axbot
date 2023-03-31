@@ -104,13 +104,16 @@ public class WtGamerProfileParser {
     }
 
     private static Integer parseCommonNumber(String str) {
-        if ("N/A".equals(str) || "".equals(str)) {
+        if ("N/A".equals(str) || StringUtils.isBlank(str)) {
             return 0;
         }
         return Integer.parseInt(str.replaceAll(",", ""));
     }
 
     private static Long parseLongNumber(String str) {
+        if ("N/A".equals(str) || StringUtils.isBlank(str)) {
+            return 0L;
+        }
         return Long.parseLong(str.replaceAll(",", ""));
     }
 

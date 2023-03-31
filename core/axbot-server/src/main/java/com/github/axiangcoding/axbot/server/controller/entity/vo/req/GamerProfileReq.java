@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class GetOrUpdateGamerProfile {
+public class GamerProfileReq {
     @NotBlank
     String nickname;
 }

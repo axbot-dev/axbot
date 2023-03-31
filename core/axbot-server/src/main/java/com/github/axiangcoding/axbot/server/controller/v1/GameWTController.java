@@ -4,7 +4,7 @@ import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GetOrUpdateGamerProfile;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GamerProfileReq;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ public class GameWTController {
 
 
     @GetMapping("gamer/profile")
-    public CommonResult getGamerProfile(@Valid @ParameterObject GetOrUpdateGamerProfile obj) {
+    public CommonResult getGamerProfile(@Valid @ParameterObject GamerProfileReq obj) {
         Optional<WtGamerProfile> optProfile = wtGameProfileService.findByNickname(obj.getNickname());
         if (optProfile.isEmpty()) {
             return CommonResult.error(CommonError.RESOURCE_NOT_EXIST);
@@ -36,13 +36,19 @@ public class GameWTController {
     }
 
     @PostMapping("gamer/profile/update")
-    public CommonResult updateGamerProfile(@Valid @ParameterObject GetOrUpdateGamerProfile obj) {
+    public CommonResult updateGamerProfile(@Valid @ParameterObject GamerProfileReq obj) {
         String nickname = obj.getNickname();
         if (!wtGameProfileService.canBeRefresh(nickname)) {
             return CommonResult.error(CommonError.WT_GAMER_PROFILE_REFRESH_TOO_OFTEN);
         }
         Mission mission = wtGameProfileService.submitMissionToUpdate(nickname);
         return CommonResult.success("missionId", mission.getMissionId());
+    }
+
+    @PostMapping("gamer/profile/update/lock/reset")
+    public CommonResult resetUpdateLock(@Valid @ParameterObject GamerProfileReq obj) {
+        wtGameProfileService.deleteRefreshFlag(obj.getNickname());
+        return CommonResult.success();
     }
 
 }
