@@ -74,7 +74,7 @@ public class AxBotHandlerForKook implements AxBotHandler {
         modules.add(KookCardMessage.newHeader("常用命令"));
         modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newPlainText("以形如 “axbot [命令] [参数]”的格式调用"))));
 
-        Map<String, String> commandMap = new HashMap<>();
+        Map<String, String> commandMap = new LinkedHashMap<>();
         commandMap.put("axbot 气运", "获取今天的气运值");
         commandMap.put("axbot 战雷 查询 [玩家昵称]", "查询战雷的玩家数据");
         commandMap.put("axbot 战雷 刷新 [玩家昵称]", "刷新战雷的玩家数据");
