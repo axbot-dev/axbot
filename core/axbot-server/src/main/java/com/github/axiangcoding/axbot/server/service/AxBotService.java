@@ -62,7 +62,7 @@ public class AxBotService {
                 } else if (jc == AxbotCommand.COMMAND_WT_QUERY_PROFILE) {
                     out.setContent(axBotHandlerForKook.queryWTProfile(cList[2], out));
                 } else if (jc == AxbotCommand.COMMAND_WT_UPDATE_PROFILE) {
-                    out.setContent(axBotHandlerForKook.updateWTProfile(cList[2]));
+                    out.setContent(axBotHandlerForKook.updateWTProfile(cList[2], out));
                 } else {
                     out.setContent(axBotHandlerForKook.notMatch(command));
                 }

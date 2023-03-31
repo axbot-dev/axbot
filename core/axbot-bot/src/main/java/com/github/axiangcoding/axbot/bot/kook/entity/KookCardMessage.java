@@ -23,9 +23,11 @@ public class KookCardMessage {
     List<KookCardMessage> elements;
     KookCardMessage text;
     String mode;
+    Integer cols;
+    List<KookCardMessage> fields;
     KookCardMessage accessory;
 
-    public static List<KookCardMessage> defaultMsg(String title){
+    public static List<KookCardMessage> defaultMsg(String title) {
         List<KookCardMessage> messages = new ArrayList<>();
         KookCardMessage card = KookCardMessage.newCard("info", "lg");
         ArrayList<KookCardMessage> modules = new ArrayList<>();
@@ -102,4 +104,11 @@ public class KookCardMessage {
         return cardMessage;
     }
 
+    public static KookCardMessage newParagraph(int cols, List<KookCardMessage> fields) {
+        KookCardMessage cardMessage = new KookCardMessage();
+        cardMessage.setType("paragraph");
+        cardMessage.setCols(cols);
+        cardMessage.setFields(fields);
+        return cardMessage;
+    }
 }

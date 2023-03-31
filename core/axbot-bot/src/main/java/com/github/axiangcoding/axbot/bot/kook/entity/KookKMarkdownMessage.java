@@ -51,4 +51,8 @@ public class KookKMarkdownMessage {
     public static String divider() {
         return "---\n";
     }
+
+    public static String colorful(String text, String color) {
+        return "(font)%s(font)[%s]\n\n".formatted(text, color);
+    }
 }

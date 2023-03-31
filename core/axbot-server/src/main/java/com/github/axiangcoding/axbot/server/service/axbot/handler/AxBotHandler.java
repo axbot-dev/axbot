@@ -29,5 +29,5 @@ public interface AxBotHandler {
 
     String queryWTProfile(String nickname, AxBotOutput out);
 
-    String updateWTProfile(String nickname);
+    String updateWTProfile(String nickname, AxBotOutput out);
 }
