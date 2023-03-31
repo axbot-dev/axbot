@@ -76,7 +76,10 @@ public class AxBotHandlerForKook implements AxBotHandler {
 
         Map<String, String> commandMap = new HashMap<>();
         commandMap.put("axbot 气运", "获取今天的气运值");
+        commandMap.put("axbot 战雷 查询 [玩家昵称]", "查询战雷的玩家数据");
+        commandMap.put("axbot 战雷 刷新 [玩家昵称]", "刷新战雷的玩家数据");
         commandMap.put("axbot 帮助", "获取帮助手册");
+        commandMap.put("axbot 版本", "获取当前机器人的部署版本");
 
         commandMap.forEach((k, v) -> {
             String msg = KookKMarkdownMessage.code(k) + " - " + v;
@@ -86,8 +89,8 @@ public class AxBotHandlerForKook implements AxBotHandler {
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newHeader("完整命令"));
         modules.add(KookCardMessage.newSectionWithLink(
-                KookCardMessage.newKMarkdown("请到 [TBD] 查看完整命令列表"),
-                KookCardMessage.newButton("info", "跳转外部链接")));
+                KookCardMessage.newKMarkdown("上面列出的只是常用命令的常用调用形式，简要调用方式请点击按钮跳转文档查看~"),
+                KookCardMessage.newButton("info", "跳转到文档")));
 
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newSection(
