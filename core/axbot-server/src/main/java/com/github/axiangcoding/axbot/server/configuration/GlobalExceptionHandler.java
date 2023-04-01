@@ -1,5 +1,6 @@
 package com.github.axiangcoding.axbot.server.configuration;
 
+import com.github.axiangcoding.axbot.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
 import jakarta.validation.ConstraintViolationException;
@@ -39,6 +40,12 @@ public class GlobalExceptionHandler {
                 .map(f -> "%s - %s".formatted(f.getField(), f.getDefaultMessage()))
                 .collect(Collectors.toCollection(ArrayList::new)));
         return CommonResult.error(CommonError.INVALID_PARAM, data);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public CommonResult exceptionHandler(BusinessException e) {
+        log.warn(e.getMessage(), e);
+        return CommonResult.error(e.getCommonError());
     }
 
     @ExceptionHandler(RuntimeException.class)

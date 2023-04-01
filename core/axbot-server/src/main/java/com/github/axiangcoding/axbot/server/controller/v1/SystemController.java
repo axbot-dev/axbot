@@ -15,4 +15,9 @@ public class SystemController {
     public CommonResult getVersion() {
         return CommonResult.success("version", System.getenv("APP_VERSION"));
     }
+
+    @GetMapping("/health")
+    public CommonResult health() {
+        return CommonResult.success();
+    }
 }

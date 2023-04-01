@@ -1,11 +1,14 @@
 package com.github.axiangcoding.axbot.server.controller.entity;
 
+import com.alibaba.fastjson2.JSONObject;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
 public class CommonResult {
     int code;
     String message;
@@ -47,10 +50,12 @@ public class CommonResult {
         return new CommonResult(ce);
     }
 
+    public static CommonResult error(CommonError ce, String msg) {
+        return new CommonResult(ce.getCode(), msg);
+    }
+
     public static CommonResult error(CommonError ce, Map<String, Object> data) {
-        CommonResult commonResult = new CommonResult(ce);
-        commonResult.setData(data);
-        return commonResult;
+        return new CommonResult(ce.getCode(), ce.getMessage(), data);
     }
 
     public static CommonResult error(Map<String, Object> data) {
@@ -63,5 +68,9 @@ public class CommonResult {
         CommonResult commonResult = new CommonResult(CommonError.ERROR);
         commonResult.setMessage(e.getMessage());
         return commonResult;
+    }
+
+    public String toJsonString(){
+        return JSONObject.toJSONString(this);
     }
 }
