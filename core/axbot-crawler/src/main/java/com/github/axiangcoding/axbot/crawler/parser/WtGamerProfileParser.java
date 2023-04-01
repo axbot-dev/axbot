@@ -118,6 +118,9 @@ public class WtGamerProfileParser {
     }
 
     private static Double parseWinRate(String str) {
+        if ("N/A".equals(str) || StringUtils.isBlank(str)) {
+            return 0.0;
+        }
         int i = Integer.parseInt(str.replaceAll("%", ""));
         return i * 1.0 / 100;
     }
