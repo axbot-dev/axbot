@@ -3,6 +3,7 @@ server:
   port: 8888
   servlet:
     context-path: /api
+  shutdown: graceful
 
 spring:
   jpa:
