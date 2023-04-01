@@ -44,6 +44,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
     implementation("com.alibaba.fastjson2:fastjson2:2.0.26")
+    // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
+    implementation("org.ocpsoft.prettytime:prettytime:5.0.6.Final")
 
 
 }

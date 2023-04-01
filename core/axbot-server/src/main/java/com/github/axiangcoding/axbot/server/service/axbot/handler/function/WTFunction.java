@@ -5,13 +5,13 @@ import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookKMarkdownMessage;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WTFunction {
     public static String profileNotFoundMsg(String nickname, String moreMsg) {
@@ -33,9 +33,10 @@ public class WTFunction {
         List<KookCardMessage> modules = messages.get(0).getModules();
         modules.add(KookCardMessage.newContext(
                 List.of(KookCardMessage.newKMarkdown("一切数据均来源自官网，AXBot只做计算不做修改"))));
+
         modules.add(KookCardMessage.newContext(
                 List.of(KookCardMessage.newKMarkdown("数据最后更新于 %s".formatted(
-                        profile.getUpdateTime().atZone(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))))));
+                        new PrettyTime(Locale.CHINA).format(profile.getUpdateTime()))))));
         ArrayList<KookCardMessage> f1 = new ArrayList<>();
 
         f1.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("联队") + "\n" + profile.getClan()));
