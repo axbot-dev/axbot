@@ -135,9 +135,7 @@ public class AxBotService {
                     out.setToChannel(defaultChannelId);
                     out.setContent(content);
                 }
-                default -> {
-                    log.warn("not support yet");
-                }
+                default -> log.warn("not support yet");
             }
             return out;
         } else if (replyPlatform == PLATFORM_QQ) {

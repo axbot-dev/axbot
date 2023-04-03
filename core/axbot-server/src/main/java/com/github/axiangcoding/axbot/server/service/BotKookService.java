@@ -109,6 +109,8 @@ public class BotKookService {
                     input.setEvent(AxBotSystemEvent.SYSTEM_EVENT_EXIT_GUILD);
                     String guildId = (String) d.getExtra().getBody().get("guild_id");
                     input.setFromGuild(guildId);
+                } else {
+                    return map;
                 }
 
                 axBotService.genResponseForSystemAsync(AxBotService.PLATFORM_KOOK, input, output -> {
