@@ -31,5 +31,9 @@ public interface AxBotHandler {
 
     String updateWTProfile(String nickname, AxBotOutput out);
 
-    String getGroupStatus(String groupId);
+    String getGuildStatus(String guildId);
+
+    String joinGuild(String guildId);
+
+    void exitGuild(String guildId);
 }

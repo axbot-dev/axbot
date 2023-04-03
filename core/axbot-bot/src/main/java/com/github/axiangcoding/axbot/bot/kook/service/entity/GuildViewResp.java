@@ -31,9 +31,9 @@ public class GuildViewResp extends CommonResp {
     @Getter
     @Setter
     public static class Role {
-        Integer roleId;
+        Long roleId;
         String name;
-        Integer color;
+        Long color;
         Integer position;
         Integer hoist;
         Integer mentionable;
@@ -43,10 +43,10 @@ public class GuildViewResp extends CommonResp {
     @Getter
     @Setter
     public static class Channel {
-        Integer id;
+        String id;
         String guildId;
         String userId;
-        Integer parentId;
+        String parentId;
         String name;
         String topic;
         Integer type;

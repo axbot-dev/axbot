@@ -13,7 +13,7 @@ import java.util.Map;
 @Data
 public class KookEvent {
     // TODO 更多的定义
-    public static final Integer TYPE_MESSAGE = 255;
+    public static final Integer TYPE_SYSTEM_MESSAGE = 255;
     public static final Integer TYPE_TEXT = 1;
     public static final Integer TYPE_PIC = 2;
     public static final Integer TYPE_VIDEO = 3;

@@ -17,6 +17,6 @@ public class KookGuildSetting extends BasicEntity {
     Integer WTProfileUpdateUsage;
     Integer WTProfileUpdateLimit;
     Boolean banned;
-
+    Boolean active;
 
 }

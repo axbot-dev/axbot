@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.entity.kook;
 
-import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotInput;
+import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotSysInput;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,11 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AxBotInputForKook extends AxBotInput {
-    /**
-     * 请求来自的频道
-     */
-    String fromChannel;
+public class AxBotSysInputForKook extends AxBotSysInput {
     /**
      * 请求来自的服务器
      */

@@ -5,6 +5,7 @@ import com.github.axiangcoding.axbot.bot.kook.service.GuildService;
 import com.github.axiangcoding.axbot.bot.kook.service.MessageService;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildViewResp;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -69,4 +70,17 @@ public class KookClient {
         }
     }
 
+    public GuildViewResp getGuildView(String guildId) {
+        try {
+            Response<GuildViewResp> execute = guildService.getGuildView(guildId).execute();
+            if (!execute.isSuccessful()) {
+                log.warn("request failed, status code is {}, message is {}",
+                        execute.code(), execute.errorBody() != null ? execute.errorBody().string() : null);
+                return null;
+            }
+            return execute.body();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

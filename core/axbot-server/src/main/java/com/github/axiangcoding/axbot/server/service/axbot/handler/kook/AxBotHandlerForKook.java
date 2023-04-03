@@ -15,6 +15,7 @@ import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
 import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotOutput;
 import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotOutputForKook;
 import com.github.axiangcoding.axbot.server.service.axbot.handler.AxBotHandler;
+import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.HelpFunction;
 import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.LuckyFunction;
 import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.StatusFunction;
 import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.WTFunction;
@@ -68,35 +69,7 @@ public class AxBotHandlerForKook implements AxBotHandler {
 
     @Override
     public String getHelp() {
-        List<KookCardMessage> messages = KookCardMessage.defaultMsg("AXBot 帮助手册", "success");
-        List<KookCardMessage> modules = messages.get(0).getModules();
-
-        modules.add(KookCardMessage.newHeader("常用命令"));
-        modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newPlainText("以形如 “axbot [命令] [参数]”的格式调用"))));
-
-        Map<String, String> commandMap = new LinkedHashMap<>();
-        commandMap.put("axbot 气运", "获取今天的气运值");
-        commandMap.put("axbot 战雷 查询 [玩家昵称]", "查询战雷的玩家数据");
-        commandMap.put("axbot 战雷 刷新 [玩家昵称]", "刷新战雷的玩家数据");
-        commandMap.put("axbot 帮助", "获取帮助手册");
-        commandMap.put("axbot 版本", "获取当前机器人的部署版本");
-
-        commandMap.forEach((k, v) -> {
-            String msg = KookKMarkdownMessage.code(k) + " - " + v;
-            modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(msg)));
-        });
-
-        modules.add(KookCardMessage.newDivider());
-        modules.add(KookCardMessage.newHeader("完整命令"));
-        modules.add(KookCardMessage.newSectionWithLink(
-                KookCardMessage.newKMarkdown("上面列出的只是常用命令的常用调用形式，简要调用方式请点击按钮跳转文档查看~"),
-                KookCardMessage.newButton("info", "跳转到文档")));
-
-        modules.add(KookCardMessage.newDivider());
-        modules.add(KookCardMessage.newSection(
-                KookCardMessage.newKMarkdown("(font)更多功能正在开发中！敬请期待(font)[warning]")));
-
-        return JSONObject.toJSONString(messages);
+        return HelpFunction.helpCard();
     }
 
     @Override
@@ -150,7 +123,7 @@ public class AxBotHandlerForKook implements AxBotHandler {
                 CreateMessageReq req = new CreateMessageReq();
                 req.setType(KookEvent.TYPE_CARD);
                 req.setQuote(out.getReplayToMsg());
-                req.setTargetId(out.getReplayToChannel());
+                req.setTargetId(out.getToChannel());
                 int i = 0;
                 while (i < 10) {
                     Optional<Mission> optM = missionService.findByMissionId(missionId.toString());
@@ -192,12 +165,35 @@ public class AxBotHandlerForKook implements AxBotHandler {
     }
 
     @Override
-    public String getGroupStatus(String groupId) {
-        Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(groupId);
+    public String getGuildStatus(String guildId) {
+        Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(guildId);
         if (optKgs.isEmpty()) {
             return StatusFunction.settingNotFound();
         } else {
             return StatusFunction.settingFound(optKgs.get());
         }
+    }
+
+    @Override
+    public String joinGuild(String guildId) {
+
+        kookGuildSettingService.updateWhenJoin(guildId);
+
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("大家好，我是AxBot", "success");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("现在是北京时间: "
+                + KookKMarkdownMessage.italic(
+                LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("很高兴见到大家，当你看到这条信息时，我已经初始化完毕，即刻可以使用！")));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果你不知道怎么开始，聊天框输入 "
+                + KookKMarkdownMessage.code("axbot 帮助") + "开始探索")));
+
+        return JSONObject.toJSONString(messages);
+    }
+
+    @Override
+    public void exitGuild(String guildId) {
+        kookGuildSettingService.updateWhenExit(guildId);
     }
 }

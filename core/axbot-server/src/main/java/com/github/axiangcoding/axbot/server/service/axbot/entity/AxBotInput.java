@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public abstract class AxBotInput {
-    String requestUser;
-    String requestMsgId;
+    String fromUserId;
+    String fromMsgId;
     String requestCommand;
     LocalDateTime startTime;
 
