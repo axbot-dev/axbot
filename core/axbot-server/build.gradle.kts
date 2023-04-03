@@ -41,7 +41,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
     implementation("com.alibaba.fastjson2:fastjson2:2.0.26")
     // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
