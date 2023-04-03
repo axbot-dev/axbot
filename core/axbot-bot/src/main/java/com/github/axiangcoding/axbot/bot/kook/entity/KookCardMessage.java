@@ -28,8 +28,12 @@ public class KookCardMessage {
     KookCardMessage accessory;
 
     public static List<KookCardMessage> defaultMsg(String title) {
+        return defaultMsg(title, "info");
+    }
+
+    public static List<KookCardMessage> defaultMsg(String title, String theme) {
         List<KookCardMessage> messages = new ArrayList<>();
-        KookCardMessage card = KookCardMessage.newCard("info", "lg");
+        KookCardMessage card = KookCardMessage.newCard(theme, "lg");
         ArrayList<KookCardMessage> modules = new ArrayList<>();
 
         modules.add(KookCardMessage.newHeader(title));

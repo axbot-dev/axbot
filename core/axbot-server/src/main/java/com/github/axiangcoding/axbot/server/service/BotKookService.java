@@ -57,11 +57,13 @@ public class BotKookService {
                 }
             }
             if (isTrigger) {
+                log.info("received trigger message. user: [{}], message content: [{}]", d.getAuthorId(), d.getContent());
                 AxBotInputForKook input = new AxBotInputForKook();
                 input.setRequestUser(d.getAuthorId());
                 input.setRequestCommand(command);
                 input.setRequestMsgId(d.getMsgId());
                 input.setRequestChannel(d.getTargetId());
+                input.setRequestGuild(d.getExtra().getGuildId());
                 axBotService.generateResponseAsync(AxBotService.PLATFORM_KOOK, input, output -> {
                     AxBotOutputForKook out = ((AxBotOutputForKook) output);
                     CreateMessageReq req = new CreateMessageReq();
@@ -72,20 +74,15 @@ public class BotKookService {
                     kookClient.createMessage(req);
                 });
             }
-
-
         } else if (Objects.equals(d.getType(), KookEvent.TYPE_MESSAGE)) {
             if (Objects.equals(d.getChannelType(), KookEvent.CHANNEL_TYPE_WEBHOOK_CHALLENGE)) {
                 String challenge = d.getChallenge();
                 map.put("challenge", challenge);
             }
         } else {
-
+            // do nothing yet
         }
         return map;
     }
 
-    private void processByAxBot() {
-
-    }
 }

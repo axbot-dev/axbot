@@ -2,16 +2,16 @@ package com.github.axiangcoding.axbot.server.service.axbot;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 
 public enum AxbotCommand {
-    COMMAND_HELP(Arrays.asList("帮助", "文档", "help"), null),
-    COMMAND_VERSION(Arrays.asList("版本", "version"), null),
-    COMMAND_LUCKY(Arrays.asList("气运", "运气", "luck"), null),
-    COMMAND_WT_QUERY_PROFILE(Arrays.asList("战雷", "战争雷霆", "WT"), Arrays.asList("查询", "查找")),
-    COMMAND_WT_UPDATE_PROFILE(Arrays.asList("战雷", "战争雷霆", "WT"), Arrays.asList("更新", "刷新")),
+    COMMAND_HELP(List.of("帮助", "文档", "help"), null),
+    COMMAND_VERSION(List.of("版本", "version"), null),
+    COMMAND_LUCKY(List.of("气运", "运气", "luck"), null),
+    COMMAND_WT_QUERY_PROFILE(List.of("战雷", "战争雷霆", "WT"), List.of("查询", "查找")),
+    COMMAND_WT_UPDATE_PROFILE(List.of("战雷", "战争雷霆", "WT"), List.of("更新", "刷新")),
+    COMMAND_GROUP_STATUS(List.of("状态", "服务器状态", "群组状态", "status"), null),
     ;
 
     private final List<String> t1;

@@ -24,13 +24,13 @@ public class BotKookController {
 
     @PostMapping("webhook")
     public Map<String, Object> webhook(@RequestBody String body) {
+        log.info("receive kook webhook msg, plain: {}", body);
         KookWebhookEvent event = JSONObject.parseObject(body, KookWebhookEvent.class,
                 JSONReader.Feature.SupportSmartMatch);
         if (!botKookService.compareVerifyToken(event.getD().getVerifyToken())) {
             log.warn("no a valid kook webhook message");
             return new HashMap<>();
         }
-        log.info(JSONObject.toJSONString(event));
         return botKookService.DetermineMessageResponse(event);
     }
 

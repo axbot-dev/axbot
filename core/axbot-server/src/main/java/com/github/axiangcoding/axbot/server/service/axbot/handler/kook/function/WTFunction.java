@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot.handler.function;
+package com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function;
 
 
 import com.alibaba.fastjson2.JSONObject;

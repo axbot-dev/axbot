@@ -6,7 +6,7 @@ import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotInput;
 import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotOutput;
 import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotInputForKook;
 import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotOutputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.AxBotHandlerForKook;
+import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.AxBotHandlerForKook;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -63,6 +63,8 @@ public class AxBotService {
                     out.setContent(axBotHandlerForKook.queryWTProfile(cList[2], out));
                 } else if (jc == AxbotCommand.COMMAND_WT_UPDATE_PROFILE) {
                     out.setContent(axBotHandlerForKook.updateWTProfile(cList[2], out));
+                } else if (jc == AxbotCommand.COMMAND_GROUP_STATUS) {
+                    out.setContent(axBotHandlerForKook.getGroupStatus(in.getRequestGuild()));
                 } else {
                     out.setContent(axBotHandlerForKook.notMatch(command));
                 }

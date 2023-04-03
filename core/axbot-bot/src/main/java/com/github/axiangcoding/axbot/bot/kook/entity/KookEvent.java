@@ -1,6 +1,11 @@
 package com.github.axiangcoding.axbot.bot.kook.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Map;
 
 /**
  * introduce at <a href="https://developer.kookapp.cn/doc/event/event-introduction">event-introduction</a>
@@ -30,5 +35,20 @@ public class KookEvent {
     String msgId;
     Long msgTimestamp;
     String nonce;
-    Object extra;
+    Extra extra;
+
+    @Getter
+    @Setter
+    @ToString
+    public static class Extra {
+        String type;
+        String guildId;
+        String channelName;
+        // List<Mention> mention;
+        Boolean mentionAll;
+        // List<MentionRole> mentionRoles;
+        Boolean mentionHere;
+        Map<String, Object> author;
+        Map<String, Object> body;
+    }
 }

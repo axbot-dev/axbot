@@ -9,5 +9,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class AxBotInputForKook extends AxBotInput {
+    /**
+     * 请求来自的频道
+     */
     String requestChannel;
+    /**
+     * 请求来自的服务器
+     */
+    String requestGuild;
 }
