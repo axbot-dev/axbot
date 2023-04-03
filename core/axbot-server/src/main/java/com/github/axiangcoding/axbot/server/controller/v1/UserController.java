@@ -4,6 +4,7 @@ import com.github.axiangcoding.axbot.server.configuration.annot.RequireLogin;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.LoginReq;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.RegisterReq;
 import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
 import com.github.axiangcoding.axbot.server.service.GlobalUserService;
 import jakarta.annotation.Resource;
@@ -55,8 +56,27 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public CommonResult register() {
-        return CommonResult.error(CommonError.NOT_SUPPORT, "not open for register yet!");
+    public CommonResult register(@Valid @RequestBody RegisterReq req) {
+        String username = req.getUsername();
+        Optional<GlobalUser> opt = globalUserService.findByUsername(username);
+        if (opt.isPresent()) {
+            return CommonResult.error(CommonError.REGISTER_FAILED, "username exist");
+        }
+
+        GlobalUser user = globalUserService.registerUser(username, req.getPassword());
+        return CommonResult.success("user", user.toDislayMap());
+    }
+
+    @RequireLogin
+    @GetMapping("me")
+    public CommonResult getMe(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String userId = (String) session.getAttribute("userId");
+        Optional<GlobalUser> opt = globalUserService.findByUserId(userId);
+        if (opt.isEmpty()) {
+            return CommonResult.error(CommonError.RESOURCE_NOT_EXIST);
+        }
+        return CommonResult.success("user", opt.get().toDislayMap());
     }
 
     @PostMapping("invite")

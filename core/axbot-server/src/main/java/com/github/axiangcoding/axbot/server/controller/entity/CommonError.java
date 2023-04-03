@@ -14,6 +14,7 @@ public enum CommonError {
     NOT_PERMIT(10003, "not permit"),
     NOT_SUPPORT(10004, "not support yet."),
     LOGIN_FAILED(20000, "login failed"),
+    REGISTER_FAILED(20001, "register failed"),
     WT_GAMER_PROFILE_REFRESH_TOO_OFTEN(30000, "WT gamer profile refresh too often");
 
 

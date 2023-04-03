@@ -12,6 +12,7 @@ import lombok.ToString;
 @Entity
 public class GlobalSetting extends BasicEntity {
     public static final String KEY_WT_PROFILE_CRAWLER_MODE = "WTProfileCrawlerMode";
+    public static final String KEY_DB_UPDATE_VERSION = "DBUpdateVersion";
 
     @Column(unique = true)
     String key;

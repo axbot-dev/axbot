@@ -68,7 +68,7 @@ public class BotKookService {
                 String guildId = d.getExtra().getGuildId();
                 Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(guildId);
                 if (optKgs.isEmpty()) {
-                    log.warn("guild setting not exist, ignore response! guild id: [{}]", guildId);
+                    log.warn("guild setting not exist, ignore request! guild id: [{}]", guildId);
                     return map;
                 } else {
                     // TODO 增加使用量

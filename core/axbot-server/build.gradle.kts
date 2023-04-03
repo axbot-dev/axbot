@@ -32,6 +32,7 @@ dependencies {
     // implementation("org.springframework.boot:spring-boot-starter-quartz")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.session:spring-session-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -46,7 +47,8 @@ dependencies {
     implementation("com.alibaba.fastjson2:fastjson2:2.0.26")
     // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
     implementation("org.ocpsoft.prettytime:prettytime:5.0.6.Final")
-
+    // // https://mvnrepository.com/artifact/com.auth0/java-jwt
+    // implementation("com.auth0:java-jwt:4.4.0")
 
 }
 
