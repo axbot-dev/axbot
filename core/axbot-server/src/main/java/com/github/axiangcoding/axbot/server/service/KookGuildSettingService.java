@@ -43,8 +43,7 @@ public class KookGuildSettingService {
     public void updateWhenExit(String guildId) {
         Optional<KookGuildSetting> opt = findBytGuildId(guildId);
         if (opt.isPresent()) {
-            int updated = kookGuildSettingRepository.updateActiveByGuildId(false, guildId);
-            System.out.println(updated);
+            kookGuildSettingRepository.updateActiveByGuildId(false, guildId);
         }
     }
 }
