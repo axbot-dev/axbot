@@ -41,7 +41,7 @@ public class DataUpdateRunner implements ApplicationRunner {
     }
 
     private void update1() {
-        Optional<GlobalSetting> opt = globalSettingRepository.f indByKey(GlobalSetting.KEY_DB_UPDATE_VERSION);
+        Optional<GlobalSetting> opt = globalSettingRepository.findByKey(GlobalSetting.KEY_DB_UPDATE_VERSION);
         if (opt.isEmpty()) {
             return;
         }
