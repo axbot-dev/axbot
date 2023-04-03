@@ -7,7 +7,6 @@ plugins {
 
 group = "com.github.axiangcoding.axbot.server"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {
     compileOnly {
