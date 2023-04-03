@@ -1,9 +1,10 @@
 package com.github.axiangcoding.axbot.server.controller.v1;
 
+import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GetMission;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GetMissionReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.resp.MissionVo;
 import com.github.axiangcoding.axbot.server.service.MissionService;
 import jakarta.annotation.Resource;
@@ -23,9 +24,10 @@ public class MissionController {
     @Resource
     MissionService missionService;
 
+    @RequireApiKey
     @GetMapping
-    public CommonResult getMission(@Valid @ParameterObject GetMission getMission) {
-        Optional<Mission> optMission = missionService.findByMissionId(getMission.getId());
+    public CommonResult getMission(@Valid @ParameterObject GetMissionReq req) {
+        Optional<Mission> optMission = missionService.findByMissionId(req.getId());
         if (optMission.isEmpty()) {
             return CommonResult.error(CommonError.RESOURCE_NOT_EXIST);
         }

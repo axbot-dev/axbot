@@ -1,5 +1,6 @@
 package com.github.axiangcoding.axbot.server.controller.v1;
 
+import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
@@ -24,7 +25,7 @@ public class GameWTController {
     @Resource
     WTGameProfileService wtGameProfileService;
 
-
+    @RequireApiKey
     @GetMapping("gamer/profile")
     public CommonResult getGamerProfile(@Valid @ParameterObject GamerProfileReq obj) {
         Optional<WtGamerProfile> optProfile = wtGameProfileService.findByNickname(obj.getNickname());
@@ -35,6 +36,7 @@ public class GameWTController {
         return CommonResult.success("profile", profile);
     }
 
+    @RequireApiKey
     @PostMapping("gamer/profile/update")
     public CommonResult updateGamerProfile(@Valid @ParameterObject GamerProfileReq obj) {
         String nickname = obj.getNickname();
@@ -45,6 +47,7 @@ public class GameWTController {
         return CommonResult.success("missionId", mission.getMissionId());
     }
 
+    @RequireApiKey
     @PostMapping("gamer/profile/update/lock/reset")
     public CommonResult resetUpdateLock(@Valid @ParameterObject GamerProfileReq obj) {
         wtGameProfileService.deleteRefreshFlag(obj.getNickname());

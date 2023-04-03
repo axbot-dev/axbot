@@ -15,7 +15,7 @@ services:
     ports:
       - "6379:6379"
   cqhttp:
-    image: ghcr.io/mrs4s/go-cqhttp:1.0.0-rc5
+    image: ghcr.io/mrs4s/go-cqhttp:1.0.0
     ports:
       - "5700:5700"
     volumes:
