@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -50,13 +51,13 @@ public class DataUpdateRunner implements ApplicationRunner {
             GlobalUser admin = new GlobalUser();
             admin.setUserId(UUID.randomUUID());
 
-            String username = "Admin";
-            String password = "AXBot";
+            String username = "admin";
+            String password = "axbot";
 
             admin.setUsername(username);
-            admin.setPassword(password);
+            admin.setPassword(new BCryptPasswordEncoder().encode(password));
             globalUserRepository.save(admin);
-            log.warn("set Default admin account, username: {}, password: {}. " +
+            log.warn("set Default admin account, username: [{}], password: [{}]. " +
                             "you should always update admin password for security reason",
                     username, password);
             setting.setValue("1");

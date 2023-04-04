@@ -7,8 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -23,12 +21,4 @@ public class GlobalUser extends BasicEntity {
     String password;
     LocalDateTime lastLoginTime;
 
-    public Map<String, Object> toDislayMap() {
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("userId", userId);
-        map.put("username", username);
-        map.put("createTime", createTime);
-        map.put("lastLoginTime", lastLoginTime);
-        return map;
-    }
 }

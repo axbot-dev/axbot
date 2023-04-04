@@ -7,6 +7,7 @@ import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GenApiKeyRe
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.LoginReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.RegisterReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UpdatePwdReq;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.resp.GlobalUserVo;
 import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
 import com.github.axiangcoding.axbot.server.service.ApiKeyService;
 import com.github.axiangcoding.axbot.server.service.GlobalUserService;
@@ -69,7 +70,7 @@ public class UserController {
         }
 
         GlobalUser user = globalUserService.registerUser(username, req.getPassword());
-        return CommonResult.success("user", user.toDislayMap());
+        return CommonResult.success("user", GlobalUserVo.from(user));
     }
 
     @RequireLogin
@@ -97,7 +98,7 @@ public class UserController {
         if (opt.isEmpty()) {
             return CommonResult.error(CommonError.RESOURCE_NOT_EXIST);
         }
-        return CommonResult.success("user", opt.get().toDislayMap());
+        return CommonResult.success("user", GlobalUserVo.from(opt.get()));
     }
 
     @PostMapping("invite")
