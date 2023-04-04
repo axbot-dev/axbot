@@ -5,7 +5,6 @@ import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookKMarkdownMessage;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
-import lombok.extern.slf4j.Slf4j;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.DecimalFormat;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Slf4j
 public class WTFunction {
     public static String profileNotFoundMsg(String nickname, String moreMsg) {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("战雷玩家 %s 的数据".formatted(nickname));
@@ -126,9 +124,7 @@ public class WTFunction {
         LocalDateTime now = LocalDateTime.now();
         modules.add(KookCardMessage.newCountDown("second", now, now.plusSeconds(60)));
 
-        String jsonString = JSONObject.toJSONString(messages);
-        log.warn("debug in query card message: {}", jsonString);
-        return jsonString;
+        return JSONObject.toJSONString(messages);
     }
 
     public static String profileQueryFailed(String nickname) {
