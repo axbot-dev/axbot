@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("java-library")
 }
 
 group = "com.github.axiangcoding.axbot.bot"
@@ -8,7 +7,7 @@ version = "1.0-SNAPSHOT"
 
 dependencies {
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
-    api("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 

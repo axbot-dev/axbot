@@ -1,15 +1,15 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildViewResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildViewResp;
 import com.github.axiangcoding.axbot.engine.AxbotCommand;
 import com.github.axiangcoding.axbot.engine.SystemInputCallback;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
 import com.github.axiangcoding.axbot.engine.entity.*;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForKook;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -75,8 +75,11 @@ public class AxBotService {
                     out.setContent(axBotHandlerForKook.queryWTProfile(cList[2], out));
                 } else if (jc == AxbotCommand.COMMAND_WT_UPDATE_PROFILE) {
                     out.setContent(axBotHandlerForKook.updateWTProfile(cList[2], out));
-                } else if (jc == AxbotCommand.COMMAND_GROUP_STATUS) {
+                } else if (jc == AxbotCommand.COMMAND_GUILD_STATUS) {
                     out.setContent(axBotHandlerForKook.getGuildStatus(in.getFromGuild()));
+                } else if (jc == AxbotCommand.COMMAND_GUILD_MANAGE) {
+                    out.setContent(axBotHandlerForKook.manageGuild(
+                            in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
                 } else {
                     out.setContent(axBotHandlerForKook.notMatch(command));
                 }

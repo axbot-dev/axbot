@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.bot.kook.service.entity;
+package com.github.axiangcoding.axbot.bot.kook.service.entity.req;
 
 import lombok.Getter;
 import lombok.Setter;

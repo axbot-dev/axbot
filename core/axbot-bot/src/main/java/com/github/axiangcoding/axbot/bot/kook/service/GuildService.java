@@ -1,8 +1,8 @@
 package com.github.axiangcoding.axbot.bot.kook.service;
 
 
-import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildListResp;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildViewResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildListResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildViewResp;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

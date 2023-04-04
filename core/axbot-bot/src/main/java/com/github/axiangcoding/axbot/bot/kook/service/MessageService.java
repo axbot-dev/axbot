@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.bot.kook.service;
 
-import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.CreateMessageResp;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;

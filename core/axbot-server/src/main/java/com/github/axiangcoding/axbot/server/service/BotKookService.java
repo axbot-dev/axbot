@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
 import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;

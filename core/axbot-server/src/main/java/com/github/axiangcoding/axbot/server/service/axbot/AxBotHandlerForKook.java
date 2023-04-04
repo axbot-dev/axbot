@@ -5,8 +5,12 @@ import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookKMarkdownMessage;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
-import com.github.axiangcoding.axbot.engine.AxBotHandler;
+import com.github.axiangcoding.axbot.bot.kook.entity.KookPermission;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.CommonRole;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.UserViewResp;
+import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
@@ -15,12 +19,10 @@ import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
 import com.github.axiangcoding.axbot.server.service.MissionService;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
-import com.github.axiangcoding.axbot.server.service.axbot.function.HelpFunction;
-import com.github.axiangcoding.axbot.server.service.axbot.function.LuckyFunction;
-import com.github.axiangcoding.axbot.server.service.axbot.function.StatusFunction;
-import com.github.axiangcoding.axbot.server.service.axbot.function.WTFunction;
+import com.github.axiangcoding.axbot.server.service.axbot.function.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +35,7 @@ import java.util.UUID;
 
 @Component
 @Slf4j
-public class AxBotHandlerForKook implements AxBotHandler {
+public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     @Resource
     WTGameProfileService wtGameProfileService;
 
@@ -197,5 +199,42 @@ public class AxBotHandlerForKook implements AxBotHandler {
     @Override
     public void exitGuild(String guildId) {
         kookGuildSettingService.updateWhenExit(guildId);
+    }
+
+    @Override
+    public String manageGuild(String userId, String guildId, String channelId, String command) {
+        UserViewResp userView = kookClient.getUserView(userId, guildId);
+        List<Long> userRoles = userView.getData().getRoles();
+
+        GuildRoleListResp guildRoleList = kookClient.getGuildRoleList(guildId, null, null);
+        List<CommonRole> items = guildRoleList.getData().getItems();
+
+        boolean isAdmin = false;
+        // 判断该用户的角色是否具备管理员权限
+        for (CommonRole role : items) {
+            if (userRoles.contains(role.getRoleId())) {
+                if (KookPermission.hasPermission(role.getPermissions(), KookPermission.ADMIN)) {
+                    isAdmin = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isAdmin) {
+            log.info("no permission to manage");
+            return ManageFunction.noPermission(userView.getData().getNickname());
+        }
+
+        // TODO 解析命令，管理社群配置
+        String manageCmd = StringUtils.split(command)[0];
+        switch (manageCmd) {
+            case "帮助" -> {
+                return ManageFunction.getHelp();
+            }
+            default -> {
+                return ManageFunction.getHelp();
+            }
+        }
+
     }
 }

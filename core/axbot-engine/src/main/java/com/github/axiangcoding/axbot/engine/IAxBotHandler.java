@@ -6,7 +6,7 @@ import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 /**
  * 定义机器人的命令解析器
  */
-public interface AxBotHandler {
+public interface IAxBotHandler {
     /**
      * 获取默认消息
      *
@@ -47,4 +47,6 @@ public interface AxBotHandler {
     String joinGuild(String guildId);
 
     void exitGuild(String guildId);
+
+
 }

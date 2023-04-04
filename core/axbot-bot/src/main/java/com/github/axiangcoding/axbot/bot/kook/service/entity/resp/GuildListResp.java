@@ -1,5 +1,7 @@
-package com.github.axiangcoding.axbot.bot.kook.service.entity;
+package com.github.axiangcoding.axbot.bot.kook.service.entity.resp;
 
+import com.github.axiangcoding.axbot.bot.kook.service.entity.CommonMeta;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.CommonResp;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +18,7 @@ public class GuildListResp extends CommonResp {
     @Setter
     public static class DataItem {
         List<Item> items;
-        Meta meta;
+        CommonMeta meta;
         Map<String, Integer> sort;
     }
 
@@ -40,12 +42,5 @@ public class GuildListResp extends CommonResp {
         String level;
     }
 
-    @Getter
-    @Setter
-    public static class Meta {
-        Integer page;
-        Integer pageTotal;
-        Integer pageSize;
-        Integer total;
-    }
+
 }
