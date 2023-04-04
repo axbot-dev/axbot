@@ -114,7 +114,7 @@ public class AxBotHandlerForKook implements AxBotHandler {
     @Override
     public String updateWTProfile(String nickname, AxBotOutput output) {
         if (!wtGameProfileService.canBeRefresh(nickname)) {
-            return WTFunction.profileNotFoundMsg(nickname, "该玩家未找到，且近期已经查询过");
+            return WTFunction.profileNotFoundMsg(nickname, "该玩家近期已更新过，更新间隔不能小于1天哦");
         } else {
             Mission oldM = wtGameProfileService.submitMissionToUpdate(nickname);
             UUID missionId = oldM.getMissionId();
