@@ -45,7 +45,8 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
 
 5. 配置环境变量
    在当前目录新建一个文件`.env`，并在其中填入如下配置
-
+   
+   
    ```
    DB_USER=[数据库用户名]
    DB_PASSWORD=[数据库密码，妥善保管！]
@@ -57,8 +58,9 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
    KOOK_BOT_TOKEN=[kook机器人token]
    KOOK_VERIFY_TOKEN=[kook机器人验证token]
    ```
-
+   
 6. 执行服务部署脚本
+   **注意：`docker-compose.yml` 的定义中默认将所有服务的端口映射到了宿主机，所以在执行部署之前，请务必开启服务器的防火墙，避免被攻击！**
 
    ```bash
    sh ./install-all-service.sh
