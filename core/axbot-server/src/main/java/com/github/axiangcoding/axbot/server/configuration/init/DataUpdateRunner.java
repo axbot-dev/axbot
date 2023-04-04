@@ -24,7 +24,6 @@ public class DataUpdateRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        log.info("Initialize the database data");
         update0();
         update1();
     }
@@ -50,9 +49,16 @@ public class DataUpdateRunner implements ApplicationRunner {
             log.info("execute update1");
             GlobalUser admin = new GlobalUser();
             admin.setUserId(UUID.randomUUID());
-            admin.setUsername("Admin");
-            admin.setPassword("AXBot");
+
+            String username = "Admin";
+            String password = "AXBot";
+
+            admin.setUsername(username);
+            admin.setPassword(password);
             globalUserRepository.save(admin);
+            log.warn("set Default admin account, username: {}, password: {}. " +
+                            "you should always update admin password for security reason",
+                    username, password);
             setting.setValue("1");
             globalSettingRepository.save(setting);
         }

@@ -9,7 +9,6 @@ import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
 import com.github.axiangcoding.axbot.server.service.GlobalUserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class UserController {
 
 
     @PostMapping("login")
-    public CommonResult login(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody LoginReq req) {
+    public CommonResult login(HttpServletRequest request, @Valid @RequestBody LoginReq req) {
         String username = req.getUsername();
         boolean checkPwd = globalUserService.checkPwd(username, req.getPassword());
         if (!checkPwd) {
@@ -65,6 +64,13 @@ public class UserController {
 
         GlobalUser user = globalUserService.registerUser(username, req.getPassword());
         return CommonResult.success("user", user.toDislayMap());
+    }
+
+    @RequireLogin
+    @PostMapping("password/update")
+    public CommonResult updatePassword() {
+        // TODO
+        return CommonResult.success();
     }
 
     @RequireLogin
