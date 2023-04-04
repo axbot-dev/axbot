@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,8 +124,8 @@ public class KookCardMessage {
         KookCardMessage cardMessage = new KookCardMessage();
         cardMessage.setType("countdown");
         cardMessage.setMode(mode);
-        cardMessage.setStartTime(startTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        cardMessage.setEndTime(endTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        cardMessage.setStartTime(startTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        cardMessage.setEndTime(endTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         return cardMessage;
     }
 }
