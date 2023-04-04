@@ -1,9 +1,10 @@
-package com.github.axiangcoding.axbot.server.service.axbot.handler;
+package com.github.axiangcoding.axbot.engine;
 
-import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotOutput;
+
+import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 
 /**
- * 定义机器人可以处理的行为
+ * 定义机器人的命令解析器
  */
 public interface AxBotHandler {
     /**
@@ -20,15 +21,26 @@ public interface AxBotHandler {
      */
     String getHelp();
 
+    /**
+     * 获取版本
+     *
+     * @return
+     */
     String getVersion();
 
+    /**
+     * 获取当天气运
+     *
+     * @param seed
+     * @return
+     */
     String getTodayLucky(long seed);
 
     String notMatch(String unknownCommand);
 
-    String queryWTProfile(String nickname, AxBotOutput out);
+    String queryWTProfile(String nickname, AxBotUserOutput out);
 
-    String updateWTProfile(String nickname, AxBotOutput out);
+    String updateWTProfile(String nickname, AxBotUserOutput out);
 
     String getGuildStatus(String guildId);
 

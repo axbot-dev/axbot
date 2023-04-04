@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot.handler.kook;
+package com.github.axiangcoding.axbot.server.service.axbot;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
@@ -6,19 +6,19 @@ import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookKMarkdownMessage;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
+import com.github.axiangcoding.axbot.engine.AxBotHandler;
+import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
 import com.github.axiangcoding.axbot.server.service.MissionService;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotOutput;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotOutputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.AxBotHandler;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.HelpFunction;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.LuckyFunction;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.StatusFunction;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function.WTFunction;
+import com.github.axiangcoding.axbot.server.service.axbot.function.HelpFunction;
+import com.github.axiangcoding.axbot.server.service.axbot.function.LuckyFunction;
+import com.github.axiangcoding.axbot.server.service.axbot.function.StatusFunction;
+import com.github.axiangcoding.axbot.server.service.axbot.function.WTFunction;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -27,7 +27,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -101,7 +103,7 @@ public class AxBotHandlerForKook implements AxBotHandler {
     }
 
     @Override
-    public String queryWTProfile(String nickname, AxBotOutput output) {
+    public String queryWTProfile(String nickname, AxBotUserOutput output) {
         Optional<WtGamerProfile> optGp = wtGameProfileService.findByNickname(nickname);
         if (optGp.isEmpty()) {
             return updateWTProfile(nickname, output);
@@ -111,14 +113,14 @@ public class AxBotHandlerForKook implements AxBotHandler {
     }
 
     @Override
-    public String updateWTProfile(String nickname, AxBotOutput output) {
+    public String updateWTProfile(String nickname, AxBotUserOutput output) {
         if (!wtGameProfileService.canBeRefresh(nickname)) {
             return WTFunction.profileNotFoundMsg(nickname, "该玩家近期已更新过，更新间隔不能小于1天哦");
         } else {
             Mission oldM = wtGameProfileService.submitMissionToUpdate(nickname);
             UUID missionId = oldM.getMissionId();
             threadPoolTaskExecutor.execute(() -> {
-                AxBotOutputForKook out = (AxBotOutputForKook) output;
+                AxBotUserOutputForKook out = (AxBotUserOutputForKook) output;
                 CreateMessageReq req = new CreateMessageReq();
                 req.setType(KookEvent.TYPE_CARD);
                 req.setQuote(out.getReplayToMsg());

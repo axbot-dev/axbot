@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot.handler;
+package com.github.axiangcoding.axbot.engine.entity;
 
 public enum AxBotSystemEvent {
     SYSTEM_EVENT_JOIN_GUILD(),

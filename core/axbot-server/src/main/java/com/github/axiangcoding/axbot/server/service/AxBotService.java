@@ -2,19 +2,15 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.GuildViewResp;
-import com.github.axiangcoding.axbot.server.service.axbot.AxbotCommand;
-import com.github.axiangcoding.axbot.server.service.axbot.SystemInputCallback;
-import com.github.axiangcoding.axbot.server.service.axbot.UserInputCallback;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotInput;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotOutput;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotSysInput;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.AxBotSysOutput;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotInputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotOutputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotSysInputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotSysOutputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.AxBotSystemEvent;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.kook.AxBotHandlerForKook;
+import com.github.axiangcoding.axbot.engine.AxbotCommand;
+import com.github.axiangcoding.axbot.engine.SystemInputCallback;
+import com.github.axiangcoding.axbot.engine.UserInputCallback;
+import com.github.axiangcoding.axbot.engine.entity.*;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
+import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForKook;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -50,10 +46,10 @@ public class AxBotService {
      * @param input
      * @return
      */
-    public AxBotOutput genResponseForInput(int replyPlatform, AxBotInput input) {
+    public AxBotUserOutput genResponseForInput(int replyPlatform, AxBotUserInput input) {
         if (replyPlatform == PLATFORM_KOOK) {
-            AxBotInputForKook in = ((AxBotInputForKook) input);
-            AxBotOutputForKook out = new AxBotOutputForKook();
+            AxBotUserInputForKook in = ((AxBotUserInputForKook) input);
+            AxBotUserOutputForKook out = new AxBotUserOutputForKook();
             String userId = in.getFromUserId();
             out.setReplayToUser(userId);
             out.setReplayToMsg(in.getFromMsgId());
@@ -99,9 +95,9 @@ public class AxBotService {
      * @param input
      * @param callback
      */
-    public void genResponseForInputAsync(int replyPlatform, AxBotInput input, UserInputCallback callback) {
+    public void genResponseForInputAsync(int replyPlatform, AxBotUserInput input, UserInputCallback callback) {
         threadPoolTaskExecutor.execute(() -> {
-            AxBotOutput output = genResponseForInput(replyPlatform, input);
+            AxBotUserOutput output = genResponseForInput(replyPlatform, input);
             callback.callback(output);
         });
     }

@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot.entity;
+package com.github.axiangcoding.axbot.engine.entity;
 
 import lombok.Getter;
 import lombok.Setter;

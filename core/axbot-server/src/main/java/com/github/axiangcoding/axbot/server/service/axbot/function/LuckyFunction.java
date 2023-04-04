@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot.handler.kook.function;
+package com.github.axiangcoding.axbot.server.service.axbot.function;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;

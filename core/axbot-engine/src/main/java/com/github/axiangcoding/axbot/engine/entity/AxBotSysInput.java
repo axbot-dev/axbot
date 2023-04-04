@@ -1,6 +1,5 @@
-package com.github.axiangcoding.axbot.server.service.axbot.entity;
+package com.github.axiangcoding.axbot.engine.entity;
 
-import com.github.axiangcoding.axbot.server.service.axbot.handler.AxBotSystemEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

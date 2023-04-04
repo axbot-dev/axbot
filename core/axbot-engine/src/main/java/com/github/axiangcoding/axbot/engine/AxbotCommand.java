@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot;
+package com.github.axiangcoding.axbot.engine;
 
 import org.apache.commons.lang3.StringUtils;
 

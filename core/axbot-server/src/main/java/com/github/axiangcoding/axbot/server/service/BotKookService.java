@@ -4,14 +4,14 @@ package com.github.axiangcoding.axbot.server.service;
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.CreateMessageReq;
+import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
 import com.github.axiangcoding.axbot.server.configuration.props.KookConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotInputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotOutputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotSysInputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.entity.kook.AxBotSysOutputForKook;
-import com.github.axiangcoding.axbot.server.service.axbot.handler.AxBotSystemEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +73,7 @@ public class BotKookService {
                 } else {
                     // TODO 增加使用量
                 }
-                AxBotInputForKook input = new AxBotInputForKook();
+                AxBotUserInputForKook input = new AxBotUserInputForKook();
                 input.setFromUserId(d.getAuthorId());
                 input.setRequestCommand(command);
                 input.setFromMsgId(d.getMsgId());
@@ -83,7 +83,7 @@ public class BotKookService {
                     if (output == null) {
                         return;
                     }
-                    AxBotOutputForKook out = ((AxBotOutputForKook) output);
+                    AxBotUserOutputForKook out = ((AxBotUserOutputForKook) output);
                     CreateMessageReq req = new CreateMessageReq();
                     req.setType(KookEvent.TYPE_CARD);
                     req.setQuote(out.getReplayToMsg());
