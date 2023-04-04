@@ -1,6 +1,6 @@
 # AXBot 艾克斯机器人
 
-![GitHub](https://img.shields.io/github/license/axiangcoding/AXBot?style=for-the-badge) ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?sort=semver&style=for-the-badge) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/build_docker_image.yml?style=for-the-badge) 
+[![GitHub](https://img.shields.io/github/license/axiangcoding/AXBot?style=for-the-badge)](LICENSE) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=AXBOT%20CORE&sort=semver&style=for-the-badge)](https://hub.docker.com/r/axiangcoding/axbot-core) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=AXBOT%20CRAWLER&sort=semver&style=for-the-badge)](https://hub.docker.com/r/axiangcoding/axbot-crawler) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/build_docker_image.yml?label=BUILD%20DOCKER%20IMAGE&style=for-the-badge)](https://github.com/axiangcoding/AXBot/actions/workflows/build_docker_image.yml) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/codeql.yml?label=CODEQL&style=for-the-badge)](https://github.com/axiangcoding/AXBot/actions/workflows/codeql.yml)
 
 ## 简介
 
@@ -34,7 +34,7 @@ AXBot的前身是 https://github.com/axiangcoding/antonstar-bot，asbot的功能
 
 [开发指南](docs/develop_guide.md)
 
-在早期版本的开发过程中，开发者可能会因为各种原因对代码进行结构性调整，请务必确保您是基于最新的代码进行开发的，避免出现大规模的冲突。
+在早期版本的开发过程中，开发者可能会因为各种原因对代码进行结构性调整，请务必确保您是基于最新的代码进行开发的，避免出现大范围的冲突。
 
 ## 开源协议
 
