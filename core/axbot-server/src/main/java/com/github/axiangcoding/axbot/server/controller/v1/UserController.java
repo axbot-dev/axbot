@@ -1,13 +1,14 @@
 package com.github.axiangcoding.axbot.server.controller.v1;
 
 import com.github.axiangcoding.axbot.server.configuration.annot.RequireLogin;
-import com.github.axiangcoding.axbot.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GenApiKeyReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.LoginReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.RegisterReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UpdatePwdReq;
 import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
+import com.github.axiangcoding.axbot.server.service.ApiKeyService;
 import com.github.axiangcoding.axbot.server.service.GlobalUserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,8 @@ public class UserController {
     @Resource
     GlobalUserService globalUserService;
 
+    @Resource
+    ApiKeyService apiKeyService;
 
     @PostMapping("login")
     public CommonResult login(HttpServletRequest request, @Valid @RequestBody LoginReq req) {
@@ -76,7 +79,7 @@ public class UserController {
             return CommonResult.error(CommonError.INVALID_PARAM, "new password can't be the same as old password");
         }
 
-        String userId = getUserIdFromRequest(request);
+        String userId = globalUserService.getUserIdFromRequest(request);
         boolean updated = globalUserService.updatePassword(userId, req.getOldPassword(), req.getNewPassword());
         if (updated) {
             request.getSession().invalidate();
@@ -89,7 +92,7 @@ public class UserController {
     @RequireLogin
     @GetMapping("me")
     public CommonResult getMe(HttpServletRequest request) {
-        String userId = getUserIdFromRequest(request);
+        String userId = globalUserService.getUserIdFromRequest(request);
         Optional<GlobalUser> opt = globalUserService.findByUserId(userId);
         if (opt.isEmpty()) {
             return CommonResult.error(CommonError.RESOURCE_NOT_EXIST);
@@ -103,24 +106,24 @@ public class UserController {
     }
 
     @RequireLogin
-    @PostMapping("token/generate")
-    public CommonResult generateToken() {
-        return null;
+    @PostMapping("apikey/generate")
+    public CommonResult generateApiKey(HttpServletRequest request, @Valid @RequestBody GenApiKeyReq req) {
+        String userId = globalUserService.getUserIdFromRequest(request);
+        String key = apiKeyService.generateApiKey(userId, req.getNeverExpire(), req.getExpireInSecond());
+        return CommonResult.success("apiKey", key);
     }
 
     @RequireLogin
-    @PostMapping("token/expire")
-    public CommonResult expireToken() {
-        return null;
+    @PostMapping("apikey/expire")
+    public CommonResult expireApiKey(HttpServletRequest request) {
+        String apiKey = apiKeyService.getApiKeyFromRequest(request);
+        boolean deleted = apiKeyService.deleteByKey(apiKey);
+        if (deleted) {
+            return CommonResult.success();
+        } else {
+            return CommonResult.error(CommonError.ERROR, "expire api-key failed");
+        }
     }
 
-    private String getUserIdFromRequest(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Object userId = session.getAttribute("userId");
-        if (Objects.isNull(userId)) {
-            throw new BusinessException(CommonError.NOT_AUTHORIZED, "no userId in session");
-        }
-        return (String) userId;
-    }
 
 }

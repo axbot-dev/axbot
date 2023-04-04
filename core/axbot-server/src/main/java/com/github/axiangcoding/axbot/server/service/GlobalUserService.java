@@ -1,12 +1,17 @@
 package com.github.axiangcoding.axbot.server.service;
 
+import com.github.axiangcoding.axbot.server.configuration.exception.BusinessException;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
 import com.github.axiangcoding.axbot.server.data.repository.GlobalUserRepository;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +20,14 @@ public class GlobalUserService {
     @Resource
     GlobalUserRepository globalUserRepository;
 
+    public String getUserIdFromRequest(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Object userId = session.getAttribute("userId");
+        if (Objects.isNull(userId)) {
+            throw new BusinessException(CommonError.NOT_AUTHORIZED, "no userId in session");
+        }
+        return (String) userId;
+    }
 
     public boolean checkPwd(String username, String password) {
         Optional<GlobalUser> opt = findByUsername(username);

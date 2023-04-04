@@ -20,4 +20,5 @@ public class SystemController {
     public CommonResult health() {
         return CommonResult.success();
     }
+
 }

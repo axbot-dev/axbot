@@ -1,12 +1,14 @@
 package com.github.axiangcoding.axbot.server.controller.entity.vo.req;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class RegisterReq {
+public class GenApiKeyReq {
+    @Nullable
+    String comment;
     @NotNull
-    String username;
-    @NotNull
-    String password;
+    Boolean neverExpire;
+    Long expireInSecond;
 }

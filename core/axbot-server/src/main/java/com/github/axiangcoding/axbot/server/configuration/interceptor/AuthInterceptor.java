@@ -4,10 +4,13 @@ import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.configuration.annot.RequireLogin;
 import com.github.axiangcoding.axbot.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
+import com.github.axiangcoding.axbot.server.service.ApiKeyService;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
@@ -17,6 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 @Configuration
 public class AuthInterceptor implements HandlerInterceptor {
+    @Resource
+    ApiKeyService apiKeyService;
+
+
     @Override
     public boolean preHandle(@NotNull HttpServletRequest request,
                              @NotNull HttpServletResponse response,
@@ -55,7 +62,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (annotation == null) {
             return true;
         }
-        // TODO
+        String key = request.getHeader("api-key");
+        if (StringUtils.isBlank(key) || !apiKeyService.isApiKeyValid(key)) {
+            throw new BusinessException(CommonError.API_KEY_INVALID, "api-key not exist");
+        }
         return true;
     }
 
