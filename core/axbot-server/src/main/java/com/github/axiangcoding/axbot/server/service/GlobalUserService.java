@@ -46,4 +46,19 @@ public class GlobalUserService {
         return globalUserRepository.save(user);
     }
 
+    public boolean updatePassword(String userId, String oldPwd, String newPwd) {
+        Optional<GlobalUser> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return false;
+        }
+        GlobalUser user = opt.get();
+        boolean checkPwd = checkPwd(user.getUsername(), oldPwd);
+        if (!checkPwd) {
+            return false;
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode(newPwd));
+        globalUserRepository.save(user);
+        return true;
+    }
+
 }

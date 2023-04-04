@@ -44,7 +44,6 @@ public class AxBotHandlerForKook implements AxBotHandler {
     @Resource
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
-
     @Resource
     KookClient kookClient;
 

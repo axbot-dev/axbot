@@ -20,7 +20,6 @@ public interface AxBotHandler {
      */
     String getHelp();
 
-
     String getVersion();
 
     String getTodayLucky(long seed);
