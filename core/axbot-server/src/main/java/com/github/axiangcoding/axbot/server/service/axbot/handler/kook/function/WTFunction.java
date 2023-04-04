@@ -9,6 +9,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -118,7 +119,11 @@ public class WTFunction {
     public static String profileInQuery(String nickname) {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("战雷玩家 %s 的数据".formatted(nickname));
         messages.get(0).setTheme("success");
-        messages.get(0).getModules().add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("正在发起查询...请耐心等待")));
+        List<KookCardMessage> modules = messages.get(0).getModules();
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("正在发起查询...请耐心等待")));
+        LocalDateTime now = LocalDateTime.now();
+        modules.add(KookCardMessage.newCountDown("second", now, now.plusSeconds(60)));
+
         return JSONObject.toJSONString(messages);
     }
 

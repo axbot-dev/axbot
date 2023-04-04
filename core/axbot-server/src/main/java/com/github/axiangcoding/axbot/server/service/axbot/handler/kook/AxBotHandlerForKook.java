@@ -125,7 +125,8 @@ public class AxBotHandlerForKook implements AxBotHandler {
                 req.setQuote(out.getReplayToMsg());
                 req.setTargetId(out.getToChannel());
                 int i = 0;
-                while (i < 10) {
+                int maxTimes = 12;
+                while (i < maxTimes) {
                     Optional<Mission> optM = missionService.findByMissionId(missionId.toString());
                     if (optM.isEmpty()) {
                         continue;
@@ -155,7 +156,7 @@ public class AxBotHandlerForKook implements AxBotHandler {
                     }
                     i++;
                 }
-                if (i == 10) {
+                if (i == maxTimes) {
                     req.setContent(WTFunction.profileNotFoundMsg(nickname, "查询轮询超时，请稍后重试"));
                 }
                 kookClient.createMessage(req);

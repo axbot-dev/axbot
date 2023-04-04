@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class KookCardMessage {
     Integer cols;
     List<KookCardMessage> fields;
     KookCardMessage accessory;
+    Long startTime;
+    Long endTime;
 
     public static List<KookCardMessage> defaultMsg(String title) {
         return defaultMsg(title, "info");
@@ -113,6 +117,15 @@ public class KookCardMessage {
         cardMessage.setType("paragraph");
         cardMessage.setCols(cols);
         cardMessage.setFields(fields);
+        return cardMessage;
+    }
+
+    public static KookCardMessage newCountDown(String mode, LocalDateTime startTime, LocalDateTime endTime) {
+        KookCardMessage cardMessage = new KookCardMessage();
+        cardMessage.setType("countdown");
+        cardMessage.setMode(mode);
+        cardMessage.setStartTime(startTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        cardMessage.setEndTime(endTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
         return cardMessage;
     }
 }
