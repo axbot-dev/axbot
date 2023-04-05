@@ -1,6 +1,10 @@
 package com.github.axiangcoding.axbot.bot.kook;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.github.axiangcoding.axbot.bot.kook.service.GuildRoleService;
 import com.github.axiangcoding.axbot.bot.kook.service.GuildService;
 import com.github.axiangcoding.axbot.bot.kook.service.MessageService;
@@ -10,15 +14,15 @@ import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.CreateMessageR
 import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListResp;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildViewResp;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.UserViewResp;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.GsonBuilder;
+import io.reactivex.Single;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Response;
+import retrofit2.HttpException;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 
@@ -34,7 +38,7 @@ public class KookClient {
     private Retrofit initRetrofit(String botToken) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+        httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC));
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder builder1 = original.newBuilder()
@@ -46,12 +50,34 @@ public class KookClient {
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(
-                        new GsonBuilder()
-                                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                                .create())).client(httpClient.build());
+                .addConverterFactory(JacksonConverterFactory.create(
+                        new ObjectMapper()
+                                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+                ))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(httpClient.build());
 
         return builder.build();
+    }
+
+    private <T> T execute(Single<T> apiCall) {
+        try {
+            return apiCall.blockingGet();
+        } catch (HttpException e) {
+            try {
+                if (e.response() == null || e.response().errorBody() == null) {
+                    throw e;
+                }
+                String errorBody = e.response().errorBody().string();
+                log.warn("execute error: {}", errorBody);
+                throw new RuntimeException(e);
+            } catch (IOException ex) {
+                // couldn't parse error
+                throw e;
+            }
+        }
     }
 
     public KookClient(String botToken) {
@@ -66,59 +92,18 @@ public class KookClient {
     }
 
     public CreateMessageResp createMessage(CreateMessageReq req) {
-        try {
-            Response<CreateMessageResp> execute = messageService.createMessage(req).execute();
-
-            if (!execute.isSuccessful()) {
-                log.warn("request failed, status code is {}, message is {}",
-                        execute.code(), execute.errorBody() != null ? execute.errorBody().string() : null);
-                return null;
-            }
-            return execute.body();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return execute(messageService.createMessage(req));
     }
 
     public GuildViewResp getGuildView(String guildId) {
-        try {
-            Response<GuildViewResp> execute = guildService.getGuildView(guildId).execute();
-            if (!execute.isSuccessful()) {
-                log.warn("request failed, status code is {}, message is {}",
-                        execute.code(), execute.errorBody() != null ? execute.errorBody().string() : null);
-                return null;
-            }
-            return execute.body();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return execute(guildService.getGuildView(guildId));
     }
 
     public UserViewResp getUserView(String userId, String guildId) {
-        try {
-            Response<UserViewResp> execute = userService.getView(userId, guildId).execute();
-            if (!execute.isSuccessful()) {
-                log.warn("request failed, status code is {}, message is {}",
-                        execute.code(), execute.errorBody() != null ? execute.errorBody().string() : null);
-                return null;
-            }
-            return execute.body();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return execute(userService.getView(userId, guildId));
     }
 
     public GuildRoleListResp getGuildRoleList(String guildId, Integer page, Integer pageSize) {
-        try {
-            Response<GuildRoleListResp> execute = guildRoleService.getView(guildId, page, pageSize).execute();
-            if (!execute.isSuccessful()) {
-                log.warn("request failed, status code is {}, message is {}",
-                        execute.code(), execute.errorBody() != null ? execute.errorBody().string() : null);
-                return null;
-            }
-            return execute.body();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return execute(guildRoleService.getView(guildId, page, pageSize));
     }
 }
