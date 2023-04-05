@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.server.service.axbot.function;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookKMarkdownMessage;
+import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class StatusFunction {
         // map.put("禁用状态", setting.getBanned());
 
         map.forEach((k, v) -> {
-            fields.add(KookCardMessage.newKMarkdown(template.formatted(KookKMarkdownMessage.bold(k), v)));
+            fields.add(KookCardMessage.newKMarkdown(template.formatted(KookMDMessage.bold(k), v)));
         });
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newParagraph(2, fields)));

@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class KookKMarkdownMessage {
+public class KookMDMessage {
     public static String bold(String text) {
         return "**%s**".formatted(text);
     }
@@ -26,6 +26,10 @@ public class KookKMarkdownMessage {
 
     public static String deleteLine(String text) {
         return "~~%s~~".formatted(text);
+    }
+
+    public static String link(String link) {
+        return link(link, link);
     }
 
     public static String link(String link, String text) {

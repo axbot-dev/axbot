@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookKMarkdownMessage;
+import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookPermission;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.CommonRole;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
@@ -57,15 +57,19 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         List<KookCardMessage> modules = messages.get(0).getModules();
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("现在是北京时间: "
-                + KookKMarkdownMessage.italic(
+                + KookMDMessage.italic(
                 LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))));
 
-        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("我可以怎么帮助你呢？如果你不知道怎么开始，聊天框输入 "
-                + KookKMarkdownMessage.code("axbot 帮助") + "开始探索")));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("需要我为你提供什么服务呢？如果你不知道怎么开始，聊天框输入 "
+                + KookMDMessage.code("axbot 帮助") + "开始探索")));
 
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newSection(
-                KookCardMessage.newKMarkdown("(font)更多功能正在开发中！敬请期待(font)[warning]")));
+                KookCardMessage.newKMarkdown(
+                        KookMDMessage.colorful("更多功能正在开发中！", "warning"))));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("开发者B站主页，欢迎关注：" +
+                KookMDMessage.link("https://space.bilibili.com/8696650")
+        )));
 
         return JSONObject.toJSONString(messages);
     }
@@ -81,7 +85,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         List<KookCardMessage> modules = messages.get(0).getModules();
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("当前版本为: "
-                + KookKMarkdownMessage.code(System.getenv("APP_VERSION")))));
+                + KookMDMessage.code(System.getenv("APP_VERSION")))));
 
         return JSONObject.toJSONString(messages);
     }
@@ -97,9 +101,9 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         List<KookCardMessage> modules = messages.get(0).getModules();
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("未识别的命令: "
-                + KookKMarkdownMessage.code(unknownCommand))));
+                + KookMDMessage.code(unknownCommand))));
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果你不知道怎么开始，聊天框输入 "
-                + KookKMarkdownMessage.code("axbot 帮助") + "开始探索")));
+                + KookMDMessage.code("axbot 帮助") + "开始探索")));
 
         return JSONObject.toJSONString(messages);
     }
@@ -187,11 +191,11 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         List<KookCardMessage> modules = messages.get(0).getModules();
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("现在是北京时间: "
-                + KookKMarkdownMessage.italic(
+                + KookMDMessage.italic(
                 LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))));
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("很高兴见到大家，当你看到这条信息时，我已经初始化完毕，即刻可以使用！")));
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果你不知道怎么开始，聊天框输入 "
-                + KookKMarkdownMessage.code("axbot 帮助") + "开始探索")));
+                + KookMDMessage.code("axbot 帮助") + "开始探索")));
 
         return JSONObject.toJSONString(messages);
     }
