@@ -60,17 +60,17 @@ public class WTFunction {
         double rbKd = 1.0 * (rb.getGroundDestroyCount() + rb.getFleetDestroyCount() + rb.getAviationDestroyCount()) / rb.getDeadCount();
 
         ArrayList<KookCardMessage> f2 = new ArrayList<>();
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[A] 任务数") + "\n" + ab.getTotalMission()));
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[A] 胜率") + "\n" + NumberFormat.getPercentInstance().format(ab.getWinRate())));
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[A] KD") + "\n" + df.format(abKd)));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("街机任务数") + "\n" + ab.getTotalMission()));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("街机胜率") + "\n" + NumberFormat.getPercentInstance().format(ab.getWinRate())));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("街机KD") + "\n" + df.format(abKd)));
 
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[R] 任务数") + "\n" + rb.getTotalMission()));
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[R] 胜率") + "\n" + NumberFormat.getPercentInstance().format(rb.getWinRate())));
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[R] KD") + "\n" + df.format(rbKd)));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("史实任务数") + "\n" + rb.getTotalMission()));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("史实胜率") + "\n" + NumberFormat.getPercentInstance().format(rb.getWinRate())));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("史实KD") + "\n" + df.format(rbKd)));
 
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[S] 任务数") + "\n" + sb.getTotalMission()));
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[S] 胜率") + "\n" + NumberFormat.getPercentInstance().format(sb.getWinRate())));
-        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("[S] KD") + "\n" + df.format(sbKd)));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("全真任务数") + "\n" + sb.getTotalMission()));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("全真胜率") + "\n" + NumberFormat.getPercentInstance().format(sb.getWinRate())));
+        f2.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("全真KD") + "\n" + df.format(sbKd)));
 
         ArrayList<KookCardMessage> f3 = new ArrayList<>();
         WtGamerProfile.AviationRate aab = profile.getAviationRateAb();
@@ -81,9 +81,9 @@ public class WTFunction {
         double asbKa = 1.0 * asb.getTotalDestroyCount() / asb.getGameCount();
 
 
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":airplane:[A] KA") + "\n" + df.format(aabKa)));
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":airplane:[R] KA") + "\n" + df.format(arbKa)));
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":airplane:[S] KA") + "\n" + df.format(asbKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("空战街机KA") + "\n" + df.format(aabKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("空战史实KA") + "\n" + df.format(arbKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("空战全真KA") + "\n" + df.format(asbKa)));
 
         WtGamerProfile.GroundRate gab = profile.getGroundRateAb();
         WtGamerProfile.GroundRate grb = profile.getGroundRateRb();
@@ -92,9 +92,9 @@ public class WTFunction {
         double grbKa = 1.0 * grb.getTotalDestroyCount() / grb.getGameCount();
         double gsbKa = 1.0 * gsb.getTotalDestroyCount() / gsb.getGameCount();
 
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":police_car:[A] KA") + "\n" + df.format(gabKa)));
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":police_car:[R] KA") + "\n" + df.format(grbKa)));
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":police_car:[S] KA") + "\n" + df.format(gsbKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("陆战街机KA") + "\n" + df.format(gabKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("陆战史实KA") + "\n" + df.format(grbKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("陆战全真KA") + "\n" + df.format(gsbKa)));
 
 
         WtGamerProfile.FleetRate fab = profile.getFleetRateAb();
@@ -103,14 +103,13 @@ public class WTFunction {
         double fabKa = 1.0 * fab.getTotalDestroyCount() / fab.getGameCount();
         double frbKa = 1.0 * frb.getTotalDestroyCount() / frb.getGameCount();
         double fsbKa = 1.0 * fsb.getTotalDestroyCount() / fsb.getGameCount();
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":ship:[A] KA") + "\n" + df.format(fabKa)));
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":ship:[R] KA") + "\n" + df.format(frbKa)));
-        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold(":ship:[S] KA") + "\n" + df.format(fsbKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("海战街机KA") + "\n" + df.format(fabKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("海战史实KA") + "\n" + df.format(frbKa)));
+        f3.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("海战全真KA") + "\n" + df.format(fsbKa)));
 
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newParagraph(3, f1)));
         modules.add(KookCardMessage.newDivider());
-        modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown("[A] [R] [S] 分别代表街机，历史，全真模式"))));
         modules.add(KookCardMessage.newSection(KookCardMessage.newParagraph(3, f2)));
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown("击杀数/出击数简称为'KA'"))));
