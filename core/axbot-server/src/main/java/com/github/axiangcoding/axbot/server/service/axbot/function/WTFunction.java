@@ -33,7 +33,7 @@ public class WTFunction {
         messages.get(0).setTheme(theme);
         List<KookCardMessage> modules = messages.get(0).getModules();
         modules.add(KookCardMessage.newContext(
-                List.of(KookCardMessage.newKMarkdown("一切数据均来源自官网，AXBot只做计算不做修改"))));
+                List.of(KookCardMessage.newKMarkdown("一切数据均来自战雷官网，AXBot只做计算不做修改"))));
 
         modules.add(KookCardMessage.newContext(
                 List.of(KookCardMessage.newKMarkdown("数据最后更新于 %s".formatted(
@@ -46,7 +46,7 @@ public class WTFunction {
         f1.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("等级") + "\n" + profile.getLevel()));
         f1.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("注册时间") + "\n" + profile.getRegisterDate()));
         if (profile.getBanned()) {
-            f1.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("封禁状态") + "\n" + KookKMarkdownMessage.colorful("已封禁", "danger")));
+            f1.add(KookCardMessage.newKMarkdown(KookKMarkdownMessage.bold("当前状态") + "\n" + KookKMarkdownMessage.colorful("已封禁", "danger")));
         }
 
 

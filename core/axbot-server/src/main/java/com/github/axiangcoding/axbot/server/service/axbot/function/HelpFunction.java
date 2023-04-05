@@ -24,9 +24,8 @@ public class HelpFunction {
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newHeader("完整命令"));
         modules.add(KookCardMessage.newSectionWithLink(
-                KookCardMessage.newKMarkdown("上面列出的只是常用命令的常用调用形式，更多调用方式请点击按钮跳转文档查看~"),
-                KookCardMessage.newButton("info", "跳转到文档")));
-
+                KookCardMessage.newKMarkdown("上面列出的只是常用命令的常用调用形式，更多调用方式请点击按钮查看文档~"),
+                KookCardMessage.newButton("info", "跳转到文档", "link", "https://github.com/axiangcoding/AXBot/blob/master/docs/user_guide.md")));
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newSection(
                 KookCardMessage.newKMarkdown("(font)更多功能正在开发中！(font)[warning]")));

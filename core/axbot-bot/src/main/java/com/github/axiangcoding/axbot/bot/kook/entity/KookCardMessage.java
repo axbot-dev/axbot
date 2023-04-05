@@ -30,6 +30,8 @@ public class KookCardMessage {
     KookCardMessage accessory;
     Long startTime;
     Long endTime;
+    String value;
+    String click;
 
     public static List<KookCardMessage> defaultMsg(String title) {
         return defaultMsg(title, "info");
@@ -97,11 +99,13 @@ public class KookCardMessage {
         return cardMessage;
     }
 
-    public static KookCardMessage newButton(String theme, String text) {
+    public static KookCardMessage newButton(String theme, String text, String click, String value) {
         KookCardMessage cardMessage = new KookCardMessage();
         cardMessage.setType("button");
         cardMessage.setTheme(theme);
-        cardMessage.setText(newPlainText(text));
+        cardMessage.setText(newKMarkdown(text));
+        cardMessage.setClick(click);
+        cardMessage.setValue(value);
         return cardMessage;
     }
 
