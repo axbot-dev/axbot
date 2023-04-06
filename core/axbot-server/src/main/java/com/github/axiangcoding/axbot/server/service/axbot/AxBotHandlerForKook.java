@@ -6,10 +6,11 @@ import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookPermission;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.CommonRole;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookResponse;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookRole;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookUser;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListResp;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.UserViewResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListData;
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
@@ -207,15 +208,15 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
 
     @Override
     public String manageGuild(String userId, String guildId, String channelId, String command) {
-        UserViewResp userView = kookClient.getUserView(userId, guildId);
+        KookResponse<KookUser> userView = kookClient.getUserView(userId, guildId);
         List<Long> userRoles = userView.getData().getRoles();
 
-        GuildRoleListResp guildRoleList = kookClient.getGuildRoleList(guildId, null, null);
-        List<CommonRole> items = guildRoleList.getData().getItems();
+        KookResponse<GuildRoleListData> guildRoleList = kookClient.getGuildRoleList(guildId, null, null);
+        List<KookRole> items = guildRoleList.getData().getItems();
 
         boolean isAdmin = false;
         // 判断该用户的角色是否具备管理员权限
-        for (CommonRole role : items) {
+        for (KookRole role : items) {
             if (userRoles.contains(role.getRoleId())) {
                 if (KookPermission.hasPermission(role.getPermissions(), KookPermission.ADMIN)) {
                     isAdmin = true;

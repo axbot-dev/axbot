@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CommonMeta {
+public class KookMeta {
     Integer page;
     Integer pageTotal;
     Integer pageSize;

@@ -2,10 +2,13 @@ package com.github.axiangcoding.axbot.bot.kook.service.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class CommonResp {
-    String code;
+@ToString
+public class KookResponse<T> {
+    Integer code;
     String message;
+    T data;
 }

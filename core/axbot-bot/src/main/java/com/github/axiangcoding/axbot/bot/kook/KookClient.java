@@ -5,11 +5,11 @@ import com.github.axiangcoding.axbot.bot.kook.service.GuildRoleService;
 import com.github.axiangcoding.axbot.bot.kook.service.GuildService;
 import com.github.axiangcoding.axbot.bot.kook.service.MessageService;
 import com.github.axiangcoding.axbot.bot.kook.service.UserService;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookResponse;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookUser;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.CreateMessageResp;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListResp;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildViewResp;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.UserViewResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.*;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import io.reactivex.Single;
@@ -36,7 +36,7 @@ public class KookClient {
     private Retrofit initRetrofit(String botToken) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+        httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC));
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder builder1 = original.newBuilder()
@@ -58,9 +58,13 @@ public class KookClient {
         return builder.build();
     }
 
-    private <T> T execute(Single<T> apiCall) {
+    private <T> KookResponse<T> execute(Single<KookResponse<T>> apiCall) {
         try {
-            return apiCall.blockingGet();
+            KookResponse<T> response = apiCall.blockingGet();
+            if (response.getCode() != 0) {
+                log.warn("response business code: {}, message: {}", response.getCode(), response.getMessage());
+            }
+            return response;
         } catch (HttpException e) {
             try {
                 if (e.response() == null || e.response().errorBody() == null) {
@@ -87,19 +91,19 @@ public class KookClient {
         this.guildRoleService = retrofit.create(GuildRoleService.class);
     }
 
-    public CreateMessageResp createMessage(CreateMessageReq req) {
+    public KookResponse<CreateMessageData> createMessage(CreateMessageReq req) {
         return execute(messageService.createMessage(req));
     }
 
-    public GuildViewResp getGuildView(String guildId) {
+    public KookResponse<KookGuild> getGuildView(String guildId) {
         return execute(guildService.getGuildView(guildId));
     }
 
-    public UserViewResp getUserView(String userId, String guildId) {
+    public KookResponse<KookUser> getUserView(String userId, String guildId) {
         return execute(userService.getView(userId, guildId));
     }
 
-    public GuildRoleListResp getGuildRoleList(String guildId, Integer page, Integer pageSize) {
+    public KookResponse<GuildRoleListData> getGuildRoleList(String guildId, Integer page, Integer pageSize) {
         return execute(guildRoleService.getView(guildId, page, pageSize));
     }
 }

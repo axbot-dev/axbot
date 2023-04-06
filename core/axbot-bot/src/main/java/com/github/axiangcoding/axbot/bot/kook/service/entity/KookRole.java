@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CommonRole {
+public class KookRole {
     Long roleId;
     String name;
     Long color;

@@ -1,33 +1,32 @@
-package com.github.axiangcoding.axbot.bot.kook.service.entity.resp;
+package com.github.axiangcoding.axbot.bot.kook.service.entity;
 
-import com.github.axiangcoding.axbot.bot.kook.service.entity.CommonResp;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class GuildViewResp extends CommonResp {
-    DataItem data;
-
-    @Getter
-    @Setter
-    public static class DataItem {
-        String id;
-        String name;
-        String topic;
-        String userId;
-        String icon;
-        Integer notifyType;
-        String region;
-        Boolean enableOpen;
-        String openId;
-        String defaultChannelId;
-        String welcomeChannelId;
-        List<Role> roles;
-        List<Channel> channels;
-    }
+@ToString
+public class KookGuild {
+    String id;
+    String name;
+    String topic;
+    String masterId;
+    String userId;
+    Boolean isMaster;
+    String icon;
+    String notifyType;
+    String region;
+    String enableOpen;
+    String openId;
+    String defaultChannelId;
+    String welcomeChannelId;
+    String boostNum;
+    String level;
+    List<Role> roles;
+    List<Channel> channels;
 
     @Getter
     @Setter

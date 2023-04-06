@@ -1,7 +1,8 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildViewResp;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookResponse;
+import com.github.axiangcoding.axbot.bot.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.engine.AxbotCommand;
 import com.github.axiangcoding.axbot.engine.SystemInputCallback;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
@@ -129,8 +130,8 @@ public class AxBotService {
                 case SYSTEM_EVENT_JOIN_GUILD -> {
                     log.info("bot join guild [{}]", fromGuild);
                     String content = axBotHandlerForKook.joinGuild(fromGuild);
-                    GuildViewResp guildInfo = kookClient.getGuildView(fromGuild);
-                    String defaultChannelId = guildInfo.getData().getDefaultChannelId();
+                    KookResponse<KookGuild> guildView = kookClient.getGuildView(fromGuild);
+                    String defaultChannelId = guildView.getData().getDefaultChannelId();
                     out.setToChannel(defaultChannelId);
                     out.setContent(content);
                 }

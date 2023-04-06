@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class CommonUser {
+public class KookUser {
     String id;
     String username;
     String nickname;
