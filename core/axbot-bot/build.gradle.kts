@@ -8,8 +8,8 @@ version = "1.0-SNAPSHOT"
 dependencies {
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-jackson
-    implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/adapter-rxjava2
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
@@ -28,8 +28,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
-    // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.26")
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
 }
 
 tasks.getByName<Test>("test") {

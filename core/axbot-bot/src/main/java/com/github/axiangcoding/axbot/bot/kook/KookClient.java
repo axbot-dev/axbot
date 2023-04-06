@@ -1,10 +1,6 @@
 package com.github.axiangcoding.axbot.bot.kook;
 
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.github.axiangcoding.axbot.bot.kook.service.GuildRoleService;
 import com.github.axiangcoding.axbot.bot.kook.service.GuildService;
 import com.github.axiangcoding.axbot.bot.kook.service.MessageService;
@@ -14,6 +10,8 @@ import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.CreateMessageR
 import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListResp;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildViewResp;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.UserViewResp;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.GsonBuilder;
 import io.reactivex.Single;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
@@ -22,7 +20,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 
@@ -50,12 +48,10 @@ public class KookClient {
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(JacksonConverterFactory.create(
-                        new ObjectMapper()
-                                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
-                ))
+                .addConverterFactory(GsonConverterFactory.create(
+                        new GsonBuilder()
+                                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                                .create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(httpClient.build());
 
