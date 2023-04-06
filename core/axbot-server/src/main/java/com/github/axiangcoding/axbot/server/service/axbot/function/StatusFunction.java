@@ -1,9 +1,9 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,7 +27,7 @@ public class StatusFunction {
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newParagraph(2, fields)));
 
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     public static String settingNotFound() {
@@ -36,6 +36,6 @@ public class StatusFunction {
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("未找到本服务器的状态！")));
 
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 }

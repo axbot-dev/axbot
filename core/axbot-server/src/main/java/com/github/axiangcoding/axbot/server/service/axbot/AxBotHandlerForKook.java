@@ -1,6 +1,5 @@
 package com.github.axiangcoding.axbot.server.service.axbot;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.KookClient;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
@@ -11,6 +10,7 @@ import com.github.axiangcoding.axbot.bot.kook.service.entity.KookRole;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.KookUser;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
 import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListData;
+import com.github.axiangcoding.axbot.crawler.entity.ParserResult;
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
@@ -21,6 +21,7 @@ import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
 import com.github.axiangcoding.axbot.server.service.MissionService;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
 import com.github.axiangcoding.axbot.server.service.axbot.function.*;
+import com.google.gson.Gson;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +73,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                 KookMDMessage.link("https://space.bilibili.com/8696650")
         )));
 
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("当前版本为: "
                 + KookMDMessage.code(System.getenv("APP_VERSION")))));
 
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果你不知道怎么开始，聊天框输入 "
                 + KookMDMessage.code("axbot 帮助") + "开始探索")));
 
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     @Override
@@ -146,7 +147,8 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                         break;
                     }
                     if (Mission.STATUS_SUCCESS.equals(status)) {
-                        if (!JSONObject.parseObject(optM.get().getResult()).getBooleanValue("found")) {
+                        ParserResult result = new Gson().fromJson(optM.get().getResult(), ParserResult.class);
+                        if (!result.getFound()) {
                             log.warn("queue at {} times, mission success, but not found", i);
                             req.setContent(WTFunction.profileNotFoundMsg(nickname));
                             break;
@@ -198,7 +200,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果你不知道怎么开始，聊天框输入 "
                 + KookMDMessage.code("axbot 帮助") + "开始探索")));
 
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     @Override

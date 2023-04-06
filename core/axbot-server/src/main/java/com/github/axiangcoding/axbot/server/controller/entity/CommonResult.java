@@ -1,6 +1,5 @@
 package com.github.axiangcoding.axbot.server.controller.entity;
 
-import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -70,7 +69,4 @@ public class CommonResult {
         return commonResult;
     }
 
-    public String toJsonString(){
-        return JSONObject.toJSONString(this);
-    }
 }

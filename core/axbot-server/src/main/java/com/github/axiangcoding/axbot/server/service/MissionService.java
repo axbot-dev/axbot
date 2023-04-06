@@ -1,12 +1,14 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.repository.MissionRepository;
+import com.google.gson.Gson;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,7 +51,7 @@ public class MissionService {
         missionRepository.save(mission);
     }
 
-    public void setSuccess(String missionId, JSONObject result) {
+    public void setSuccess(String missionId, String result) {
         Optional<Mission> optM = findByMissionId(missionId);
         if (optM.isEmpty()) {
             return;
@@ -58,11 +60,11 @@ public class MissionService {
         mission.setStatus(Mission.STATUS_SUCCESS);
         mission.setProcess(100.0);
         mission.setFinishTime(LocalDateTime.now());
-        mission.setResult(result.toJSONString());
+        mission.setResult(result);
         missionRepository.save(mission);
     }
 
-    public void setFailed(String missionId, JSONObject result) {
+    public void setFailed(String missionId, String result) {
         Optional<Mission> optM = findByMissionId(missionId);
         if (optM.isEmpty()) {
             return;
@@ -71,14 +73,14 @@ public class MissionService {
         mission.setStatus(Mission.STATUS_FAILED);
         mission.setProcess(100.0);
         mission.setFinishTime(LocalDateTime.now());
-        mission.setResult(result.toJSONString());
+        mission.setResult(result);
         missionRepository.save(mission);
     }
 
     public void setFailed(String missionId, Exception e) {
-        JSONObject result = new JSONObject();
+        Map<String, Object> result = new HashMap<>();
         String message = e.getMessage();
         result.put("error", message);
-        setFailed(missionId, result);
+        setFailed(missionId, new Gson().toJson(result));
     }
 }

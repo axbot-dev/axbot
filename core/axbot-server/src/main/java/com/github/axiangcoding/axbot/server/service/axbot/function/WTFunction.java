@@ -1,10 +1,10 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function;
 
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
+import com.google.gson.Gson;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.DecimalFormat;
@@ -19,7 +19,7 @@ public class WTFunction {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("战雷玩家 %s 的数据".formatted(nickname));
         messages.get(0).setTheme("warning");
         messages.get(0).getModules().add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(moreMsg)));
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     public static String profileNotFoundMsg(String nickname) {
@@ -114,7 +114,7 @@ public class WTFunction {
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown("击杀数/出击数简称为'KA'"))));
         modules.add(KookCardMessage.newSection(KookCardMessage.newParagraph(3, f3)));
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     public static String profileInQuery(String nickname) {
@@ -125,13 +125,13 @@ public class WTFunction {
         LocalDateTime now = LocalDateTime.now();
         modules.add(KookCardMessage.newCountDown("second", now, now.plusSeconds(60)));
 
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     public static String profileQueryFailed(String nickname) {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("战雷玩家 %s 的数据".formatted(nickname));
         messages.get(0).setTheme("danger");
         messages.get(0).getModules().add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("查询失败！请稍后重试")));
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 }

@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class ManageFunction {
         modules.add(KookCardMessage.newContext(List.of(
                 KookCardMessage.newKMarkdown("如果您是服务器所有者，请检查是否给自己分配了具备管理员权限的角色")
         )));
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     public static String getHelp() {

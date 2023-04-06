@@ -1,8 +1,8 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.crawler.entity.ParserResult;
+import com.google.gson.Gson;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -141,7 +141,7 @@ public class WtGamerProfile extends BasicEntity {
     }
 
     public static WtGamerProfile from(ParserResult.GamerProfile gp) {
-        JSONObject from = JSONObject.from(gp);
-        return JSONObject.parseObject(from.toString(), WtGamerProfile.class);
+        Gson gson = new Gson();
+        return gson.fromJson(gson.toJson(gp), WtGamerProfile.class);
     }
 }

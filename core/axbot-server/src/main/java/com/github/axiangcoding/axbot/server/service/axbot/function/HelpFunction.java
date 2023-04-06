@@ -1,8 +1,8 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
+import com.google.gson.Gson;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,7 +33,7 @@ public class HelpFunction {
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("开发者B站主页，欢迎关注：" +
                 KookMDMessage.link("https://space.bilibili.com/8696650")
         )));
-        return JSONObject.toJSONString(messages);
+        return new Gson().toJson(messages);
     }
 
     private static LinkedHashMap<String, String> commandDescription() {
