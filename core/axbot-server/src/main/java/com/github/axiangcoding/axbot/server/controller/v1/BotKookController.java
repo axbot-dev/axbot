@@ -2,8 +2,7 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 import com.github.axiangcoding.axbot.server.service.BotKookService;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.GsonBuilder;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +24,7 @@ public class BotKookController {
     @PostMapping("webhook")
     public Map<String, Object> webhook(@RequestBody String body) {
         log.info("receive kook webhook msg, plain: {}", body);
-        GsonBuilder gb = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        KookWebhookEvent event = gb.create().fromJson(body, KookWebhookEvent.class);
+        KookWebhookEvent event = JsonUtils.fromLowCaseUnderscoresJson(body, KookWebhookEvent.class);
         if (!botKookService.compareVerifyToken(event.getD().getVerifyToken())) {
             log.warn("no a valid kook webhook message");
             return new HashMap<>();
