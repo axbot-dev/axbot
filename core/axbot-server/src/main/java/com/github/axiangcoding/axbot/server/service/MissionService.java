@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.repository.MissionRepository;
-import com.google.gson.Gson;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +81,6 @@ public class MissionService {
         Map<String, Object> result = new HashMap<>();
         String message = e.getMessage();
         result.put("error", message);
-        setFailed(missionId, new Gson().toJson(result));
+        setFailed(missionId, JsonUtils.toJson(result));
     }
 }

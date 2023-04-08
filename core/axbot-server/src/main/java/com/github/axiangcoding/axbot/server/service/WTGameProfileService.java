@@ -9,7 +9,7 @@ import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.data.repository.GlobalSettingRepository;
 import com.github.axiangcoding.axbot.server.data.repository.WtGamerProfileRepository;
 import com.github.axiangcoding.axbot.server.service.entity.CrawlerMissionMessage;
-import com.google.gson.Gson;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Queue;
@@ -125,7 +125,7 @@ public class WTGameProfileService {
                 } else {
                     log.info("user not found at mission {}", missionId);
                 }
-                missionService.setSuccess(missionId, new Gson().toJson(pr));
+                missionService.setSuccess(missionId, JsonUtils.toJson(pr));
             } catch (IOException e) {
                 log.info("get wt profile failed", e);
                 missionService.setFailed(missionId, e);
@@ -138,7 +138,7 @@ public class WTGameProfileService {
             msg.setUrl(WtCrawlerClient.formatGetProfileUrl(nickname));
             msg.setXpathCondition(WtCrawlerClient.EXIST_XPATH_CONDITION);
             String outQueueName = outQueue.getName();
-            rabbitTemplate.convertAndSend(outQueueName, new Gson().toJson(msg));
+            rabbitTemplate.convertAndSend(outQueueName, JsonUtils.toJson(msg));
             missionService.setRunning(missionId, 50.0);
             log.info("send a message to {}, missionId is {}", outQueueName, missionId);
         }

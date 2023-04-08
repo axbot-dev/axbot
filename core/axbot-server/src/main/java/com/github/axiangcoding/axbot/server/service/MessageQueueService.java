@@ -5,7 +5,7 @@ import com.github.axiangcoding.axbot.crawler.entity.ParserResult;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.service.entity.CrawlerResultMessage;
-import com.google.gson.Gson;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -32,8 +32,7 @@ public class MessageQueueService {
 
     @RabbitListener(queues = IN_QUEUE_NAME)
     public void receiveMessage(String message) throws IOException {
-        Gson gson = new Gson();
-        CrawlerResultMessage msg = gson.fromJson(message, CrawlerResultMessage.class);
+        CrawlerResultMessage msg = JsonUtils.fromJson(message, CrawlerResultMessage.class);
         String missionId = msg.getMissionId();
         try {
             log.info("receive message back, missionId is {}", missionId);
@@ -51,7 +50,7 @@ public class MessageQueueService {
                 log.info("user not found at mission {}", missionId);
 
             }
-            missionService.setSuccess(missionId, gson.toJson(pr));
+            missionService.setSuccess(missionId, JsonUtils.toJson(pr));
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
             missionService.setFailed(missionId, e);

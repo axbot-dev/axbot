@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.controller.entity.vo.resp;
 
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
-import com.google.gson.Gson;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -28,7 +28,7 @@ public class MissionVo {
         missionVo.setBeginTime(mission.getBeginTime());
         missionVo.setFinishTime(mission.getFinishTime());
         missionVo.setProcess(mission.getProcess());
-        missionVo.setResult(new Gson().fromJson(mission.getResult(), Object.class));
+        missionVo.setResult(JsonUtils.fromJson(mission.getResult(), Object.class));
         return missionVo;
     }
 }

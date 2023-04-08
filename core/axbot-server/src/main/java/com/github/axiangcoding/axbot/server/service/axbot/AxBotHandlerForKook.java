@@ -22,7 +22,6 @@ import com.github.axiangcoding.axbot.server.service.MissionService;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
 import com.github.axiangcoding.axbot.server.service.axbot.function.*;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
-import com.google.gson.Gson;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -148,7 +147,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                         break;
                     }
                     if (Mission.STATUS_SUCCESS.equals(status)) {
-                        ParserResult result = new Gson().fromJson(optM.get().getResult(), ParserResult.class);
+                        ParserResult result = JsonUtils.fromJson(optM.get().getResult(), ParserResult.class);
                         if (!result.getFound()) {
                             log.warn("queue at {} times, mission success, but not found", i);
                             req.setContent(WTFunction.profileNotFoundMsg(nickname));

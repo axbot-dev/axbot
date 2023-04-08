@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function;
 
 import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
-import com.google.gson.Gson;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -16,7 +16,7 @@ public class LuckyFunction {
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(genExtra(luck))));
 
-        return new Gson().toJson(messages);
+        return JsonUtils.toJson(messages);
     }
 
     private static String genExtra(int luck) {
