@@ -64,7 +64,7 @@ public class AxBotService {
             } else {
                 AxbotCommand jc = AxbotCommand.judgeCommand(command);
                 if (jc == null) {
-                    out.setContent(axBotHandlerForKook.notMatch(command));
+                    out.setContent(axBotHandlerForKook.commandNotFound(command));
                 } else if (jc == AxbotCommand.COMMAND_HELP) {
                     out.setContent(axBotHandlerForKook.getHelp());
                 } else if (jc == AxbotCommand.COMMAND_VERSION) {
@@ -82,7 +82,7 @@ public class AxBotService {
                     out.setContent(axBotHandlerForKook.manageGuild(
                             in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
                 } else {
-                    out.setContent(axBotHandlerForKook.notMatch(command));
+                    out.setContent(axBotHandlerForKook.commandNotFound(command));
                 }
             }
 

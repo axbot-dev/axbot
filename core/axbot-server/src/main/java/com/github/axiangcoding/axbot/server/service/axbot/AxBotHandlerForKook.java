@@ -98,12 +98,12 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     }
 
     @Override
-    public String notMatch(String unknownCommand) {
+    public String commandNotFound(String unknownCmd) {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AxBot", "warning");
         List<KookCardMessage> modules = messages.get(0).getModules();
 
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("未识别的命令: "
-                + KookMDMessage.code(unknownCommand))));
+                + KookMDMessage.code(unknownCmd))));
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果你不知道怎么开始，聊天框输入 "
                 + KookMDMessage.code("axbot 帮助") + "开始探索")));
 
