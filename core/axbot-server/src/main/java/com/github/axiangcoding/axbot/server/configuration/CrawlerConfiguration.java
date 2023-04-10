@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.configuration;
 
 
-import com.github.axiangcoding.axbot.crawler.WtCrawlerClient;
+import com.github.axiangcoding.axbot.crawler.wt.WtCrawlerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

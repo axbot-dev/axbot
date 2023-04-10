@@ -38,5 +38,5 @@ kook:
   bot-token:
   verify-token:
   trigger-message-prefix:
-    - .axbot
     - axbot
+    - .axbot

@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.controller.entity.vo.req;
 
 
-import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import lombok.Data;
 
 @Data

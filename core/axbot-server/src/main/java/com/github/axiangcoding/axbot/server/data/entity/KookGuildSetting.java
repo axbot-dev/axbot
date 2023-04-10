@@ -26,6 +26,8 @@ public class KookGuildSetting extends BasicEntity {
     @Setter
     @Embeddable
     public static class FunctionSetting {
+        Boolean enabledWtProfileQuery;
+
         /**
          * 启用战雷新闻提醒
          */
@@ -34,7 +36,7 @@ public class KookGuildSetting extends BasicEntity {
         /**
          * 发布战雷新闻的频道id
          */
-        String wtNewsGuildId;
+        String wtNewsChannelId;
 
         /**
          * 启用bilibili直播提醒
@@ -44,7 +46,7 @@ public class KookGuildSetting extends BasicEntity {
         /**
          * bilibili直播提醒的频道id
          */
-        String biliLiveGuildId;
+        String biliLiveChannelId;
 
         /**
          * 配置的bilibili直播间id

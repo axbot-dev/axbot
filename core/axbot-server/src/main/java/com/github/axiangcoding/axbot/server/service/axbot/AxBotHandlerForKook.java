@@ -1,19 +1,20 @@
 package com.github.axiangcoding.axbot.server.service.axbot;
 
-import com.github.axiangcoding.axbot.bot.kook.KookClient;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookEvent;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookPermission;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.KookResponse;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.KookRole;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.KookUser;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.req.CreateMessageReq;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.resp.GuildRoleListData;
-import com.github.axiangcoding.axbot.crawler.entity.ParserResult;
+import com.github.axiangcoding.axbot.remote.kook.KookClient;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookPermission;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.KookRole;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.KookUser;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.resp.GuildRoleListData;
+import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
+import com.github.axiangcoding.axbot.server.configuration.props.KookConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
@@ -53,6 +54,9 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     @Resource
     KookClient kookClient;
 
+    @Resource
+    KookConfProps kookConfProps;
+
     @Override
     public String getDefault() {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AXBot");
@@ -78,7 +82,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
 
     @Override
     public String getHelp() {
-        return HelpFunction.helpCard();
+        return HelpFunction.helpCard(kookConfProps.getTriggerMessagePrefix().get(0));
     }
 
     @Override
@@ -226,22 +230,39 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                 }
             }
         }
+        String nickname = userView.getData().getNickname();
 
         if (!isAdmin) {
-            log.info("no permission to manage");
-            return ManageFunction.noPermission(userView.getData().getNickname());
+            log.info("user [{}] has no permission to manage guild [{}]", userId, guildId);
+            return ManageFunction.noPermission(nickname);
         }
+
+        String[] cmdList = StringUtils.split(command, null, 3);
+        String cmdPrefix = kookConfProps.getTriggerMessagePrefix().get(0);
+        if (cmdList.length < 3) {
+            return ManageFunction.getHelp(nickname, cmdPrefix);
+        }
+        System.out.println(StringUtils.join(cmdList, ","));
 
         // TODO 解析命令，管理社群配置
-        String manageCmd = StringUtils.split(command)[0];
+        String manageCmd = cmdList[1];
         switch (manageCmd) {
             case "帮助" -> {
-                return ManageFunction.getHelp();
+                return ManageFunction.getHelp(nickname, cmdPrefix);
+            }
+            case "B站直播通知" -> {
+
+            }
+            case "战雷新闻播报" -> {
+
+            }
+            case "战雷战绩查询" -> {
+
             }
             default -> {
-                return ManageFunction.getHelp();
+                return ManageFunction.configError(nickname);
             }
         }
-
+        return ManageFunction.configError(nickname);
     }
 }

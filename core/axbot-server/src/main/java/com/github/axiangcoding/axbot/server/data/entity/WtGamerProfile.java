@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 
-import com.github.axiangcoding.axbot.crawler.entity.ParserResult;
+import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.persistence.*;
 import lombok.Getter;

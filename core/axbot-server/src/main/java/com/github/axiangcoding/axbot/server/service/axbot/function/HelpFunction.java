@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function;
 
-import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 
 import java.util.LinkedHashMap;
@@ -9,14 +9,14 @@ import java.util.List;
 
 public class HelpFunction {
 
-    public static String helpCard() {
+    public static String helpCard(String cmdPrefix) {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("AXBot 帮助手册", "success");
         List<KookCardMessage> modules = messages.get(0).getModules();
 
         modules.add(KookCardMessage.newHeader("常用命令"));
-        modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newPlainText("以形如 “axbot [命令] [参数]”的格式调用"))));
+        modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newPlainText("以形如 “axbot <命令> [参数]”的形式调用"))));
 
-        commandDescription().forEach((k, v) -> {
+        commandDescription(cmdPrefix).forEach((k, v) -> {
             String msg = KookMDMessage.code(k) + " - " + v;
             modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(msg)));
         });
@@ -36,14 +36,16 @@ public class HelpFunction {
         return JsonUtils.toJson(messages);
     }
 
-    private static LinkedHashMap<String, String> commandDescription() {
+    private static LinkedHashMap<String, String> commandDescription(String prefix) {
         LinkedHashMap<String, String> commandMap = new LinkedHashMap<>();
-        commandMap.put("axbot 气运", "获取今天的气运值");
-        commandMap.put("axbot 战雷 查询 [玩家昵称]", "查询战雷的玩家数据");
-        commandMap.put("axbot 战雷 刷新 [玩家昵称]", "刷新战雷的玩家数据");
-        commandMap.put("axbot 帮助", "获取帮助手册");
-        commandMap.put("axbot 状态", "查看当前所处的Kook服务器的信息");
-        commandMap.put("axbot 版本", "获取当前机器人的部署版本");
+        commandMap.put("%s 气运".formatted(prefix), "获取今天的气运值");
+        commandMap.put("%s 战雷 查询 <玩家昵称>".formatted(prefix), "查询战雷的玩家数据");
+        commandMap.put("%s 战雷 刷新 <玩家昵称>".formatted(prefix), "刷新战雷的玩家数据");
+        commandMap.put("%s 帮助".formatted(prefix), "获取帮助手册");
+        commandMap.put("%s 状态".formatted(prefix), "查看当前所处的Kook服务器的信息");
+        commandMap.put("%s 管理 <管理命令>".formatted(prefix), "管理本Kook服务器的配置，服务器管理员角色可用");
+        commandMap.put("%s 版本".formatted(prefix), "获取当前机器人的部署版本");
+
         return commandMap;
     }
 }

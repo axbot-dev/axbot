@@ -1,8 +1,8 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function;
 
 
-import com.github.axiangcoding.axbot.bot.kook.entity.KookCardMessage;
-import com.github.axiangcoding.axbot.bot.kook.entity.KookMDMessage;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import org.ocpsoft.prettytime.PrettyTime;

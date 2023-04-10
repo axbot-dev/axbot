@@ -1,8 +1,8 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.bot.kook.KookClient;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.KookResponse;
-import com.github.axiangcoding.axbot.bot.kook.service.entity.KookGuild;
+import com.github.axiangcoding.axbot.remote.kook.KookClient;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.engine.AxbotCommand;
 import com.github.axiangcoding.axbot.engine.SystemInputCallback;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;

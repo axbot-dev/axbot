@@ -6,7 +6,7 @@ group = "com.github.axiangcoding.axbot.engine"
 version = "1.0-SNAPSHOT"
 
 dependencies {
-    implementation(project(":axbot-bot"))
+    implementation(project(":axbot-remote"))
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.26")
     annotationProcessor("org.projectlombok:lombok:1.18.26")
