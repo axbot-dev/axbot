@@ -9,6 +9,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class AxBotSysOutputForKook extends AxBotSysOutput {
-    // 回复的频道
+    /**
+     * 回复的频道
+     */
     String toChannel;
+    /**
+     * 消息的类型
+     */
+    String contentType;
 }

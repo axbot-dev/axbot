@@ -24,6 +24,7 @@ public class KookGuildSetting extends BasicEntity {
 
     @Getter
     @Setter
+    @ToString
     @Embeddable
     public static class FunctionSetting {
         Boolean enabledWtProfileQuery;

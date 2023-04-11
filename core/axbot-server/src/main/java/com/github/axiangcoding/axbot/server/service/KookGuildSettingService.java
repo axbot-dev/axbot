@@ -3,18 +3,27 @@ package com.github.axiangcoding.axbot.server.service;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.repository.KookGuildSettingRepository;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class KookGuildSettingService {
+
     @Resource
-    private KookGuildSettingRepository kookGuildSettingRepository;
+    KookGuildSettingRepository kookGuildSettingRepository;
 
     public Optional<KookGuildSetting> findBytGuildId(String guildId) {
         return kookGuildSettingRepository.findByGuildId(guildId);
     }
+
+    public List<KookGuildSetting> findByEnabledBiliLiveReminder() {
+        return kookGuildSettingRepository.findByFunctionSettingEnableBiliLiveReminder(true);
+    }
+
 
     /**
      * 加入群组时操作

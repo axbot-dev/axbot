@@ -55,5 +55,6 @@ public interface IAxBotHandler {
 
     void exitGuild(String guildId);
 
+    String biliLiveRemind(Long roomId, String title, String areaName, String description);
 
 }

@@ -1,9 +1,6 @@
 package com.github.axiangcoding.axbot.server.schedule;
 
-import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
-import com.github.axiangcoding.axbot.remote.bilibili.service.entity.BiliResponse;
-import com.github.axiangcoding.axbot.remote.bilibili.service.entity.resp.RoomInfoData;
-import com.github.axiangcoding.axbot.server.util.JsonUtils;
+import com.github.axiangcoding.axbot.server.service.BotKookService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,17 +13,18 @@ import org.springframework.stereotype.Component;
 public class ScheduleTask {
 
     @Resource
-    BiliClient biliClient;
+    BotKookService botKookService;
 
     @Scheduled(cron = "0 0/2 * * * ?")
     public void checkBiliRoom() {
-        log.info("check bilibili room");
-        BiliResponse<RoomInfoData> liveRoomInfo = biliClient.getLiveRoomInfo("5295790");
-        System.out.println(JsonUtils.toJson(liveRoomInfo));
+        // TODO 确保并发正常
+        log.info("start regularly checking the status of bili streaming");
+        botKookService.checkBiliRoomStatus();
     }
 
     @Scheduled(cron = "@daily")
-    public void cleanUsage(){
+    public void cleanUsage() {
+        // TODO 确保并发正常
         log.info("clean usage daily");
     }
 

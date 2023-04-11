@@ -1,6 +1,9 @@
 package com.github.axiangcoding.axbot.server.service;
 
 
+import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
+import com.github.axiangcoding.axbot.remote.bilibili.service.entity.BiliResponse;
+import com.github.axiangcoding.axbot.remote.bilibili.service.entity.resp.RoomInfoData;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
@@ -34,6 +37,8 @@ public class BotKookService {
     @Resource
     KookGuildSettingService kookGuildSettingService;
 
+    @Resource
+    BiliClient biliClient;
 
     public boolean compareVerifyToken(String retToken) {
         return StringUtils.equals(retToken, kookConfProps.getVerifyToken());
@@ -68,8 +73,7 @@ public class BotKookService {
                 String guildId = d.getExtra().getGuildId();
                 Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(guildId);
                 if (optKgs.isEmpty()) {
-                    log.warn("guild setting not exist, ignore request! guild id: [{}]", guildId);
-                    return map;
+                    kookGuildSettingService.updateWhenJoin(guildId);
                 } else {
                     // TODO 增加使用量
                 }
@@ -130,6 +134,40 @@ public class BotKookService {
             // do nothing yet
         }
         return map;
+    }
+
+    public void checkBiliRoomStatus() {
+        List<KookGuildSetting> settings = kookGuildSettingService.findByEnabledBiliLiveReminder();
+
+        settings.forEach(setting -> {
+            String biliRoomId = setting.getFunctionSetting().getBiliRoomId();
+            BiliResponse<RoomInfoData> liveRoomInfo = biliClient.getLiveRoomInfo(biliRoomId);
+            // TODO: 排除掉已经在redis中有记录的群组
+            AxBotSysInputForKook input = new AxBotSysInputForKook();
+            input.setEvent(AxBotSystemEvent.SYSTEM_EVENT_BILI_ROOM_REMIND);
+            HashMap<String, Object> extraMap = new HashMap<>();
+            RoomInfoData roomInfoData = liveRoomInfo.getData();
+            extraMap.put("roomId", roomInfoData.getRoomId());
+            extraMap.put("title", roomInfoData.getTitle());
+            extraMap.put("areaName", roomInfoData.getAreaName());
+            extraMap.put("description", roomInfoData.getDescription());
+
+            input.setExtraMap(extraMap);
+            if (roomInfoData.getLiveStatus() == 1) {
+                axBotService.genResponseForSystemAsync(AxBotService.PLATFORM_KOOK, input, output -> {
+                    if (output == null) {
+                        return;
+                    }
+                    AxBotSysOutputForKook out = ((AxBotSysOutputForKook) output);
+                    CreateMessageReq req = new CreateMessageReq();
+                    req.setType(KookEvent.TYPE_CARD);
+                    req.setTargetId(setting.getFunctionSetting().getBiliLiveChannelId());
+                    req.setContent(out.getContent());
+                    kookClient.createMessage(req);
+                });
+
+            }
+        });
     }
 
 }

@@ -32,9 +32,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -210,6 +208,21 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     @Override
     public void exitGuild(String guildId) {
         kookGuildSettingService.updateWhenExit(guildId);
+    }
+
+    @Override
+    public String biliLiveRemind(Long roomId, String title, String areaName, String description) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("AXBot的B站直播提醒", "success");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newHeader("直播间: %s".formatted(title)));
+        modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown(description))));
+
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("直播间链接: %s".formatted(
+                KookMDMessage.link("https://live.bilibili.com/%d".formatted(roomId))
+        ))));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("大家快来一起观看吧 " + KookMDMessage.mention("here"))));
+        return JsonUtils.toJson(messages);
     }
 
     @Override

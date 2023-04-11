@@ -1,8 +1,5 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.remote.kook.KookClient;
-import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
-import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.engine.AxbotCommand;
 import com.github.axiangcoding.axbot.engine.SystemInputCallback;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
@@ -11,6 +8,9 @@ import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
+import com.github.axiangcoding.axbot.remote.kook.KookClient;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForKook;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -133,6 +134,16 @@ public class AxBotService {
                     KookResponse<KookGuild> guildView = kookClient.getGuildView(fromGuild);
                     String defaultChannelId = guildView.getData().getDefaultChannelId();
                     out.setToChannel(defaultChannelId);
+                    out.setContent(content);
+                }
+                case SYSTEM_EVENT_BILI_ROOM_REMIND -> {
+                    log.info("send bilibili live remainder");
+                    Map<String, Object> extraMap = in.getExtraMap();
+                    String content = axBotHandlerForKook.biliLiveRemind(
+                            (Long) extraMap.get("roomId"),
+                            (String) extraMap.get("title"),
+                            (String) extraMap.get("areaName"),
+                            (String) extraMap.get("description"));
                     out.setContent(content);
                 }
                 default -> log.warn("not support yet");
