@@ -15,11 +15,13 @@ services:
     ports:
       - "6379:6379"
   cqhttp:
-    image: ghcr.io/mrs4s/go-cqhttp:1.0.0
+    image: ghcr.io/mrs4s/go-cqhttp:1.0.1
     ports:
       - "5700:5700"
     volumes:
       - "./volume/cqhttp/:/data/"
+    environment:
+      - FORCE_TTY=true
     # entrypoint: [ "tail", "-f", "/dev/null" ]
   rabbitmq:
     image: rabbitmq:3-management-alpine
