@@ -1,26 +1,29 @@
 package com.github.axiangcoding.axbot.server.service;
 
 
+import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.BiliResponse;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.resp.RoomInfoData;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
-import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
+import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.server.configuration.props.KookConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -39,6 +42,9 @@ public class BotKookService {
 
     @Resource
     BiliClient biliClient;
+
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
     public boolean compareVerifyToken(String retToken) {
         return StringUtils.equals(retToken, kookConfProps.getVerifyToken());
@@ -141,8 +147,11 @@ public class BotKookService {
 
         settings.forEach(setting -> {
             String biliRoomId = setting.getFunctionSetting().getBiliRoomId();
+            String biliLiveChannelId = setting.getFunctionSetting().getBiliLiveChannelId();
             BiliResponse<RoomInfoData> liveRoomInfo = biliClient.getLiveRoomInfo(biliRoomId);
-            // TODO: 排除掉已经在redis中有记录的群组
+
+            String cacheKey = CacheKeyGenerator.getBiliRoomRemindCacheKey(biliLiveChannelId, biliRoomId);
+
             AxBotSysInputForKook input = new AxBotSysInputForKook();
             input.setEvent(AxBotSystemEvent.SYSTEM_EVENT_BILI_ROOM_REMIND);
             HashMap<String, Object> extraMap = new HashMap<>();
@@ -154,18 +163,20 @@ public class BotKookService {
 
             input.setExtraMap(extraMap);
             if (roomInfoData.getLiveStatus() == 1) {
-                axBotService.genResponseForSystemAsync(AxBotService.PLATFORM_KOOK, input, output -> {
-                    if (output == null) {
-                        return;
-                    }
-                    AxBotSysOutputForKook out = ((AxBotSysOutputForKook) output);
-                    CreateMessageReq req = new CreateMessageReq();
-                    req.setType(KookEvent.TYPE_CARD);
-                    req.setTargetId(setting.getFunctionSetting().getBiliLiveChannelId());
-                    req.setContent(out.getContent());
-                    kookClient.createMessage(req);
-                });
-
+                if (!Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey))) {
+                    axBotService.genResponseForSystemAsync(AxBotService.PLATFORM_KOOK, input, output -> {
+                        if (output == null) {
+                            return;
+                        }
+                        AxBotSysOutputForKook out = ((AxBotSysOutputForKook) output);
+                        CreateMessageReq req = new CreateMessageReq();
+                        req.setType(KookEvent.TYPE_CARD);
+                        req.setTargetId(biliLiveChannelId);
+                        req.setContent(out.getContent());
+                        kookClient.createMessage(req);
+                    });
+                }
+                stringRedisTemplate.opsForValue().set(cacheKey, "", 5, TimeUnit.MINUTES);
             }
         });
     }
