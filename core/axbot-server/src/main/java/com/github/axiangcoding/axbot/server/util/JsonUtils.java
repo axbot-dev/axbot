@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 
 /**
  * implements gson
+ * TODO: 序列号空值的LocalDateTime时会报错
  */
 public class JsonUtils {
     private static final Gson GSON = new Gson();

@@ -51,6 +51,10 @@ public class MissionService {
         missionRepository.save(mission);
     }
 
+    public void setSuccess(String missionId) {
+        setSuccess(missionId, null);
+    }
+
     public void setSuccess(String missionId, String result) {
         Optional<Mission> optM = findByMissionId(missionId);
         if (optM.isEmpty()) {

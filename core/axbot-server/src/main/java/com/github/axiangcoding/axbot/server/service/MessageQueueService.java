@@ -49,7 +49,7 @@ public class MessageQueueService {
                 log.info("user not found at mission {}", missionId);
 
             }
-            missionService.setSuccess(missionId, JsonUtils.toJson(pr));
+            missionService.setSuccess(missionId);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
