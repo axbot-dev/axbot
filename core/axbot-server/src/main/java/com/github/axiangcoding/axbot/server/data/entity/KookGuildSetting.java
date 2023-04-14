@@ -22,6 +22,11 @@ public class KookGuildSetting extends BasicEntity {
     @Embedded
     FunctionSetting functionSetting;
 
+    public KookGuildSetting() {
+        super();
+        this.functionSetting = new FunctionSetting();
+    }
+
     @Getter
     @Setter
     @ToString
