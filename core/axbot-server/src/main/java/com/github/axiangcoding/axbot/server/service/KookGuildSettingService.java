@@ -55,4 +55,29 @@ public class KookGuildSettingService {
             kookGuildSettingRepository.updateActiveByGuildId(false, guildId);
         }
     }
+
+    public void disableBiliRoomRemind(String guildId) {
+        Optional<KookGuildSetting> opt = findBytGuildId(guildId);
+        if (opt.isPresent()) {
+            KookGuildSetting entity = opt.get();
+            KookGuildSetting.FunctionSetting functionSetting = entity.getFunctionSetting();
+            functionSetting.setBiliLiveChannelId(null);
+            functionSetting.setBiliRoomId(null);
+            functionSetting.setEnableBiliLiveReminder(false);
+            kookGuildSettingRepository.save(entity);
+        }
+    }
+
+
+    public void enableBiliRoomRemind(String guildId, String channelId, String roomId) {
+        Optional<KookGuildSetting> opt = findBytGuildId(guildId);
+        if (opt.isPresent()) {
+            KookGuildSetting entity = opt.get();
+            KookGuildSetting.FunctionSetting functionSetting = entity.getFunctionSetting();
+            functionSetting.setEnableBiliLiveReminder(true);
+            functionSetting.setBiliLiveChannelId(channelId);
+            functionSetting.setBiliRoomId(roomId);
+            kookGuildSettingRepository.save(entity);
+        }
+    }
 }

@@ -231,11 +231,11 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         List<Long> userRoles = userView.getData().getRoles();
 
         KookResponse<GuildRoleListData> guildRoleList = kookClient.getGuildRoleList(guildId, null, null);
-        List<KookRole> items = guildRoleList.getData().getItems();
+        List<KookRole> roles = guildRoleList.getData().getItems();
 
         boolean isAdmin = false;
         // 判断该用户的角色是否具备管理员权限
-        for (KookRole role : items) {
+        for (KookRole role : roles) {
             if (userRoles.contains(role.getRoleId())) {
                 if (KookPermission.hasPermission(role.getPermissions(), KookPermission.ADMIN)) {
                     isAdmin = true;
@@ -250,12 +250,11 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
             return ManageFunction.noPermission(nickname);
         }
 
-        String[] cmdList = StringUtils.split(command, null, 3);
+        String[] cmdList = StringUtils.split(command);
         String cmdPrefix = kookConfProps.getTriggerMessagePrefix().get(0);
         if (cmdList.length < 3) {
             return ManageFunction.getHelp(nickname, cmdPrefix);
         }
-        System.out.println(StringUtils.join(cmdList, ","));
 
         // TODO 解析命令，管理社群配置
         String manageCmd = cmdList[1];
@@ -264,7 +263,17 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                 return ManageFunction.getHelp(nickname, cmdPrefix);
             }
             case "B站直播通知" -> {
-
+                HashMap<String, Object> items = new HashMap<>();
+                if ("关".equals(cmdList[2])) {
+                    kookGuildSettingService.disableBiliRoomRemind(guildId);
+                    items.put("测试", "test");
+                    return ManageFunction.configSuccess(nickname, items);
+                } else if ("开".equals(cmdList[2]) && cmdList.length == 4) {
+                    kookGuildSettingService.enableBiliRoomRemind(guildId, channelId, cmdList[3]);
+                    return ManageFunction.configSuccess(nickname, items);
+                } else {
+                    return ManageFunction.configError(nickname);
+                }
             }
             case "战雷新闻播报" -> {
 
