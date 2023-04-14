@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -31,10 +30,10 @@ public class MessageQueueService {
     WtCrawlerClient wtCrawlerClient;
 
     @RabbitListener(queues = IN_QUEUE_NAME)
-    public void receiveMessage(String message) throws IOException {
-        CrawlerResultMessage msg = JsonUtils.fromJson(message, CrawlerResultMessage.class);
-        String missionId = msg.getMissionId();
+    public void receiveMessage(String message) {
         try {
+            CrawlerResultMessage msg = JsonUtils.fromJson(message, CrawlerResultMessage.class);
+            String missionId = msg.getMissionId();
             log.info("receive message back, missionId is {}", missionId);
             Optional<Mission> optMission = missionService.findByMissionId(missionId);
             if (optMission.isEmpty()) {
@@ -53,7 +52,6 @@ public class MessageQueueService {
             missionService.setSuccess(missionId, JsonUtils.toJson(pr));
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
-            missionService.setFailed(missionId, e);
         }
     }
 }
