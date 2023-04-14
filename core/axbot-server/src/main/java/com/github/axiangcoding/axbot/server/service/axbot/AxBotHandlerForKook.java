@@ -266,9 +266,11 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                 HashMap<String, Object> items = new HashMap<>();
                 if ("关".equals(cmdList[2])) {
                     kookGuildSettingService.disableBiliRoomRemind(guildId);
-                    items.put("测试", "test");
                     return ManageFunction.configSuccess(nickname, items);
                 } else if ("开".equals(cmdList[2]) && cmdList.length == 4) {
+                    if(!StringUtils.isNumeric(cmdList[3])) {
+                        return ManageFunction.configError(nickname);
+                    }
                     kookGuildSettingService.enableBiliRoomRemind(guildId, channelId, cmdList[3]);
                     return ManageFunction.configSuccess(nickname, items);
                 } else {

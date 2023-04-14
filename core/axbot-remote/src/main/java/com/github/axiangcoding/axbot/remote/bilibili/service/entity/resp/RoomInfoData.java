@@ -18,5 +18,6 @@ public class RoomInfoData {
     String title;
     Integer liveStatus;
     String areaName;
-
+    String parentAreaName;
+    String tags;
 }

@@ -47,7 +47,7 @@ public class ManageFunction {
 
         items.forEach((k, v) -> {
             modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(
-                    KookMDMessage.code(k) + ": " + v)));
+                    KookMDMessage.bold(k) + ": " + v)));
         });
 
         return JsonUtils.toJson(messages);

@@ -147,6 +147,9 @@ public class BotKookService {
 
         settings.forEach(setting -> {
             String biliRoomId = setting.getFunctionSetting().getBiliRoomId();
+            if(!StringUtils.isNumeric(biliRoomId)) {
+                return;
+            }
             String biliLiveChannelId = setting.getFunctionSetting().getBiliLiveChannelId();
             BiliResponse<RoomInfoData> liveRoomInfo = biliClient.getLiveRoomInfo(biliRoomId);
 
