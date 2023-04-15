@@ -179,7 +179,7 @@ public class BotKookService {
                         kookClient.createMessage(req);
                     });
                 }
-                stringRedisTemplate.opsForValue().set(cacheKey, "", 5, TimeUnit.MINUTES);
+                stringRedisTemplate.opsForValue().set(cacheKey, "", 10, TimeUnit.MINUTES);
             }
         });
     }
