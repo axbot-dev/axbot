@@ -45,7 +45,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
     implementation("org.ocpsoft.prettytime:prettytime:5.0.6.Final")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.27")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.28")
 
 
 }
