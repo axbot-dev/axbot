@@ -14,7 +14,7 @@ import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
-import com.github.axiangcoding.axbot.server.configuration.props.KookConfProps;
+import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
@@ -53,7 +53,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     KookClient kookClient;
 
     @Resource
-    KookConfProps kookConfProps;
+    BotConfProps botConfProps;
 
     @Override
     public String getDefault() {
@@ -80,7 +80,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
 
     @Override
     public String getHelp() {
-        return HelpFunction.helpCard(kookConfProps.getTriggerMessagePrefix().get(0));
+        return HelpFunction.helpCard(botConfProps.getTriggerMessagePrefix().get(0));
     }
 
     @Override
@@ -251,7 +251,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         }
 
         String[] cmdList = StringUtils.split(command);
-        String cmdPrefix = kookConfProps.getTriggerMessagePrefix().get(0);
+        String cmdPrefix = botConfProps.getTriggerMessagePrefix().get(0);
         if (cmdList.length < 3) {
             return ManageFunction.getHelp(nickname, cmdPrefix);
         }
@@ -278,10 +278,10 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                 }
             }
             case "战雷新闻播报" -> {
-
+                // TODO
             }
             case "战雷战绩查询" -> {
-
+                // TODO
             }
             default -> {
                 return ManageFunction.configError(nickname);

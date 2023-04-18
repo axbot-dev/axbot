@@ -33,10 +33,15 @@ logging:
     name: ./logs/axbot.log
     path: ./logs/
 
-kook:
-  enabled: true
-  bot-token:
-  verify-token:
+bot:
   trigger-message-prefix:
     - axbot
     - .axbot
+  kook:
+    enabled: true
+    bot-token:
+    verify-token:
+  cqhttp:
+    enabled: true
+    base-url: http://localhost:5700/
+    secret:

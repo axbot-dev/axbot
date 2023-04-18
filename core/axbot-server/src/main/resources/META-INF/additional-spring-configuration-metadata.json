@@ -1,24 +1,39 @@
 {
   "properties": [
     {
-      "name": "kook.bot-token",
+      "name": "bot.kook.bot-token",
       "type": "java.lang.String",
       "description": "Kook bot token."
     },
     {
-      "name": "kook.verify-token",
+      "name": "bot.kook.verify-token",
       "type": "java.lang.String",
       "description": "Kook bot verify token."
     },
     {
-      "name": "kook.enabled",
+      "name": "bot.kook.enabled",
       "type": "java.lang.String",
       "description": "Enabled Kook bot or not."
     },
     {
-      "name": "kook.trigger-message-prefix",
+      "name": "bot.trigger-message-prefix",
       "type": "java.lang.String",
       "description": "Trigger message prefix for Kook bot."
+    },
+    {
+      "name": "bot.cqhttp.enabled",
+      "type": "java.lang.String",
+      "description": "Enabled cqhttp service as qq bot or not."
+    },
+    {
+      "name": "bot.cqhttp.base-url",
+      "type": "java.lang.String",
+      "description": "base url of cqhttp service."
+    },
+    {
+      "name": "bot.cqhttp.secret",
+      "type": "java.lang.String",
+      "description": "secret of cqhttp service."
     }
   ]
 }

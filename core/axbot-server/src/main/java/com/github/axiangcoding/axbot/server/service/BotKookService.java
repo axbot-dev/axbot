@@ -13,7 +13,7 @@ import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
 import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
-import com.github.axiangcoding.axbot.server.configuration.props.KookConfProps;
+import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import jakarta.annotation.Resource;
@@ -32,7 +32,7 @@ public class BotKookService {
     KookClient kookClient;
 
     @Resource
-    KookConfProps kookConfProps;
+    BotConfProps botConfProps;
 
     @Resource
     AxBotService axBotService;
@@ -47,7 +47,7 @@ public class BotKookService {
     StringRedisTemplate stringRedisTemplate;
 
     public boolean compareVerifyToken(String retToken) {
-        return StringUtils.equals(retToken, kookConfProps.getVerifyToken());
+        return StringUtils.equals(retToken, botConfProps.getKook().getVerifyToken());
     }
 
     /**
@@ -65,7 +65,7 @@ public class BotKookService {
             String[] contentSplit = StringUtils.split(content);
 
             String command = "";
-            List<String> prefixes = kookConfProps.getTriggerMessagePrefix();
+            List<String> prefixes = botConfProps.getTriggerMessagePrefix();
             boolean isTrigger = false;
             for (String prefix : prefixes) {
                 if (prefix.equals(contentSplit[0])) {
@@ -75,7 +75,8 @@ public class BotKookService {
                 }
             }
             if (isTrigger) {
-                log.info("received trigger message. user: [{}], message content: [{}]", d.getAuthorId(), d.getContent());
+                log.info("received trigger message from kook. user: [{}], message content: [{}]",
+                        d.getAuthorId(), d.getContent());
                 String guildId = d.getExtra().getGuildId();
                 Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(guildId);
                 if (optKgs.isEmpty()) {

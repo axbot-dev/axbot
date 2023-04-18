@@ -16,7 +16,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("v1/bot/kook")
 @Slf4j
-
 public class BotKookController {
     @Resource
     BotKookService botKookService;

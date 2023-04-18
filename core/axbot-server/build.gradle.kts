@@ -46,6 +46,8 @@ dependencies {
     implementation("org.ocpsoft.prettytime:prettytime:5.0.6.Final")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
     implementation("com.alibaba.fastjson2:fastjson2:2.0.28")
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation("commons-codec:commons-codec:1.15")
 
 
 }
