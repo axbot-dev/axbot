@@ -131,8 +131,8 @@ public class AxBotService {
             try {
                 AxBotUserOutput output = genResponseForInput(replyPlatform, input);
                 callback.callback(output);
-            } catch (RuntimeException e) {
-                log.error("generate response for user input error", e);
+            } catch (Exception e) {
+                log.error("generate response for user input async error", e);
             }
         });
     }
@@ -196,8 +196,12 @@ public class AxBotService {
      */
     public void genResponseForSystemAsync(int replyPlatform, AxBotSysInput input, SystemInputCallback callback) {
         threadPoolTaskExecutor.execute(() -> {
-            AxBotSysOutput output = genResponseForSystem(replyPlatform, input);
-            callback.callback(output);
+            try {
+                AxBotSysOutput output = genResponseForSystem(replyPlatform, input);
+                callback.callback(output);
+            } catch (Exception e) {
+                log.error("generate response for system input async error", e);
+            }
         });
     }
 

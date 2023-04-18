@@ -90,8 +90,12 @@ public class WTGameProfileService {
         missionService.save(mission);
         // 提交线程去执行任务
         threadPoolTaskExecutor.execute(() -> {
-            missionService.setPending(missionId);
-            executeMission(missionId, nickname);
+            try {
+                missionService.setPending(missionId);
+                executeMission(missionId, nickname);
+            } catch (Exception e) {
+                log.error("execute mission error", e);
+            }
         });
         putRefreshFlag(nickname);
         return mission;

@@ -130,48 +130,52 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
             Mission oldM = wtGameProfileService.submitMissionToUpdate(nickname);
             UUID missionId = oldM.getMissionId();
             threadPoolTaskExecutor.execute(() -> {
-                AxBotUserOutputForKook out = (AxBotUserOutputForKook) output;
-                CreateMessageReq req = new CreateMessageReq();
-                req.setType(KookEvent.TYPE_CARD);
-                req.setQuote(out.getReplayToMsg());
-                req.setTargetId(out.getToChannel());
-                int i = 0;
-                int maxTimes = 12;
-                while (i < maxTimes) {
-                    Optional<Mission> optM = missionService.findByMissionId(missionId.toString());
-                    if (optM.isEmpty()) {
-                        continue;
-                    }
-                    String status = optM.get().getStatus();
-                    if (Mission.STATUS_FAILED.equals(status)) {
-                        log.warn("queue at {} times, mission failed", i);
-                        req.setContent(WTFunction.profileQueryFailed(nickname));
-                        break;
-                    }
-                    if (Mission.STATUS_SUCCESS.equals(status)) {
-                        ParserResult result = JsonUtils.fromJson(optM.get().getResult(), ParserResult.class);
-                        if (!result.getFound()) {
-                            log.warn("queue at {} times, mission success, but not found", i);
-                            req.setContent(WTFunction.profileNotFoundMsg(nickname));
+                try {
+                    AxBotUserOutputForKook out = (AxBotUserOutputForKook) output;
+                    CreateMessageReq req = new CreateMessageReq();
+                    req.setType(KookEvent.TYPE_CARD);
+                    req.setQuote(out.getReplayToMsg());
+                    req.setTargetId(out.getToChannel());
+                    int i = 0;
+                    int maxTimes = 12;
+                    while (i < maxTimes) {
+                        Optional<Mission> optM = missionService.findByMissionId(missionId.toString());
+                        if (optM.isEmpty()) {
+                            continue;
+                        }
+                        String status = optM.get().getStatus();
+                        if (Mission.STATUS_FAILED.equals(status)) {
+                            log.warn("queue at {} times, mission failed", i);
+                            req.setContent(WTFunction.profileQueryFailed(nickname));
                             break;
                         }
-                        Optional<WtGamerProfile> opt = wtGameProfileService.findByNickname(nickname);
-                        if (opt.isPresent()) {
-                            req.setContent(WTFunction.profileFound(nickname, opt.get()));
-                            break;
+                        if (Mission.STATUS_SUCCESS.equals(status)) {
+                            ParserResult result = JsonUtils.fromJson(optM.get().getResult(), ParserResult.class);
+                            if (!result.getFound()) {
+                                log.warn("queue at {} times, mission success, but not found", i);
+                                req.setContent(WTFunction.profileNotFoundMsg(nickname));
+                                break;
+                            }
+                            Optional<WtGamerProfile> opt = wtGameProfileService.findByNickname(nickname);
+                            if (opt.isPresent()) {
+                                req.setContent(WTFunction.profileFound(nickname, opt.get()));
+                                break;
+                            }
                         }
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        i++;
                     }
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                    if (i == maxTimes) {
+                        req.setContent(WTFunction.profileNotFoundMsg(nickname, "查询轮询超时，请稍后重试"));
                     }
-                    i++;
+                    kookClient.createMessage(req);
+                } catch (Exception e) {
+                    log.error("async update wt profile error", e);
                 }
-                if (i == maxTimes) {
-                    req.setContent(WTFunction.profileNotFoundMsg(nickname, "查询轮询超时，请稍后重试"));
-                }
-                kookClient.createMessage(req);
             });
             return WTFunction.profileInQuery(nickname);
         }
@@ -268,7 +272,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                     kookGuildSettingService.disableBiliRoomRemind(guildId);
                     return ManageFunction.configSuccess(nickname, items);
                 } else if ("开".equals(cmdList[2]) && cmdList.length == 4) {
-                    if(!StringUtils.isNumeric(cmdList[3])) {
+                    if (!StringUtils.isNumeric(cmdList[3])) {
                         return ManageFunction.configError(nickname);
                     }
                     kookGuildSettingService.enableBiliRoomRemind(guildId, channelId, cmdList[3]);
