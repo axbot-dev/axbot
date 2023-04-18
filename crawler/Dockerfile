@@ -7,6 +7,8 @@ RUN apk add chromium chromium-chromedriver unzip curl
 COPY requirements.txt ./
 RUN #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install -r requirements.txt
+ARG VERSION
+ENV APP_VERSION=${VERSION}
 
 COPY main.py ./
 ENTRYPOINT ["python", "-u", "main.py"]
