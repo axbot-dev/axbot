@@ -4,6 +4,8 @@ import com.github.axiangcoding.axbot.engine.AxbotCommand;
 import com.github.axiangcoding.axbot.engine.SystemInputCallback;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
 import com.github.axiangcoding.axbot.engine.entity.*;
+import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserInputForCqhttp;
+import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserOutputForCqhttp;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
@@ -11,6 +13,7 @@ import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
+import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForCqhttp;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForKook;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +30,7 @@ import java.util.Map;
 @Service
 public class AxBotService {
     public static final Integer PLATFORM_KOOK = 1;
-    public static final Integer PLATFORM_QQ = 2;
+    public static final Integer PLATFORM_CQHTTP = 2;
 
 
     @Resource
@@ -35,6 +38,9 @@ public class AxBotService {
 
     @Resource
     AxBotHandlerForKook axBotHandlerForKook;
+
+    @Resource
+    AxBotHandlerForCqhttp axBotHandlerForCqhttp;
 
     @Resource
     KookGuildSettingService kookGuildSettingService;
@@ -88,8 +94,28 @@ public class AxBotService {
             }
 
             return out;
-        } else if (replyPlatform == PLATFORM_QQ) {
-            // TODO
+        } else if (replyPlatform == PLATFORM_CQHTTP) {
+            AxBotUserInputForCqhttp in = ((AxBotUserInputForCqhttp) input);
+            AxBotUserOutputForCqhttp out = new AxBotUserOutputForCqhttp();
+            out.setToGroup(in.getFromGroup());
+            out.setReplayToUser(in.getFromUserId());
+            String command = in.getRequestCommand();
+            String[] cList = StringUtils.split(command);
+            String userId = in.getFromUserId();
+            if (StringUtils.isBlank(command)) {
+                out.setContent(axBotHandlerForCqhttp.getDefault());
+            } else {
+                AxbotCommand jc = AxbotCommand.judgeCommand(command);
+                if (jc == null) {
+                    out.setContent(axBotHandlerForCqhttp.commandNotFound(command));
+                } else if (jc == AxbotCommand.COMMAND_LUCKY) {
+                    String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
+                    out.setContent(axBotHandlerForCqhttp.getTodayLucky(s.hashCode()));
+                } else {
+                    out.setContent(axBotHandlerForCqhttp.commandNotFound(command));
+                }
+            }
+            return out;
         }
         return null;
     }
@@ -149,7 +175,7 @@ public class AxBotService {
                 default -> log.warn("not support yet");
             }
             return out;
-        } else if (replyPlatform == PLATFORM_QQ) {
+        } else if (replyPlatform == PLATFORM_CQHTTP) {
             // TODO
         } else {
 

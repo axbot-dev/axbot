@@ -96,7 +96,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
 
     @Override
     public String getTodayLucky(long seed) {
-        return LuckyFunction.todayLucky(seed);
+        return LuckyFunction.todayLuckyForKook(seed);
     }
 
     @Override

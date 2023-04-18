@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class LuckyFunction {
 
-    public static String todayLucky(long seed) {
+    public static String todayLuckyForKook(long seed) {
         int luck = new Random(seed).nextInt(100);
         String title = "您的今日气运为：" + luck;
         List<KookCardMessage> messages = KookCardMessage.defaultMsg(title, "success");
@@ -17,6 +17,11 @@ public class LuckyFunction {
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(genExtra(luck))));
 
         return JsonUtils.toJson(messages);
+    }
+
+    public static String todayLuckForCqhttp(long seed) {
+        int luck = new Random(seed).nextInt(100);
+        return "您的今日气运为：%d，%s".formatted(luck, genExtra(luck));
     }
 
     private static String genExtra(int luck) {
