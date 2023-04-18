@@ -1,7 +1,9 @@
 package com.github.axiangcoding.axbot.server.service;
 
 
+import com.github.axiangcoding.axbot.engine.UserInputCallback;
 import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
+import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
@@ -90,17 +92,30 @@ public class BotKookService {
                 input.setFromMsgId(d.getMsgId());
                 input.setFromChannel(d.getTargetId());
                 input.setFromGuild(guildId);
-                axBotService.genResponseForInputAsync(AxBotService.PLATFORM_KOOK, input, output -> {
-                    if (output == null) {
-                        return;
+                axBotService.genResponseForInputAsync(AxBotService.PLATFORM_KOOK, input, new UserInputCallback() {
+                    @Override
+                    public void callback(AxBotUserOutput output) {
+                        if (output == null) {
+                            return;
+                        }
+                        AxBotUserOutputForKook out = ((AxBotUserOutputForKook) output);
+                        CreateMessageReq req = new CreateMessageReq();
+                        req.setType(KookEvent.TYPE_CARD);
+                        req.setQuote(out.getReplayToMsg());
+                        req.setTargetId(out.getToChannel());
+                        req.setContent(out.getContent());
+                        kookClient.createMessage(req);
                     }
-                    AxBotUserOutputForKook out = ((AxBotUserOutputForKook) output);
-                    CreateMessageReq req = new CreateMessageReq();
-                    req.setType(KookEvent.TYPE_CARD);
-                    req.setQuote(out.getReplayToMsg());
-                    req.setTargetId(out.getToChannel());
-                    req.setContent(out.getContent());
-                    kookClient.createMessage(req);
+
+                    @Override
+                    public void catchException(Exception e) {
+                        CreateMessageReq req = new CreateMessageReq();
+                        req.setType(KookEvent.TYPE_TEXT);
+                        req.setQuote(input.getFromMsgId());
+                        req.setTargetId(input.getFromChannel());
+                        req.setContent("系统内部错误，请报告开发者");
+                        kookClient.createMessage(req);
+                    }
                 });
             }
         } else if (Objects.equals(d.getType(), KookEvent.TYPE_SYSTEM_MESSAGE)) {
