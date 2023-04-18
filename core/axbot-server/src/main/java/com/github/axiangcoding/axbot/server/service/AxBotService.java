@@ -128,12 +128,8 @@ public class AxBotService {
      */
     public void genResponseForInputAsync(int replyPlatform, AxBotUserInput input, UserInputCallback callback) {
         threadPoolTaskExecutor.execute(() -> {
-            try {
-                AxBotUserOutput output = genResponseForInput(replyPlatform, input);
-                callback.callback(output);
-            } catch (RuntimeException e) {
-                log.error("generate response for user input error", e);
-            }
+            AxBotUserOutput output = genResponseForInput(replyPlatform, input);
+            callback.callback(output);
         });
     }
 
