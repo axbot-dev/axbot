@@ -1,5 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
+import com.github.axiangcoding.axbot.engine.UserInputCallback;
+import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserInputForCqhttp;
 import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserOutputForCqhttp;
 import com.github.axiangcoding.axbot.remote.cqhttp.CqHttpClient;
@@ -86,13 +88,22 @@ public class BotQQService {
                 input.setFromMsgId(String.valueOf(event.getMessageId()));
                 input.setFromGroup(String.valueOf(event.getGroupId()));
 
-                axBotService.genResponseForInputAsync(AxBotService.PLATFORM_CQHTTP, input, output -> {
-                    if (output == null) {
-                        return;
+                axBotService.genResponseForInputAsync(AxBotService.PLATFORM_CQHTTP, input, new UserInputCallback() {
+                    @Override
+                    public void callback(AxBotUserOutput output) {
+                        if (output == null) {
+                            return;
+                        }
+                        AxBotUserOutputForCqhttp out = ((AxBotUserOutputForCqhttp) output);
+                        String message = "[CQ:at,qq=%s] %s".formatted(output.getReplayToUser(), output.getContent());
+                        cqHttpClient.sendGroupMsg(Long.valueOf(out.getToGroup()), message, false);
                     }
-                    AxBotUserOutputForCqhttp out = ((AxBotUserOutputForCqhttp) output);
-                    String message = "[CQ:at,qq=%s] %s".formatted(output.getReplayToUser(), output.getContent());
-                    cqHttpClient.sendGroupMsg(Long.valueOf(out.getToGroup()), message, false);
+
+                    @Override
+                    public void catchException(Exception e) {
+                        String message = "[CQ:at,qq=%s] %s".formatted(input.getFromUserId(), "系统内部错误，请报告开发者");
+                        cqHttpClient.sendGroupMsg(Long.valueOf(input.getFromGroup()), message, false);
+                    }
                 });
             }
 

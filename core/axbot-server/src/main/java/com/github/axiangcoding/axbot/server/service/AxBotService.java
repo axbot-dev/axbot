@@ -133,6 +133,7 @@ public class AxBotService {
                 callback.callback(output);
             } catch (Exception e) {
                 log.error("generate response for user input async error", e);
+                callback.catchException(e);
             }
         });
     }
