@@ -25,7 +25,7 @@ public class BotQQController {
     public Map<String, Object> cqhttpWebhook(
             HttpServletRequest request,
             @RequestBody String body) {
-        log.info("receive cqhttp webhook msg, plain: {}", body);
+        log.debug("receive cqhttp webhook msg, plain: {}", body);
         QQWebhookEvent event = JsonUtils.fromLowCaseUnderscoresJson(body, QQWebhookEvent.class);
 
         if (!botQQService.checkSecret(request.getHeader("X-Signature"), body)) {

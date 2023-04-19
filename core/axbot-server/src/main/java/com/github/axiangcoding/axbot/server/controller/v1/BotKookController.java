@@ -22,7 +22,7 @@ public class BotKookController {
 
     @PostMapping("webhook")
     public Map<String, Object> webhook(@RequestBody String body) {
-        log.info("receive kook webhook msg, plain: {}", body);
+        log.debug("receive kook webhook msg, plain: {}", body);
         KookWebhookEvent event = JsonUtils.fromLowCaseUnderscoresJson(body, KookWebhookEvent.class);
         if (!botKookService.compareVerifyToken(event.getD().getVerifyToken())) {
             log.warn("no a valid kook webhook message");

@@ -2,6 +2,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
+import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
@@ -48,6 +49,9 @@ public class BotKookService {
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    UserInputRecordService userInputRecordService;
+
     public boolean compareVerifyToken(String retToken) {
         return StringUtils.equals(retToken, botConfProps.getKook().getVerifyToken());
     }
@@ -65,21 +69,18 @@ public class BotKookService {
                 Objects.equals(d.getType(), KookEvent.TYPE_KMARKDOWN)) {
             String content = d.getContent();
             String[] contentSplit = StringUtils.split(content);
+            String guildId = d.getExtra().getGuildId();
+            String authorId = d.getAuthorId();
+            String channelId = d.getTargetId();
+            String msgId = d.getMsgId();
 
-            String command = "";
-            List<String> prefixes = botConfProps.getTriggerMessagePrefix();
-            boolean isTrigger = false;
-            for (String prefix : prefixes) {
-                if (prefix.equals(contentSplit[0])) {
-                    isTrigger = true;
-                    command = StringUtils.join(Arrays.copyOfRange(contentSplit, 1, contentSplit.length), " ");
-                    break;
-                }
-            }
-            if (isTrigger) {
+            if (axBotService.isTriggerMessage(content)) {
                 log.info("received trigger message from kook. user: [{}], message content: [{}]",
-                        d.getAuthorId(), d.getContent());
-                String guildId = d.getExtra().getGuildId();
+                        authorId, content);
+                userInputRecordService.saveRecordFromKook(authorId, content, guildId, channelId);
+
+                String command = StringUtils.join(Arrays.copyOfRange(contentSplit, 1, contentSplit.length), " ");
+
                 Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(guildId);
                 if (optKgs.isEmpty()) {
                     kookGuildSettingService.updateWhenJoin(guildId);
@@ -87,12 +88,13 @@ public class BotKookService {
                     // TODO 增加使用量
                 }
                 AxBotUserInputForKook input = new AxBotUserInputForKook();
-                input.setFromUserId(d.getAuthorId());
+                input.setFromUserId(authorId);
                 input.setRequestCommand(command);
-                input.setFromMsgId(d.getMsgId());
-                input.setFromChannel(d.getTargetId());
+
+                input.setFromMsgId(msgId);
+                input.setFromChannel(channelId);
                 input.setFromGuild(guildId);
-                axBotService.genResponseForInputAsync(AxBotService.PLATFORM_KOOK, input, new UserInputCallback() {
+                axBotService.genResponseForInputAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, new UserInputCallback() {
                     @Override
                     public void callback(AxBotUserOutput output) {
                         if (output == null) {
@@ -139,7 +141,7 @@ public class BotKookService {
                     return map;
                 }
 
-                axBotService.genResponseForSystemAsync(AxBotService.PLATFORM_KOOK, input, output -> {
+                axBotService.genResponseForSystemAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, output -> {
                     if (output == null) {
                         return;
                     }
@@ -163,7 +165,7 @@ public class BotKookService {
 
         settings.forEach(setting -> {
             String biliRoomId = setting.getFunctionSetting().getBiliRoomId();
-            if(!StringUtils.isNumeric(biliRoomId)) {
+            if (!StringUtils.isNumeric(biliRoomId)) {
                 return;
             }
             String biliLiveChannelId = setting.getFunctionSetting().getBiliLiveChannelId();
@@ -183,7 +185,7 @@ public class BotKookService {
             input.setExtraMap(extraMap);
             if (roomInfoData.getLiveStatus() == 1) {
                 if (!Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey))) {
-                    axBotService.genResponseForSystemAsync(AxBotService.PLATFORM_KOOK, input, output -> {
+                    axBotService.genResponseForSystemAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, output -> {
                         if (output == null) {
                             return;
                         }

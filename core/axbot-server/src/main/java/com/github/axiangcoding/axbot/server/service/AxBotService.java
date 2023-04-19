@@ -13,6 +13,7 @@ import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
+import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForCqhttp;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForKook;
 import jakarta.annotation.Resource;
@@ -24,14 +25,15 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Service
 public class AxBotService {
-    public static final Integer PLATFORM_KOOK = 1;
-    public static final Integer PLATFORM_CQHTTP = 2;
 
+    @Resource
+    BotConfProps botConfProps;
 
     @Resource
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
@@ -48,14 +50,30 @@ public class AxBotService {
     @Resource
     KookClient kookClient;
 
+    public boolean isTriggerMessage(String message) {
+        if (StringUtils.isBlank(message)) {
+            return false;
+        }
+        String[] contentSplit = StringUtils.split(message);
+        List<String> prefixes = botConfProps.getTriggerMessagePrefix();
+        boolean isTrigger = false;
+        for (String prefix : prefixes) {
+            if (prefix.equals(contentSplit[0])) {
+                isTrigger = true;
+                break;
+            }
+        }
+        return isTrigger;
+    }
+
     /**
      * 同步响应用户输入
      *
      * @param input
      * @return
      */
-    public AxBotUserOutput genResponseForInput(int replyPlatform, AxBotUserInput input) {
-        if (replyPlatform == PLATFORM_KOOK) {
+    public AxBotUserOutput genResponseForInput(AxBotSupportPlatform replyPlatform, AxBotUserInput input) {
+        if (replyPlatform == AxBotSupportPlatform.PLATFORM_KOOK) {
             AxBotUserInputForKook in = ((AxBotUserInputForKook) input);
             AxBotUserOutputForKook out = new AxBotUserOutputForKook();
             String userId = in.getFromUserId();
@@ -94,7 +112,7 @@ public class AxBotService {
             }
 
             return out;
-        } else if (replyPlatform == PLATFORM_CQHTTP) {
+        } else if (replyPlatform == AxBotSupportPlatform.PLATFORM_CQHTTP) {
             AxBotUserInputForCqhttp in = ((AxBotUserInputForCqhttp) input);
             AxBotUserOutputForCqhttp out = new AxBotUserOutputForCqhttp();
             out.setToGroup(in.getFromGroup());
@@ -126,7 +144,7 @@ public class AxBotService {
      * @param input
      * @param callback
      */
-    public void genResponseForInputAsync(int replyPlatform, AxBotUserInput input, UserInputCallback callback) {
+    public void genResponseForInputAsync(AxBotSupportPlatform replyPlatform, AxBotUserInput input, UserInputCallback callback) {
         threadPoolTaskExecutor.execute(() -> {
             try {
                 AxBotUserOutput output = genResponseForInput(replyPlatform, input);
@@ -145,8 +163,8 @@ public class AxBotService {
      * @param input
      * @return
      */
-    public AxBotSysOutput genResponseForSystem(int replyPlatform, AxBotSysInput input) {
-        if (replyPlatform == PLATFORM_KOOK) {
+    public AxBotSysOutput genResponseForSystem(AxBotSupportPlatform replyPlatform, AxBotSysInput input) {
+        if (replyPlatform == AxBotSupportPlatform.PLATFORM_KOOK) {
             AxBotSysInputForKook in = (AxBotSysInputForKook) input;
             AxBotSysOutputForKook out = new AxBotSysOutputForKook();
 
@@ -180,7 +198,7 @@ public class AxBotService {
                 default -> log.warn("not support yet");
             }
             return out;
-        } else if (replyPlatform == PLATFORM_CQHTTP) {
+        } else if (replyPlatform == AxBotSupportPlatform.PLATFORM_CQHTTP) {
             // TODO
         } else {
 
@@ -195,7 +213,7 @@ public class AxBotService {
      * @param input
      * @param callback
      */
-    public void genResponseForSystemAsync(int replyPlatform, AxBotSysInput input, SystemInputCallback callback) {
+    public void genResponseForSystemAsync(AxBotSupportPlatform replyPlatform, AxBotSysInput input, SystemInputCallback callback) {
         threadPoolTaskExecutor.execute(() -> {
             try {
                 AxBotSysOutput output = genResponseForSystem(replyPlatform, input);

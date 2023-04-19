@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
+import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserInputForCqhttp;
 import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserOutputForCqhttp;
@@ -18,7 +19,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -32,6 +32,10 @@ public class BotQQService {
 
     @Resource
     CqHttpClient cqHttpClient;
+
+    @Resource
+    UserInputRecordService userInputRecordService;
+
 
     public boolean checkSecret(String signatureHeader, String body) {
         String secret = botConfProps.getCqhttp().getSecret();
@@ -58,37 +62,27 @@ public class BotQQService {
 
     public Map<String, Object> DetermineMessageResponse(QQWebhookEvent event) {
         String content = event.getRawMessage();
+        Long userId = event.getUserId();
+        Long groupId = event.getGroupId();
+        Long messageId = event.getMessageId();
         String[] contentSplit = StringUtils.split(content);
-
+        // 是群聊消息
         if ("group".equals(event.getMessageType()) && "normal".equals(event.getSubType())) {
+            if (axBotService.isTriggerMessage(content)) {
+                log.info("received trigger message from cqhttp. user: [{}], message content: [{}]",
+                        userId, content);
 
-            String command = "";
-            List<String> prefixes = botConfProps.getTriggerMessagePrefix();
-            boolean isTrigger = false;
-            for (String prefix : prefixes) {
-                if (prefix.equals(contentSplit[0])) {
-                    isTrigger = true;
-                    command = StringUtils.join(Arrays.copyOfRange(contentSplit, 1, contentSplit.length), " ");
-                    break;
-                }
-            }
-            if (isTrigger) {
-                log.info("received trigger message from kook. user: [{}], message content: [{}]",
-                        event.getUserId(), content);
-                // String guildId = d.getExtra().getGuildId();
-                // Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(guildId);
-                // if (optKgs.isEmpty()) {
-                //     kookGuildSettingService.updateWhenJoin(guildId);
-                // } else {
-                //     // TODO 增加使用量
-                // }
+                userInputRecordService.saveRecordFromCqhttp(String.valueOf(userId), content, String.valueOf(groupId));
+                String command = StringUtils.join(Arrays.copyOfRange(contentSplit, 1, contentSplit.length), " ");
+                // TODO 更多校验
                 AxBotUserInputForCqhttp input = new AxBotUserInputForCqhttp();
-                input.setFromUserId(String.valueOf(event.getUserId()));
+                input.setFromUserId(String.valueOf(userId));
                 input.setRequestCommand(command);
-                input.setFromMsgId(String.valueOf(event.getMessageId()));
-                input.setFromGroup(String.valueOf(event.getGroupId()));
 
-                axBotService.genResponseForInputAsync(AxBotService.PLATFORM_CQHTTP, input, new UserInputCallback() {
+                input.setFromMsgId(String.valueOf(messageId));
+                input.setFromGroup(String.valueOf(groupId));
+
+                axBotService.genResponseForInputAsync(AxBotSupportPlatform.PLATFORM_CQHTTP, input, new UserInputCallback() {
                     @Override
                     public void callback(AxBotUserOutput output) {
                         if (output == null) {
