@@ -6,11 +6,13 @@
 
 ## 部署前提
 
-AXBot共有两个服务：core和crawler，分别作为其核心程序和数据获取节点。此外，AXBot还需要依赖第三方服务，如数据库和队列等。
+AXBot共有两个服务：core和crawler，分别作为其核心程序和数据获取节点。此外，AXBot还需要依赖第三方服务，如数据库，CQHTTP和队列服务等。
 
 默认情况下，完整部署需要依赖服务和一个crawler服务，一个core服务。这些服务需要占用约600MB的内存。因此，我们建议服务器的内存应该在2GB以上，以避免出现不必要的OOM问题。
 
 AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸缩数量，以提供稳定的服务质量
+
+需要注意的是，如果启用qq机器人，请自行部署cqhttp服务。部署的方式请参考cqhttp的文档介绍
 
 ## 部署方式
 
@@ -57,6 +59,9 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
    
    KOOK_BOT_TOKEN=[kook机器人token]
    KOOK_VERIFY_TOKEN=[kook机器人验证token]
+   
+   CQHTTP_SECRET=[cqhttp的反向HTTP请求的密钥]
+   CQHTTP_BASE_URL=http://cqhttp:5700/
    ```
    
 6. 执行服务部署脚本

@@ -1,12 +1,14 @@
+<img src="docs/axbot_logo.png" alt="AXbot" style="zoom:33%;" />
+
 # AXBot 艾克斯机器人
 
 [![GitHub](https://img.shields.io/github/license/axiangcoding/AXBot?style=for-the-badge)](LICENSE) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=AXBOT%20CORE&sort=semver&style=for-the-badge)](https://hub.docker.com/r/axiangcoding/axbot-core) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=AXBOT%20CRAWLER&sort=semver&style=for-the-badge)](https://hub.docker.com/r/axiangcoding/axbot-crawler) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/build_docker_image.yml?label=BUILD%20DOCKER%20IMAGE&style=for-the-badge)](https://github.com/axiangcoding/AXBot/actions/workflows/build_docker_image.yml) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/codeql.yml?label=CODEQL&style=for-the-badge)](https://github.com/axiangcoding/AXBot/actions/workflows/codeql.yml)
 
 ## 简介
 
-AXBot，全称艾克斯机器人（以下简称 "AXBot"），是一个能够在Kook、~~QQ~~（暂未支持）平台上使用的机器人。它可以查询游戏战绩，并具备一些有趣的交互功能。AXBot的终极目标是成为一个功能丰富的游戏型机器人，能够协助玩家获取、分析游戏数据，方便地查询游戏数据等。
+AXBot，全称艾克斯机器人（以下简称 "AXBot"），是一个能够在Kook、QQ上使用的机器人。它可以查询游戏战绩，并具备一些有趣的交互功能。AXBot的终极目标是成为一个功能丰富的游戏型机器人，能够协助玩家获取、分析游戏数据，方便地查询游戏数据等。
 
-AXBot的前身是 [https://github.com/axiangcoding/antonstar-bot](https://github.com/axiangcoding/antonstar-bot)，asbot的功能将陆续迁移到AXBot中。
+AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](https://github.com/axiangcoding/antonstar-bot)，asbot的功能将陆续迁移到AXBot中。
 
 > 艾克斯机器人的中文名是音译而来的，而 "AX" 则是作者平时所使用的昵称。
 
@@ -15,10 +17,14 @@ AXBot的前身是 [https://github.com/axiangcoding/antonstar-bot](https://github
 
 [使用手册](docs/user_guide.md)
 
-你可以通过以下链接将AXBot机器人邀请到您的群组或者服务器中：
+你可以通过以下方式将官方维护的AXBot机器人邀请到您的群组或者服务器中：
 
 - Kook: [内测阶段，暂不开放]
-- QQ: [暂未提供]
+- QQ: [内测阶段，暂不开放]
+
+除了官方维护的机器人外，还有一些社区维护的机器人：
+
+- [实际上还没有]
 
 ## 部署指南
 
@@ -26,7 +32,7 @@ AXBot的前身是 [https://github.com/axiangcoding/antonstar-bot](https://github
 
 [部署指南](docs/deploy_guide.md)
 
-需要注意的是，AXBot机器人目前正在快速迭代开发中。我们强烈建议您更新到最新版本以获取最完整的功能和最新的错误修复。但同时，我们也建议在更新之前，详细阅读更新日志并解决可能存在的兼容问题。如果您在更新过程中遇到任何问题，欢迎提出ISSUE获取帮助。
+需要注意的是，AXBot机器人目前正在快速迭代开发中。如果您部署了AXBot机器人，我们强烈建议您更新到最新版本以获取最完整的功能和最新的错误修复。但同时，我们也建议在更新之前，详细阅读更新日志并解决可能存在的兼容问题。如果您在更新过程中遇到任何问题，欢迎提出ISSUE获取帮助。
 
 ## 开发指南
 
