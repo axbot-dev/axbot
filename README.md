@@ -10,6 +10,13 @@
 
 AXBot，全称艾克斯机器人（以下简称 "AXBot"），是一个能够在Kook、QQ上使用的机器人。它可以查询游戏战绩，并具备一些有趣的交互功能。AXBot的终极目标是成为一个功能丰富的游戏型机器人，能够协助玩家获取、分析游戏数据，方便地查询游戏数据等。
 
+AXBot目前支持：
+
+1. 接入Kook机器人或者Cqhttp
+2. 每日电子算命
+3. 战争雷霆战绩查询
+4. B站直播提醒
+
 AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](https://github.com/axiangcoding/antonstar-bot)，asbot的功能将陆续迁移到AXBot中。
 
 > 艾克斯机器人的中文名是音译而来的，而 "AX" 则是作者平时所使用的昵称。
