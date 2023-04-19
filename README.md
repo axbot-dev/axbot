@@ -1,4 +1,6 @@
-<img src="docs/axbot_logo.png" alt="AXbot" style="zoom:33%;" />
+<p>
+ <img src="docs/axbot_logo.png" height="400px" />   
+</p>
 
 # AXBot 艾克斯机器人
 
