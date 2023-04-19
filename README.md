@@ -1,5 +1,5 @@
-<p>
- <img src="docs/axbot_logo.png" height="400px" />   
+<p align="center">
+ <img src="docs/axbot_logo.png" height="200px" />   
 </p>
 
 # AXBot 艾克斯机器人
