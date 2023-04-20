@@ -11,6 +11,8 @@ java.targetCompatibility = JavaVersion.VERSION_17
 allprojects {
     repositories {
         // maven(url = "https://maven.aliyun.com/repository/public/")
+        mavenLocal()
+        maven(url = "https://repo1.maven.org/maven2/")
         mavenCentral()
     }
 }
