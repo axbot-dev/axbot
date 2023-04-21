@@ -107,8 +107,11 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AxBot", "warning");
         List<KookCardMessage> modules = messages.get(0).getModules();
 
-        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("你已经达到了使用限制（%d/%d），第二天会重置".formatted(usage, limit))));
-
+        modules.add(KookCardMessage.newSection(
+                KookCardMessage.newKMarkdown("你已经达到了使用限制（%d/%d），第二天会重置".formatted(usage, limit))));
+        modules.add(KookCardMessage.newSection(
+                KookCardMessage.newKMarkdown("警告：超出限制10次将被拉黑！")
+        ));
         return JsonUtils.toJson(messages);
     }
 

@@ -18,5 +18,4 @@ public interface UserInputRecordRepository extends JpaRepository<UserInputRecord
 
     long countByUserIdAndPlatformAndSensitive(String userId, String platform, Boolean sensitive);
 
-
 }

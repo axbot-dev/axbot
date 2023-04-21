@@ -1,6 +1,8 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,4 +21,22 @@ public class KookUserSetting extends BasicEntity {
     Boolean banned;
     String bannedReason;
     LocalDateTime bannedTime;
+    @Embedded
+    Usage usage;
+
+    public KookUserSetting() {
+        super();
+        this.usage = new Usage();
+    }
+
+    @Embeddable
+    @Getter
+    @Setter
+    @ToString
+    public static class Usage {
+        Integer inputToday;
+        Long inputTotal;
+        Integer queryWtToday;
+        Long queryWtTotal;
+    }
 }

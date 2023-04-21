@@ -13,6 +13,9 @@ public class UserInputRecordService {
     @Resource
     private UserInputRecordRepository userInputRecordRepository;
 
+    @Resource
+    KookUserSettingService kookUserSettingService;
+
     public long saveRecordFromCqhttp(String userId, String message, String groupId) {
         UserInputRecord entity = new UserInputRecord();
         entity.setUserId(userId);
@@ -31,6 +34,7 @@ public class UserInputRecordService {
         entity.setFromKookGuild(guildId);
         entity.setFromKookChannel(channelId);
         userInputRecordRepository.save(entity);
+        kookUserSettingService.upsertUsage(userId);
         return entity.getId();
     }
 

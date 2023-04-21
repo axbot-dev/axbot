@@ -12,9 +12,14 @@ import java.util.Optional;
 public interface KookUserSettingRepository extends JpaRepository<KookUserSetting, Long> {
     @Transactional
     @Modifying
-    @Query("update KookUserSetting k set k.banned = ?1, k.bannedReason = ?2, k.bannedTime = ?3 where k.userId = ?3")
+    @Query("update KookUserSetting k set k.banned = ?1, k.bannedReason = ?2, k.bannedTime = ?3 where k.userId = ?4")
     int updateBannedAndBannedReasonAndBannedTimeByUserId(Boolean banned, String bannedReason, LocalDateTime bannedTime, String userId);
 
     Optional<KookUserSetting> findByUserId(String userId);
+
+    @Transactional
+    @Modifying
+    @Query("update KookUserSetting k set k.usage.inputToday = 0, k.usage.queryWtToday = 0")
+    int resetTodayUsage();
 
 }

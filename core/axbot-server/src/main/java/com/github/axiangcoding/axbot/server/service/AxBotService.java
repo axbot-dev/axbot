@@ -204,14 +204,28 @@ public class AxBotService {
 
         Optional<KookUserSetting> optKus = kookUserSettingService.findByUserId(userId);
         if (optKus.isEmpty()) {
-            kookUserSettingService.newSetting(userId);
-        } else {
-            // 用户已被封禁
-            if (optKus.get().getBanned()) {
-                out.setContent(axBotHandlerForKook.userBanned(optKus.get().getBannedReason()));
-                return out;
-            }
+            return null;
         }
+        // 用户已被封禁
+        KookUserSetting kookUserSetting = optKus.get();
+        if (kookUserSetting.getBanned()) {
+            out.setContent(axBotHandlerForKook.userBanned(kookUserSetting.getBannedReason()));
+            return out;
+        }
+
+        int inputLimit = 50;
+        Integer inputToday = kookUserSetting.getUsage().getInputToday();
+        int overflow = inputToday - inputLimit;
+        if (overflow >= 0 && overflow < 10) {
+            out.setContent(axBotHandlerForKook.reachedUserLimit(inputToday, inputLimit));
+            return out;
+        } else if (overflow >= 10) {
+            String reason = "超限使用";
+            kookUserSettingService.banUser(userId, reason);
+            out.setContent(axBotHandlerForKook.userBanned(reason));
+            return out;
+        }
+
 
         boolean textPass = textCensorService.isTextPassCheck(command);
         boolean isWarning = false;
