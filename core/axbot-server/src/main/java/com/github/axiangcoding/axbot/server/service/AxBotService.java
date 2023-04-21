@@ -266,26 +266,27 @@ public class AxBotService {
         String command = input.getRequestCommand();
         Long inputId = input.getInputId();
 
-        boolean textPass = textCensorService.isTextPassCheck(command);
-        boolean isWarning = false;
-        long leftTimes = 0;
-        if (!textPass) {
-            userInputRecordService.updateSensitive(inputId, true);
-            long times = userInputRecordService.countUserCqhttpSensitiveInput(userId);
-            leftTimes = 3 - times;
-            if (leftTimes > 0) {
-                isWarning = true;
-            }
-        }
-
-        if (!textPass) {
-            if (isWarning) {
-                out.setContent(axBotHandlerForCqhttp.sensitiveInput(leftTimes));
-            } else {
-                out.setContent(axBotHandlerForCqhttp.userBanned("输入3次及以上的逆天内容"));
-            }
-            return out;
-        }
+        // TODO: 暂时不做qq的输入校验
+        // boolean textPass = textCensorService.isTextPassCheck(command);
+        // boolean isWarning = false;
+        // long leftTimes = 0;
+        // if (!textPass) {
+        //     userInputRecordService.updateSensitive(inputId, true);
+        //     long times = userInputRecordService.countUserCqhttpSensitiveInput(userId);
+        //     leftTimes = 3 - times;
+        //     if (leftTimes > 0) {
+        //         isWarning = true;
+        //     }
+        // }
+        //
+        // if (!textPass) {
+        //     if (isWarning) {
+        //         out.setContent(axBotHandlerForCqhttp.sensitiveInput(leftTimes));
+        //     } else {
+        //         out.setContent(axBotHandlerForCqhttp.userBanned("输入3次及以上的逆天内容"));
+        //     }
+        //     return out;
+        // }
 
         if (StringUtils.isBlank(command)) {
             out.setContent(axBotHandlerForCqhttp.getDefault());
