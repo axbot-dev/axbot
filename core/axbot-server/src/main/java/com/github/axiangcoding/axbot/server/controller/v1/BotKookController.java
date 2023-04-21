@@ -1,6 +1,8 @@
 package com.github.axiangcoding.axbot.server.controller.v1;
 
+import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
+import com.github.axiangcoding.axbot.server.service.AxBotService;
 import com.github.axiangcoding.axbot.server.service.BotKookService;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
@@ -20,9 +22,17 @@ public class BotKookController {
     @Resource
     BotKookService botKookService;
 
+    @Resource
+    AxBotService axBotService;
+
     @PostMapping("webhook")
     public Map<String, Object> webhook(@RequestBody String body) {
         log.debug("receive kook webhook msg, plain: {}", body);
+        if (!axBotService.isPlatformEnabled(AxBotSupportPlatform.PLATFORM_KOOK)) {
+            log.warn("platform kook not enabled");
+            return new HashMap<>();
+        }
+
         KookWebhookEvent event = JsonUtils.fromLowCaseUnderscoresJson(body, KookWebhookEvent.class);
         if (!botKookService.compareVerifyToken(event.getD().getVerifyToken())) {
             log.warn("no a valid kook webhook message");

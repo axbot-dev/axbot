@@ -1,6 +1,8 @@
 package com.github.axiangcoding.axbot.server.schedule;
 
+import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
 import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
+import com.github.axiangcoding.axbot.server.service.AxBotService;
 import com.github.axiangcoding.axbot.server.service.BotKookService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +22,17 @@ public class ScheduleTask {
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    AxBotService axBotService;
+
     private static final String LOCK_CHECK_BILI_ROOM_KEY = CacheKeyGenerator.getCronJobLockKey("checkBiliRoom");
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void checkBiliRoom() {
+        if (!axBotService.isPlatformEnabled(AxBotSupportPlatform.PLATFORM_KOOK)) {
+            return;
+        }
+
         boolean lock = false;
         try {
             // 尝试获取锁
