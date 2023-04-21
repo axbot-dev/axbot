@@ -7,6 +7,7 @@ import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.TextCensor;
 import com.github.axiangcoding.axbot.server.data.repository.TextCensorRepository;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,6 +25,10 @@ public class TextCensorService {
 
     public boolean isTextPassCheck(String text) {
         if (!botConfProps.getCensor().getEnabled()) {
+            return true;
+        }
+
+        if(StringUtils.isBlank(text)){
             return true;
         }
 
