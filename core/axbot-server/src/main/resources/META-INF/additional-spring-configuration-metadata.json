@@ -34,6 +34,21 @@
       "name": "bot.cqhttp.secret",
       "type": "java.lang.String",
       "description": "secret of cqhttp service."
+    },
+    {
+      "name": "bot.censor.enabled",
+      "type": "java.lang.String",
+      "description": "enabled censor for all input or not."
+    },
+    {
+      "name": "bot.censor.qiniu.access-token",
+      "type": "java.lang.String",
+      "description": "qiniu censor accessToken."
+    },
+    {
+      "name": "bot.censor.qiniu.secret-token",
+      "type": "java.lang.String",
+      "description": "qiniu censor secretToken."
     }
   ]
 }

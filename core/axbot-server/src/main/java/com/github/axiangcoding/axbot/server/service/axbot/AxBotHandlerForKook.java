@@ -20,6 +20,7 @@ import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
 import com.github.axiangcoding.axbot.server.service.MissionService;
+import com.github.axiangcoding.axbot.server.service.UserInputRecordService;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
 import com.github.axiangcoding.axbot.server.service.axbot.function.*;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
@@ -55,6 +56,9 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     @Resource
     BotConfProps botConfProps;
 
+    @Resource
+    UserInputRecordService userInputRecordService;
+
     @Override
     public String getDefault() {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AXBot");
@@ -74,6 +78,56 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("开发者B站主页，欢迎关注：" +
                 KookMDMessage.link("https://space.bilibili.com/8696650")
         )));
+
+        return JsonUtils.toJson(messages);
+    }
+
+    @Override
+    public String sensitiveInput(long left) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AxBot", "danger");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("我不会理会这个命令。这是一次警告。距离拉黑还差 %d 次".formatted(left))));
+
+        return JsonUtils.toJson(messages);
+    }
+
+    @Override
+    public String reachedGuildLimit(int usage, int limit) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AxBot", "warning");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("本群已经达到了使用限制（%d/%d），第二天会重置".formatted(usage, limit))));
+
+        return JsonUtils.toJson(messages);
+    }
+
+    @Override
+    public String reachedUserLimit(int usage, int limit) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AxBot", "warning");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("你已经达到了使用限制（%d/%d），第二天会重置".formatted(usage, limit))));
+
+        return JsonUtils.toJson(messages);
+    }
+
+    @Override
+    public String userBanned(String reason) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AxBot", "danger");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("你已被拉黑，原因：%s".formatted(reason))));
+
+        return JsonUtils.toJson(messages);
+    }
+
+    @Override
+    public String guildBanned(String reason) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是AxBot", "danger");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("这个群已被拉黑，因为：%s".formatted(reason))));
 
         return JsonUtils.toJson(messages);
     }

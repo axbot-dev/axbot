@@ -14,6 +14,7 @@ import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
+import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForCqhttp;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForKook;
 import jakarta.annotation.Resource;
@@ -27,6 +28,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -48,7 +50,16 @@ public class AxBotService {
     KookGuildSettingService kookGuildSettingService;
 
     @Resource
+    KookUserSettingService kookUserSettingService;
+
+    @Resource
+    TextCensorService textCensorService;
+
+    @Resource
     KookClient kookClient;
+
+    @Resource
+    UserInputRecordService userInputRecordService;
 
     public boolean isTriggerMessage(String message) {
         if (StringUtils.isBlank(message)) {
@@ -74,66 +85,9 @@ public class AxBotService {
      */
     public AxBotUserOutput genResponseForInput(AxBotSupportPlatform replyPlatform, AxBotUserInput input) {
         if (replyPlatform == AxBotSupportPlatform.PLATFORM_KOOK) {
-            AxBotUserInputForKook in = ((AxBotUserInputForKook) input);
-            AxBotUserOutputForKook out = new AxBotUserOutputForKook();
-            String userId = in.getFromUserId();
-            out.setReplayToUser(userId);
-            out.setReplayToMsg(in.getFromMsgId());
-            out.setToChannel(in.getFromChannel());
-
-            String command = in.getRequestCommand();
-            String[] cList = StringUtils.split(command);
-
-            if (StringUtils.isBlank(command)) {
-                out.setContent(axBotHandlerForKook.getDefault());
-            } else {
-                AxbotCommand jc = AxbotCommand.judgeCommand(command);
-                if (jc == null) {
-                    out.setContent(axBotHandlerForKook.commandNotFound(command));
-                } else if (jc == AxbotCommand.COMMAND_HELP) {
-                    out.setContent(axBotHandlerForKook.getHelp());
-                } else if (jc == AxbotCommand.COMMAND_VERSION) {
-                    out.setContent(axBotHandlerForKook.getVersion());
-                } else if (jc == AxbotCommand.COMMAND_LUCKY) {
-                    String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
-                    out.setContent(axBotHandlerForKook.getTodayLucky(s.hashCode()));
-                } else if (jc == AxbotCommand.COMMAND_WT_QUERY_PROFILE) {
-                    out.setContent(axBotHandlerForKook.queryWTProfile(cList[2], out));
-                } else if (jc == AxbotCommand.COMMAND_WT_UPDATE_PROFILE) {
-                    out.setContent(axBotHandlerForKook.updateWTProfile(cList[2], out));
-                } else if (jc == AxbotCommand.COMMAND_GUILD_STATUS) {
-                    out.setContent(axBotHandlerForKook.getGuildStatus(in.getFromGuild()));
-                } else if (jc == AxbotCommand.COMMAND_GUILD_MANAGE) {
-                    out.setContent(axBotHandlerForKook.manageGuild(
-                            in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
-                } else {
-                    out.setContent(axBotHandlerForKook.commandNotFound(command));
-                }
-            }
-
-            return out;
+            return processKookUserEvent(input);
         } else if (replyPlatform == AxBotSupportPlatform.PLATFORM_CQHTTP) {
-            AxBotUserInputForCqhttp in = ((AxBotUserInputForCqhttp) input);
-            AxBotUserOutputForCqhttp out = new AxBotUserOutputForCqhttp();
-            out.setToGroup(in.getFromGroup());
-            out.setReplayToUser(in.getFromUserId());
-            String command = in.getRequestCommand();
-            String[] cList = StringUtils.split(command);
-            String userId = in.getFromUserId();
-            if (StringUtils.isBlank(command)) {
-                out.setContent(axBotHandlerForCqhttp.getDefault());
-            } else {
-                AxbotCommand jc = AxbotCommand.judgeCommand(command);
-                if (jc == null) {
-                    out.setContent(axBotHandlerForCqhttp.commandNotFound(command));
-                } else if (jc == AxbotCommand.COMMAND_LUCKY) {
-                    String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
-                    out.setContent(axBotHandlerForCqhttp.getTodayLucky(s.hashCode()));
-                } else {
-                    out.setContent(axBotHandlerForCqhttp.commandNotFound(command));
-                }
-            }
-            return out;
+            return processCqhttpUserEvent(input);
         }
         return null;
     }
@@ -224,5 +178,128 @@ public class AxBotService {
         });
     }
 
+    private AxBotUserOutputForKook processKookUserEvent(AxBotUserInput input) {
+        AxBotUserInputForKook in = ((AxBotUserInputForKook) input);
+        AxBotUserOutputForKook out = new AxBotUserOutputForKook();
 
+        String userId = input.getFromUserId();
+        String command = input.getRequestCommand();
+        Long inputId = input.getInputId();
+
+        out.setReplayToUser(userId);
+        out.setReplayToMsg(in.getFromMsgId());
+        out.setToChannel(in.getFromChannel());
+
+        String[] cList = StringUtils.split(command);
+
+        Optional<KookUserSetting> optKus = kookUserSettingService.findByUserId(userId);
+        if (optKus.isEmpty()) {
+            kookUserSettingService.newSetting(userId);
+        } else {
+            // 用户已被封禁
+            if (optKus.get().getBanned()) {
+                out.setContent(axBotHandlerForKook.userBanned(optKus.get().getBannedReason()));
+                return out;
+            }
+        }
+
+        boolean textPass = textCensorService.isTextPassCheck(command);
+        boolean isWarning = false;
+        long leftTimes = 0;
+        if (!textPass) {
+            userInputRecordService.updateSensitive(inputId, true);
+            long times = userInputRecordService.countUserKookSensitiveInput(userId);
+            leftTimes = 3 - times;
+            if (leftTimes > 0) {
+                isWarning = true;
+            }
+        }
+
+        if (!textPass) {
+            if (isWarning) {
+                out.setContent(axBotHandlerForKook.sensitiveInput(leftTimes));
+            } else {
+                String reason = "输入3次及以上的逆天内容";
+                kookUserSettingService.banUser(userId, reason);
+                out.setContent(axBotHandlerForKook.userBanned(reason));
+            }
+            return out;
+        }
+
+        if (StringUtils.isBlank(command)) {
+            out.setContent(axBotHandlerForKook.getDefault());
+        } else {
+            AxbotCommand jc = AxbotCommand.judgeCommand(command);
+            if (jc == null) {
+                out.setContent(axBotHandlerForKook.commandNotFound(command));
+            } else if (jc == AxbotCommand.COMMAND_HELP) {
+                out.setContent(axBotHandlerForKook.getHelp());
+            } else if (jc == AxbotCommand.COMMAND_VERSION) {
+                out.setContent(axBotHandlerForKook.getVersion());
+            } else if (jc == AxbotCommand.COMMAND_LUCKY) {
+                String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
+                out.setContent(axBotHandlerForKook.getTodayLucky(s.hashCode()));
+            } else if (jc == AxbotCommand.COMMAND_WT_QUERY_PROFILE) {
+                out.setContent(axBotHandlerForKook.queryWTProfile(cList[2], out));
+            } else if (jc == AxbotCommand.COMMAND_WT_UPDATE_PROFILE) {
+                out.setContent(axBotHandlerForKook.updateWTProfile(cList[2], out));
+            } else if (jc == AxbotCommand.COMMAND_GUILD_STATUS) {
+                out.setContent(axBotHandlerForKook.getGuildStatus(in.getFromGuild()));
+            } else if (jc == AxbotCommand.COMMAND_GUILD_MANAGE) {
+                out.setContent(axBotHandlerForKook.manageGuild(
+                        in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
+            } else {
+                out.setContent(axBotHandlerForKook.commandNotFound(command));
+            }
+        }
+
+        return out;
+    }
+
+    private AxBotUserOutputForCqhttp processCqhttpUserEvent(AxBotUserInput input) {
+        AxBotUserInputForCqhttp in = ((AxBotUserInputForCqhttp) input);
+        AxBotUserOutputForCqhttp out = new AxBotUserOutputForCqhttp();
+        out.setToGroup(in.getFromGroup());
+        out.setReplayToUser(in.getFromUserId());
+
+        String userId = input.getFromUserId();
+        String command = input.getRequestCommand();
+        Long inputId = input.getInputId();
+
+        boolean textPass = textCensorService.isTextPassCheck(command);
+        boolean isWarning = false;
+        long leftTimes = 0;
+        if (!textPass) {
+            userInputRecordService.updateSensitive(inputId, true);
+            long times = userInputRecordService.countUserCqhttpSensitiveInput(userId);
+            leftTimes = 3 - times;
+            if (leftTimes > 0) {
+                isWarning = true;
+            }
+        }
+
+        if (!textPass) {
+            if (isWarning) {
+                out.setContent(axBotHandlerForCqhttp.sensitiveInput(leftTimes));
+            } else {
+                out.setContent(axBotHandlerForCqhttp.userBanned("输入3次及以上的逆天内容"));
+            }
+            return out;
+        }
+
+        if (StringUtils.isBlank(command)) {
+            out.setContent(axBotHandlerForCqhttp.getDefault());
+        } else {
+            AxbotCommand jc = AxbotCommand.judgeCommand(command);
+            if (jc == null) {
+                out.setContent(axBotHandlerForCqhttp.commandNotFound(command));
+            } else if (jc == AxbotCommand.COMMAND_LUCKY) {
+                String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
+                out.setContent(axBotHandlerForCqhttp.getTodayLucky(s.hashCode()));
+            } else {
+                out.setContent(axBotHandlerForCqhttp.commandNotFound(command));
+            }
+        }
+        return out;
+    }
 }

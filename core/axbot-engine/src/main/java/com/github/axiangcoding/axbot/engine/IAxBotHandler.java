@@ -15,6 +15,47 @@ public interface IAxBotHandler {
     String getDefault();
 
     /**
+     * 敏感输入
+     *
+     * @return 响应消息
+     */
+    String sensitiveInput(long left);
+
+    /**
+     * 达到社群输入上限
+     *
+     * @param usage
+     * @param limit
+     * @return 响应消息
+     */
+    String reachedGuildLimit(int usage, int limit);
+
+    /**
+     * 达到个人输入上限
+     *
+     * @param usage
+     * @param limit
+     * @return 响应消息
+     */
+    String reachedUserLimit(int usage, int limit);
+
+    /**
+     * 用户被拉黑
+     *
+     * @param reason 原因
+     * @return
+     */
+    String userBanned(String reason);
+
+    /**
+     * 社群被拉黑
+     *
+     * @param reason 原因
+     * @return
+     */
+    String guildBanned(String reason);
+
+    /**
      * 获取帮助信息
      *
      * @return 响应消息
@@ -56,5 +97,6 @@ public interface IAxBotHandler {
     void exitGuild(String guildId);
 
     String biliLiveRemind(Long roomId, String title, String areaName, String description);
+
 
 }

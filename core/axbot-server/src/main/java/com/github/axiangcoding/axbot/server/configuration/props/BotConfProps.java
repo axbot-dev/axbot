@@ -11,6 +11,7 @@ public class BotConfProps {
     CqhttpConf cqhttp;
     KookConf kook;
     List<String> triggerMessagePrefix;
+    Censor censor;
 
     @Data
     public static class CqhttpConf {
@@ -24,5 +25,17 @@ public class BotConfProps {
         Boolean enabled;
         String botToken;
         String verifyToken;
+    }
+
+    @Data
+    public static class Censor {
+        Boolean enabled;
+        Qiniu qiniu;
+
+        @Data
+        public static class Qiniu {
+            String accessToken;
+            String secretToken;
+        }
     }
 }

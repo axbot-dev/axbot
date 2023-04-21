@@ -7,6 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SendGroupMsgResp {
+public class SendGroupMsgData {
     Long messageId;
 }

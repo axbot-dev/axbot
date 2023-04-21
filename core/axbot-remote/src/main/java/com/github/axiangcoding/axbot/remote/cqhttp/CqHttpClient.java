@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.remote.cqhttp;
 
 import com.github.axiangcoding.axbot.remote.cqhttp.service.MessageService;
 import com.github.axiangcoding.axbot.remote.cqhttp.service.entity.CqhttpResponse;
-import com.github.axiangcoding.axbot.remote.cqhttp.service.entity.resp.SendGroupMsgResp;
+import com.github.axiangcoding.axbot.remote.cqhttp.service.entity.resp.SendGroupMsgData;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import io.reactivex.Single;
@@ -76,7 +76,7 @@ public class CqHttpClient {
         }
     }
 
-    public CqhttpResponse<SendGroupMsgResp> sendGroupMsg(Long groupId, String message, Boolean autoEscape) {
+    public CqhttpResponse<SendGroupMsgData> sendGroupMsg(Long groupId, String message, Boolean autoEscape) {
         return execute(messageService.sendGroupMsg(groupId, message, autoEscape));
     }
 }

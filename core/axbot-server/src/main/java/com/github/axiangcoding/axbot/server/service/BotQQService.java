@@ -72,13 +72,14 @@ public class BotQQService {
                 log.info("received trigger message from cqhttp. user: [{}], message content: [{}]",
                         userId, content);
 
-                userInputRecordService.saveRecordFromCqhttp(String.valueOf(userId), content, String.valueOf(groupId));
+                long inputId = userInputRecordService.saveRecordFromCqhttp(String.valueOf(userId), content, String.valueOf(groupId));
                 String command = StringUtils.join(Arrays.copyOfRange(contentSplit, 1, contentSplit.length), " ");
-                // TODO 更多校验
+
                 AxBotUserInputForCqhttp input = new AxBotUserInputForCqhttp();
                 input.setFromUserId(String.valueOf(userId));
                 input.setRequestCommand(command);
-
+                input.setInputId(inputId);
+                
                 input.setFromMsgId(String.valueOf(messageId));
                 input.setFromGroup(String.valueOf(groupId));
 

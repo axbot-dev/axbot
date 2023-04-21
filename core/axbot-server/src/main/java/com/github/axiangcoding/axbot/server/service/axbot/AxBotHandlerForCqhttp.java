@@ -15,6 +15,31 @@ public class AxBotHandlerForCqhttp implements IAxBotHandlerForCqhttp {
     }
 
     @Override
+    public String sensitiveInput(long left) {
+        return "我不会理会这个命令。这是一次警告。距离拉黑还差 %d 次".formatted(left);
+    }
+
+    @Override
+    public String reachedGuildLimit(int usage, int limit) {
+        return "本群已经达到了使用限制（%d/%d），第二天会重置".formatted(usage, limit);
+    }
+
+    @Override
+    public String reachedUserLimit(int usage, int limit) {
+        return "你已经达到了使用限制（%d/%d），第二天会重置".formatted(usage, limit);
+    }
+
+    @Override
+    public String userBanned(String reason) {
+        return "你已被拉黑，原因：%s".formatted(reason);
+    }
+
+    @Override
+    public String guildBanned(String reason) {
+        return "这个群已被拉黑，因为：%s".formatted(reason);
+    }
+
+    @Override
     public String getHelp() {
         return "很抱歉，我在Q上的支持有限，暂未实现";
     }

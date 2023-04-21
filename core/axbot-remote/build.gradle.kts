@@ -30,6 +30,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.10.1")
+    // https://mvnrepository.com/artifact/com.qiniu/qiniu-java-sdk
+    implementation("com.qiniu:qiniu-java-sdk:7.13.0")
 
 }
 

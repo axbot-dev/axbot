@@ -14,6 +14,7 @@ public abstract class AxBotUserInput {
     String fromMsgId;
     String requestCommand;
     LocalDateTime startTime;
+    Long inputId;
 
     public AxBotUserInput() {
         startTime = LocalDateTime.now();

@@ -34,6 +34,11 @@ logging:
     path: ./logs/
 
 bot:
+  censor:
+    enabled: true
+    qiniu:
+      access-token:
+      secret-token:
   trigger-message-prefix:
     - axbot
     - .axbot

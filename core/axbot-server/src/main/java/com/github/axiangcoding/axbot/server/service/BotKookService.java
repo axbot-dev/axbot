@@ -77,7 +77,7 @@ public class BotKookService {
             if (axBotService.isTriggerMessage(content)) {
                 log.info("received trigger message from kook. user: [{}], message content: [{}]",
                         authorId, content);
-                userInputRecordService.saveRecordFromKook(authorId, content, guildId, channelId);
+                long inputId = userInputRecordService.saveRecordFromKook(authorId, content, guildId, channelId);
 
                 String command = StringUtils.join(Arrays.copyOfRange(contentSplit, 1, contentSplit.length), " ");
 
@@ -90,6 +90,7 @@ public class BotKookService {
                 AxBotUserInputForKook input = new AxBotUserInputForKook();
                 input.setFromUserId(authorId);
                 input.setRequestCommand(command);
+                input.setInputId(inputId);
 
                 input.setFromMsgId(msgId);
                 input.setFromChannel(channelId);
