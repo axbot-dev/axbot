@@ -8,7 +8,7 @@ import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
  */
 public interface IAxBotHandler {
     /**
-     * 获取默认消息
+     * 默认消息
      *
      * @return 响应消息
      */
@@ -33,8 +33,8 @@ public interface IAxBotHandler {
     /**
      * 达到个人输入上限
      *
-     * @param usage
-     * @param limit
+     * @param usage 使用量
+     * @param limit 限制量
      * @return 响应消息
      */
     String reachedUserLimit(int usage, int limit);
@@ -43,7 +43,7 @@ public interface IAxBotHandler {
      * 用户被拉黑
      *
      * @param reason 原因
-     * @return
+     * @return 响应消息
      */
     String userBanned(String reason);
 
