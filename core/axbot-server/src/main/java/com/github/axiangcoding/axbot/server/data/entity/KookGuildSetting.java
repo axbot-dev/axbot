@@ -22,9 +22,17 @@ public class KookGuildSetting extends BasicEntity {
     @Embedded
     FunctionSetting functionSetting;
 
-    public KookGuildSetting() {
-        super();
-        this.functionSetting = new FunctionSetting();
+    public static KookGuildSetting defaultSetting(String guildId) {
+        KookGuildSetting setting = new KookGuildSetting();
+        setting.setGuildId(guildId);
+        setting.setBanned(false);
+        setting.setActive(true);
+        FunctionSetting fs = new FunctionSetting();
+        fs.setEnableBiliLiveReminder(false);
+        fs.setEnableWtNewsReminder(false);
+        fs.setEnabledWtProfileQuery(true);
+        setting.setFunctionSetting(fs);
+        return setting;
     }
 
     @Getter

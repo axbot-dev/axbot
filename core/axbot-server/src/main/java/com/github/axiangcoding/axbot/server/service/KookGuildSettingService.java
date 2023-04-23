@@ -40,10 +40,7 @@ public class KookGuildSettingService {
             kookGuildSettingRepository.save(opt.get());
             return;
         }
-        KookGuildSetting entity = new KookGuildSetting();
-        entity.setGuildId(guildId);
-        entity.setBanned(false);
-        entity.setActive(true);
+        KookGuildSetting entity = KookGuildSetting.defaultSetting(guildId);
         kookGuildSettingRepository.save(entity);
     }
 

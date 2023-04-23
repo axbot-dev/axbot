@@ -16,13 +16,7 @@ public class KookUserSettingService {
     KookUserSettingRepository kookUserSettingRepository;
 
     public KookUserSetting newSetting(String userId) {
-        KookUserSetting entity = new KookUserSetting();
-        entity.setUserId(userId);
-        entity.setBanned(false);
-        entity.getUsage().setInputToday(0);
-        entity.getUsage().setInputTotal(0L);
-        entity.getUsage().setQueryWtToday(0);
-        entity.getUsage().setQueryWtTotal(0L);
+        KookUserSetting entity = KookUserSetting.defaultSetting(userId);
         return kookUserSettingRepository.save(entity);
     }
 

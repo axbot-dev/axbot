@@ -24,9 +24,17 @@ public class KookUserSetting extends BasicEntity {
     @Embedded
     Usage usage;
 
-    public KookUserSetting() {
-        super();
-        this.usage = new Usage();
+    public static KookUserSetting defaultSetting(String userId) {
+        KookUserSetting setting = new KookUserSetting();
+        setting.setUserId(userId);
+        setting.setBanned(false);
+        Usage usage = new Usage();
+        usage.setInputTotal(0L);
+        usage.setQueryWtTotal(0L);
+        usage.setInputToday(0);
+        usage.setQueryWtToday(0);
+        setting.setUsage(usage);
+        return setting;
     }
 
     @Embeddable
