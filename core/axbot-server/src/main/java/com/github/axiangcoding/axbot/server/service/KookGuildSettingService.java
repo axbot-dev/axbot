@@ -24,6 +24,9 @@ public class KookGuildSettingService {
         return kookGuildSettingRepository.findByFunctionSettingEnableBiliLiveReminder(true);
     }
 
+    public List<KookGuildSetting> findByEnableNewsReminder() {
+        return kookGuildSettingRepository.findByFunctionSettingEnableWtNewsReminder(true);
+    }
 
     /**
      * 加入群组时操作
@@ -77,6 +80,28 @@ public class KookGuildSettingService {
             functionSetting.setEnableBiliLiveReminder(true);
             functionSetting.setBiliLiveChannelId(channelId);
             functionSetting.setBiliRoomId(roomId);
+            kookGuildSettingRepository.save(entity);
+        }
+    }
+
+    public void enableWtNewsRemind(String guildId, String channelId){
+        Optional<KookGuildSetting> opt = findBytGuildId(guildId);
+        if (opt.isPresent()) {
+            KookGuildSetting entity = opt.get();
+            KookGuildSetting.FunctionSetting functionSetting = entity.getFunctionSetting();
+            functionSetting.setEnableWtNewsReminder(true);
+            functionSetting.setWtNewsChannelId(channelId);
+            kookGuildSettingRepository.save(entity);
+        }
+    }
+
+    public void disableWtNewsRemind(String guildId){
+        Optional<KookGuildSetting> opt = findBytGuildId(guildId);
+        if (opt.isPresent()) {
+            KookGuildSetting entity = opt.get();
+            KookGuildSetting.FunctionSetting functionSetting = entity.getFunctionSetting();
+            functionSetting.setEnableWtNewsReminder(false);
+            functionSetting.setWtNewsChannelId(null);
             kookGuildSettingRepository.save(entity);
         }
     }

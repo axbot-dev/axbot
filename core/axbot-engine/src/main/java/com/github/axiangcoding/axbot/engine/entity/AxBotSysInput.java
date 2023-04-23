@@ -11,6 +11,10 @@ import java.util.Map;
 @ToString
 public class AxBotSysInput {
     AxBotSystemEvent event;
+    /**
+     * 类型转换太拉跨，更换为extraJson为佳
+     */
+    @Deprecated
     Map<String, Object> extraMap;
-
+    String extraJson;
 }

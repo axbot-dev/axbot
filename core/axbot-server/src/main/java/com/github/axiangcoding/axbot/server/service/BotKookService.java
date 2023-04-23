@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
 
+import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
 import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
@@ -19,6 +20,7 @@ import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -162,14 +164,14 @@ public class BotKookService {
     }
 
     public void checkBiliRoomStatus() {
-        List<KookGuildSetting> settings = kookGuildSettingService.findByEnabledBiliLiveReminder();
+        List<KookGuildSetting> guilds = kookGuildSettingService.findByEnabledBiliLiveReminder();
 
-        settings.forEach(setting -> {
-            String biliRoomId = setting.getFunctionSetting().getBiliRoomId();
+        guilds.forEach(guild -> {
+            String biliRoomId = guild.getFunctionSetting().getBiliRoomId();
             if (!StringUtils.isNumeric(biliRoomId)) {
                 return;
             }
-            String biliLiveChannelId = setting.getFunctionSetting().getBiliLiveChannelId();
+            String biliLiveChannelId = guild.getFunctionSetting().getBiliLiveChannelId();
             BiliResponse<RoomInfoData> liveRoomInfo = biliClient.getLiveRoomInfo(biliRoomId);
 
             String cacheKey = CacheKeyGenerator.getBiliRoomRemindCacheKey(biliLiveChannelId, biliRoomId);
@@ -190,11 +192,10 @@ public class BotKookService {
                         if (output == null) {
                             return;
                         }
-                        AxBotSysOutputForKook out = ((AxBotSysOutputForKook) output);
                         CreateMessageReq req = new CreateMessageReq();
                         req.setType(KookEvent.TYPE_CARD);
                         req.setTargetId(biliLiveChannelId);
-                        req.setContent(out.getContent());
+                        req.setContent(output.getContent());
                         kookClient.createMessage(req);
                     });
                 }
@@ -203,4 +204,28 @@ public class BotKookService {
         });
     }
 
+
+    public void sendLatestNews(NewParseResult item) {
+        String extraJson = JsonUtils.toJson(item);
+        List<KookGuildSetting> guilds = kookGuildSettingService.findByEnableNewsReminder();
+        guilds.forEach(guild -> {
+            String wtNewsChannelId = guild.getFunctionSetting().getWtNewsChannelId();
+            if (StringUtils.isEmpty(wtNewsChannelId)) {
+                return;
+            }
+            AxBotSysInputForKook input = new AxBotSysInputForKook();
+            input.setEvent(AxBotSystemEvent.SYSTEM_EVENT_WT_NEWS);
+            input.setExtraJson(extraJson);
+            axBotService.genResponseForSystemAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, output -> {
+                if(output ==null){
+                    return;
+                }
+                CreateMessageReq req = new CreateMessageReq();
+                req.setType(KookEvent.TYPE_CARD);
+                req.setTargetId(wtNewsChannelId);
+                req.setContent(output.getContent());
+                kookClient.createMessage(req);
+            });
+        });
+    }
 }

@@ -1,5 +1,6 @@
 package com.github.axiangcoding.axbot.server.service;
 
+import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
 import com.github.axiangcoding.axbot.engine.AxbotCommand;
 import com.github.axiangcoding.axbot.engine.SystemInputCallback;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
@@ -17,6 +18,7 @@ import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForCqhttp;
 import com.github.axiangcoding.axbot.server.service.axbot.AxBotHandlerForKook;
+import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -147,6 +149,16 @@ public class AxBotService {
                             (String) extraMap.get("title"),
                             (String) extraMap.get("areaName"),
                             (String) extraMap.get("description"));
+                    out.setContent(content);
+                }
+                case SYSTEM_EVENT_WT_NEWS -> {
+                    log.info("send wt news");
+                    NewParseResult parseResult = JsonUtils.fromJson(input.getExtraJson(), NewParseResult.class);
+                    String content = axBotHandlerForKook.sendWtNew(parseResult.getUrl(),
+                            parseResult.getTitle(),
+                            parseResult.getComment(),
+                            parseResult.getPosterUrl(),
+                            parseResult.getDateStr());
                     out.setContent(content);
                 }
                 default -> log.warn("not support yet");

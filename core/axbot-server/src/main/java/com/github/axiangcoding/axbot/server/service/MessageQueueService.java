@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.crawler.wt.WtCrawlerClient;
-import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
+import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
 import com.github.axiangcoding.axbot.server.service.entity.CrawlerResultMessage;
@@ -40,7 +40,7 @@ public class MessageQueueService {
                 log.warn("no such mission!");
                 return;
             }
-            ParserResult pr = wtCrawlerClient.getProfileFromHtml(msg.getPageSource());
+            ProfileParseResult pr = wtCrawlerClient.getProfileFromHtml(msg.getPageSource());
             // 找到用户资料
             if (pr.getFound()) {
                 WtGamerProfile wtGamerProfile = WtGamerProfile.from(pr.getProfile());

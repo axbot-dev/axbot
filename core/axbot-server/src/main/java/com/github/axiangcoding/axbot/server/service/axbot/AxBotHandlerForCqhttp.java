@@ -88,4 +88,9 @@ public class AxBotHandlerForCqhttp implements IAxBotHandlerForCqhttp {
     public String biliLiveRemind(Long roomId, String title, String areaName, String description) {
         return null;
     }
+
+    @Override
+    public String sendWtNew(String url, String title, String comment, String posterUrl, String dateStr) {
+        return null;
+    }
 }

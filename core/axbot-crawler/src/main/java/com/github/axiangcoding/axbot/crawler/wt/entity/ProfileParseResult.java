@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ParserResult {
+public class ProfileParseResult {
     Boolean found;
     GamerProfile profile;
 

@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.crawler.wt.parser;
 
-import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
+import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,19 +15,19 @@ import java.util.List;
 import java.util.Map;
 
 public class WtGamerProfileParser {
-    public static ParserResult parseHtml(String html) {
+    public static ProfileParseResult parseHtml(String html) {
 
         Document doc = Jsoup.parse(html);
         return parse(doc);
     }
 
-    public static ParserResult parseUrl(String url) throws IOException {
+    public static ProfileParseResult parseUrl(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
         return parse(doc);
     }
 
-    private static ParserResult parse(Document document) {
-        ParserResult pr = new ParserResult();
+    private static ProfileParseResult parse(Document document) {
+        ProfileParseResult pr = new ProfileParseResult();
         // 未找到该用户
         Elements e1 = document.select("div[class=user__unavailable]");
         if (e1.size() != 0) {
@@ -36,7 +36,7 @@ public class WtGamerProfileParser {
         }
         pr.setFound(true);
 
-        ParserResult.GamerProfile gp = new ParserResult.GamerProfile();
+        ProfileParseResult.GamerProfile gp = new ProfileParseResult.GamerProfile();
         gp.setNickname(document.select("li[class=user-profile__data-nick]").text());
         gp.setClan(document.select("a[class=user-profile__data-link]").text());
 
@@ -125,12 +125,12 @@ public class WtGamerProfileParser {
         return i * 1.0 / 100;
     }
 
-    private static ParserResult.GamerProfile.UserStat extractUserStat(List<String> userStatKeys, List<String> values) {
+    private static ProfileParseResult.GamerProfile.UserStat extractUserStat(List<String> userStatKeys, List<String> values) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < userStatKeys.size(); i++) {
             map.put(userStatKeys.get(i), values.get(i));
         }
-        ParserResult.GamerProfile.UserStat userStat = new ParserResult.GamerProfile.UserStat();
+        ProfileParseResult.GamerProfile.UserStat userStat = new ProfileParseResult.GamerProfile.UserStat();
         userStat.setTotalMission(parseCommonNumber(map.get("任务总数")));
         userStat.setWinRate(parseWinRate(map.get("作战胜率")));
         userStat.setGroundDestroyCount(parseCommonNumber(map.get("地面单位摧毁数")));
@@ -143,12 +143,12 @@ public class WtGamerProfileParser {
         return userStat;
     }
 
-    private static ParserResult.GamerProfile.AviationRate extractAviationUserRate(List<String> userRateKeys, Elements elements) {
+    private static ProfileParseResult.GamerProfile.AviationRate extractAviationUserRate(List<String> userRateKeys, Elements elements) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < userRateKeys.size(); i++) {
             map.put(userRateKeys.get(i), elements.get(i).text());
         }
-        ParserResult.GamerProfile.AviationRate userRate = new ParserResult.GamerProfile.AviationRate();
+        ProfileParseResult.GamerProfile.AviationRate userRate = new ProfileParseResult.GamerProfile.AviationRate();
         userRate.setGameCount(parseCommonNumber(map.get("参战次数(空战)")));
         userRate.setFighterGameCount(parseCommonNumber(map.get("参战次数(战斗机)")));
         userRate.setBomberGameCount(parseCommonNumber(map.get("参战次数(轰炸机)")));
@@ -164,12 +164,12 @@ public class WtGamerProfileParser {
         return userRate;
     }
 
-    private static ParserResult.GamerProfile.GroundRate extractGroundUserRate(List<String> userRateKeys, Elements elements) {
+    private static ProfileParseResult.GamerProfile.GroundRate extractGroundUserRate(List<String> userRateKeys, Elements elements) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < userRateKeys.size(); i++) {
             map.put(userRateKeys.get(i), elements.get(i).text());
         }
-        ParserResult.GamerProfile.GroundRate userRate = new ParserResult.GamerProfile.GroundRate();
+        ProfileParseResult.GamerProfile.GroundRate userRate = new ProfileParseResult.GamerProfile.GroundRate();
         userRate.setGameCount(parseCommonNumber(map.get("参战次数(陆战)")));
         userRate.setGroundVehicleGameCount(parseCommonNumber(map.get("参战次数(地面载具)")));
         userRate.setTdGameCount(parseCommonNumber(map.get("参战次数(坦克歼击车)")));
@@ -187,12 +187,12 @@ public class WtGamerProfileParser {
         return userRate;
     }
 
-    private static ParserResult.GamerProfile.FleetRate extractFleetUserRate(List<String> userRateKeys, Elements elements) {
+    private static ProfileParseResult.GamerProfile.FleetRate extractFleetUserRate(List<String> userRateKeys, Elements elements) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < userRateKeys.size(); i++) {
             map.put(userRateKeys.get(i), elements.get(i).text());
         }
-        ParserResult.GamerProfile.FleetRate fleetRate = new ParserResult.GamerProfile.FleetRate();
+        ProfileParseResult.GamerProfile.FleetRate fleetRate = new ProfileParseResult.GamerProfile.FleetRate();
         fleetRate.setGameCount(parseCommonNumber(map.get("参战次数(海军)")));
         fleetRate.setFleetGameCount(parseCommonNumber(map.get("参战次数(舰船)")));
         fleetRate.setTorpedoBoatGameCount(parseCommonNumber(map.get("参战次数(鱼雷艇)")));

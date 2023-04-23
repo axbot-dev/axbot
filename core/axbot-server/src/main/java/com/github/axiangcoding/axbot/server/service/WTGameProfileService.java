@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.crawler.wt.WtCrawlerClient;
-import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
+import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.server.data.entity.GlobalSetting;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
@@ -117,10 +117,10 @@ public class WTGameProfileService {
         missionService.setRunning(missionId, 10.0);
         Optional<GlobalSetting> optKey = globalSettingRepository.findByKey(GlobalSetting.KEY_WT_PROFILE_CRAWLER_MODE);
         // 如果配置项为空或者为direct模式，直接获取数据即可
-        if (optKey.isEmpty() || optKey.get().getValue().equals(WtCrawlerClient.MODE_DIRECT)) {
+        if (optKey.isEmpty() || optKey.get().getValue().equals(WtCrawlerClient.MODE.DIRECT.getName())) {
             try {
                 missionService.setRunning(missionId, 20.0);
-                ParserResult pr = wtCrawlerClient.getProfileFromUrl(nickname);
+                ProfileParseResult pr = wtCrawlerClient.getProfileFromUrl(nickname);
                 missionService.setRunning(missionId, 50.0);
                 // 找到用户资料
                 if (pr.getFound()) {
@@ -136,7 +136,7 @@ public class WTGameProfileService {
             }
         }
         // 如果是selenium模式，则提交任务到队列中
-        else if (optKey.get().getValue().equals(WtCrawlerClient.MODE_SELENIUM)) {
+        else if (optKey.get().getValue().equals(WtCrawlerClient.MODE.SELENIUM.getName())) {
             CrawlerMissionMessage msg = new CrawlerMissionMessage();
             msg.setMissionId(missionId);
             msg.setUrl(WtCrawlerClient.formatGetProfileUrl(nickname));

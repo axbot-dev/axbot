@@ -98,5 +98,6 @@ public interface IAxBotHandler {
 
     String biliLiveRemind(Long roomId, String title, String areaName, String description);
 
+    String sendWtNew(String url, String title, String comment, String posterUrl, String dateStr);
 
 }

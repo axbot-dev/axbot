@@ -10,7 +10,7 @@ import com.github.axiangcoding.axbot.remote.kook.service.entity.KookRole;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookUser;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.resp.GuildRoleListData;
-import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
+import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
@@ -207,7 +207,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                             break;
                         }
                         if (Mission.STATUS_SUCCESS.equals(status)) {
-                            ParserResult result = JsonUtils.fromJson(optM.get().getResult(), ParserResult.class);
+                            ProfileParseResult result = JsonUtils.fromJson(optM.get().getResult(), ProfileParseResult.class);
                             if (!result.getFound()) {
                                 log.warn("queue at {} times, mission success, but not found", i);
                                 req.setContent(WTFunction.profileNotFoundMsg(nickname));
@@ -287,6 +287,24 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     }
 
     @Override
+    public String sendWtNew(String url, String title, String comment, String posterUrl, String dateStr) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("AXBot带来战雷的最新新闻", "success");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+
+        modules.add(KookCardMessage.newHeader("%s".formatted(title)));
+        modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown(dateStr))));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newPlainText(comment)));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(KookMDMessage.mention("all"))));
+        modules.add(KookCardMessage.newDivider());
+        modules.add(KookCardMessage.newSectionWithLink(
+                KookCardMessage.newKMarkdown("点击按钮跳转到官网"),
+                KookCardMessage.newButton("info", "查看原文", "link", url)));
+
+
+        return JsonUtils.toJson(messages);
+    }
+
+    @Override
     public String manageGuild(String userId, String guildId, String channelId, String command) {
         KookResponse<KookUser> userView = kookClient.getUserView(userId, guildId);
         List<Long> userRoles = userView.getData().getRoles();
@@ -319,12 +337,12 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
 
         // TODO 解析命令，管理社群配置
         String manageCmd = cmdList[1];
+        HashMap<String, Object> items = new HashMap<>();
         switch (manageCmd) {
             case "帮助" -> {
                 return ManageFunction.getHelp(nickname, cmdPrefix);
             }
             case "B站直播通知" -> {
-                HashMap<String, Object> items = new HashMap<>();
                 if ("关".equals(cmdList[2])) {
                     kookGuildSettingService.disableBiliRoomRemind(guildId);
                     return ManageFunction.configSuccess(nickname, items);
@@ -339,7 +357,15 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                 }
             }
             case "战雷新闻播报" -> {
-                // TODO
+                if ("关".equals(cmdList[2])) {
+                    kookGuildSettingService.disableWtNewsRemind(guildId);
+                    return ManageFunction.configSuccess(nickname, items);
+                } else if ("开".equals(cmdList[2])) {
+                    kookGuildSettingService.enableWtNewsRemind(guildId, channelId);
+                    return ManageFunction.configSuccess(nickname, items);
+                } else {
+                    return ManageFunction.configError(nickname);
+                }
             }
             case "战雷战绩查询" -> {
                 // TODO

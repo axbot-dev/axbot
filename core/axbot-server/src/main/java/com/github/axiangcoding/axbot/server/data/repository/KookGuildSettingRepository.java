@@ -17,5 +17,7 @@ public interface KookGuildSettingRepository extends JpaRepository<KookGuildSetti
     @Query("update KookGuildSetting k set k.active = ?1 where k.guildId = ?2")
     int updateActiveByGuildId(Boolean active, String guildId);
 
-    List<KookGuildSetting> findByFunctionSettingEnableBiliLiveReminder(Boolean functionSettingEnableBiliLiveReminder);
+    List<KookGuildSetting> findByFunctionSettingEnableBiliLiveReminder(Boolean enableBiliLiveReminder);
+
+    List<KookGuildSetting> findByFunctionSettingEnableWtNewsReminder(Boolean wtNewsReminder);
 }

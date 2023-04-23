@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 
-import com.github.axiangcoding.axbot.crawler.wt.entity.ParserResult;
+import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -140,7 +140,7 @@ public class WtGamerProfile extends BasicEntity {
         Integer fleetDestroyCount;
     }
 
-    public static WtGamerProfile from(ParserResult.GamerProfile gp) {
+    public static WtGamerProfile from(ProfileParseResult.GamerProfile gp) {
         return JsonUtils.fromJson(JsonUtils.toJson(gp), WtGamerProfile.class);
     }
 }
