@@ -62,6 +62,9 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
    
    CQHTTP_SECRET=[cqhttp的反向HTTP请求的密钥]
    CQHTTP_BASE_URL=http://cqhttp:5700/
+   
+   QINIU_ACCESS_TOKEN=[七牛云AK]
+   QINIU_SECRET_TOKEN=[七牛云SK]
    ```
    
 6. 执行服务部署脚本

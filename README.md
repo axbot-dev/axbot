@@ -14,8 +14,9 @@ AXBot目前支持：
 
 1. 接入Kook机器人或者Cqhttp
 2. 每日电子算命
-3. 战争雷霆战绩查询
-4. B站直播提醒
+3. 《战争雷霆》战绩查询
+4. 《战争雷霆》最新新闻提醒
+5. B站UP主开播提醒
 
 AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](https://github.com/axiangcoding/antonstar-bot)，asbot的功能将陆续迁移到AXBot中。
 
@@ -28,12 +29,8 @@ AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](ht
 
 你可以通过以下方式将官方维护的AXBot机器人邀请到您的群组或者服务器中：
 
-- Kook: [内测阶段，暂不开放]
+- Kook: [点击邀请Kook机器人](https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=923648&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot)，需要邀请人的Kook账号具备邀请服务器的管理员身份
 - QQ: [内测阶段，暂不开放]
-
-除了官方维护的机器人外，还有一些社区维护的机器人：
-
-- [实际上还没有]
 
 ## 部署指南
 
