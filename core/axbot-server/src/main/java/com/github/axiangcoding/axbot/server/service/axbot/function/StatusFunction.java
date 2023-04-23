@@ -18,7 +18,14 @@ public class StatusFunction {
         String template = "%s:\n%s";
 
         Map<String, Object> map = new LinkedHashMap<>();
+        KookGuildSetting.FunctionSetting functionSetting = setting.getFunctionSetting();
         map.put("服务器ID", setting.getGuildId());
+        map.put("服务器状态", setting.getBanned() ? "已拉黑" : "试用");
+        map.put("战雷新闻播报状态", functionSetting.getEnableWtNewsReminder() ? "开启" : "关闭");
+        map.put("战雷新闻播报频道", functionSetting.getWtNewsChannelId());
+        map.put("B站直播通知状态", functionSetting.getEnableBiliLiveReminder() ? "开启" : "关闭");
+        map.put("B站直播间", functionSetting.getBiliRoomId());
+        map.put("B站直播通知频道", functionSetting.getBiliLiveChannelId());
         // map.put("禁用状态", setting.getBanned());
 
         map.forEach((k, v) -> {
