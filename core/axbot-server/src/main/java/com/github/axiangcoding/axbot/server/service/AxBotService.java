@@ -212,7 +212,7 @@ public class AxBotService {
         out.setReplayToMsg(in.getFromMsgId());
         out.setToChannel(in.getFromChannel());
 
-        String[] cList = StringUtils.split(command);
+        String[] cList = StringUtils.split(command, null, 3);
 
         Optional<KookUserSetting> optKus = kookUserSettingService.findByUserId(userId);
         if (optKus.isEmpty()) {
