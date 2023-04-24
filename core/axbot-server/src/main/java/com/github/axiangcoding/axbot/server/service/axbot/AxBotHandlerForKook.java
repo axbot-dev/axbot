@@ -294,7 +294,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         modules.add(KookCardMessage.newHeader("%s".formatted(title)));
         modules.add(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown(dateStr))));
         modules.add(KookCardMessage.newSection(KookCardMessage.newPlainText(comment)));
-        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(KookMDMessage.mention("all"))));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(KookMDMessage.mention("here"))));
         modules.add(KookCardMessage.newDivider());
         modules.add(KookCardMessage.newSectionWithLink(
                 KookCardMessage.newKMarkdown("点击按钮跳转到官网"),
