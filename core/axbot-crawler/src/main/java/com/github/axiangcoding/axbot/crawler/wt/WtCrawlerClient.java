@@ -31,7 +31,7 @@ public class WtCrawlerClient {
     private static final String GAMER_PROFILE_URL_TEMPLATE = "https://warthunder.com/zh/community/userinfo/?nick=%s";
     private static final String NEWS_FIRST_PAGE_URL_TEMPLATE = "https://warthunder.com/%s/news/";
 
-    public static final String EXIST_XPATH_CONDITION = "//div[@class=\"content__title\"]";
+    public static final String EXIST_PROFILE_XPATH_CONDITION = "//div[@class=\"content__title\"]";
 
     public static String formatGetProfileUrl(String nickname) {
         return GAMER_PROFILE_URL_TEMPLATE.formatted(nickname);

@@ -140,7 +140,7 @@ public class WTGameProfileService {
             CrawlerMissionMessage msg = new CrawlerMissionMessage();
             msg.setMissionId(missionId);
             msg.setUrl(WtCrawlerClient.formatGetProfileUrl(nickname));
-            msg.setXpathCondition(WtCrawlerClient.EXIST_XPATH_CONDITION);
+            msg.setXpathCondition(WtCrawlerClient.EXIST_PROFILE_XPATH_CONDITION);
             String outQueueName = outQueue.getName();
             rabbitTemplate.convertAndSend(outQueueName, JsonUtils.toJson(msg));
             missionService.setRunning(missionId, 50.0);
