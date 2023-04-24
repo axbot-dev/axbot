@@ -13,7 +13,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/adapter-rxjava2
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.26")
