@@ -50,7 +50,7 @@ AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](ht
 
 ## 开源协议
 
-本仓库遵循 [MIT license](LICENSE) 协议。
+本仓库遵循 [GPL 3.0](LICENSE) 协议。
 
 ## 赞助
 
