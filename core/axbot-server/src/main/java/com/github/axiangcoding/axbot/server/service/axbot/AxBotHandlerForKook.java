@@ -308,26 +308,29 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     public String manageGuild(String userId, String guildId, String channelId, String command) {
         KookResponse<KookUser> userView = kookClient.getUserView(userId, guildId);
         List<Long> userRoles = userView.getData().getRoles();
+        String nickname = userView.getData().getNickname();
+        try {
+            KookResponse<GuildRoleListData> guildRoleList = kookClient.getGuildRoleList(guildId, null, null);
+            List<KookRole> roles = guildRoleList.getData().getItems();
 
-        KookResponse<GuildRoleListData> guildRoleList = kookClient.getGuildRoleList(guildId, null, null);
-        List<KookRole> roles = guildRoleList.getData().getItems();
-
-        boolean isAdmin = false;
-        // 判断该用户的角色是否具备管理员权限
-        for (KookRole role : roles) {
-            if (userRoles.contains(role.getRoleId())) {
-                if (KookPermission.hasPermission(role.getPermissions(), KookPermission.ADMIN)) {
-                    isAdmin = true;
-                    break;
+            boolean isAdmin = false;
+            // 判断该用户的角色是否具备管理员权限
+            for (KookRole role : roles) {
+                if (userRoles.contains(role.getRoleId())) {
+                    if (KookPermission.hasPermission(role.getPermissions(), KookPermission.ADMIN)) {
+                        isAdmin = true;
+                        break;
+                    }
                 }
             }
+            if (!isAdmin) {
+                log.info("user [{}] has no permission to manage guild [{}]", userId, guildId);
+                return ManageFunction.noPermission(nickname);
+            }
+        } catch (RuntimeException e) {
+            return ManageFunction.botHaveNoPermission(nickname);
         }
-        String nickname = userView.getData().getNickname();
 
-        if (!isAdmin) {
-            log.info("user [{}] has no permission to manage guild [{}]", userId, guildId);
-            return ManageFunction.noPermission(nickname);
-        }
 
         String[] cmdList = StringUtils.split(command);
         String cmdPrefix = botConfProps.getTriggerMessagePrefix().get(0);

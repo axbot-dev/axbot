@@ -25,6 +25,15 @@ public class ManageFunction {
         return JsonUtils.toJson(messages);
     }
 
+    public static String botHaveNoPermission(String nickname) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("您好，%s".formatted(nickname), "danger");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+        modules.add(KookCardMessage.newHeader("配置失败！"));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("AXBot可能未具备具有`管理角色权限`权限的角色身份，请赋予后重试")));
+        modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果问题一直存在请通知开发者")));
+        return JsonUtils.toJson(messages);
+    }
+
     public static String getHelp(String nickname, String cmdPrefix) {
         List<KookCardMessage> messages = KookCardMessage.defaultMsg("您好，%s".formatted(nickname), "info");
         List<KookCardMessage> modules = messages.get(0).getModules();
