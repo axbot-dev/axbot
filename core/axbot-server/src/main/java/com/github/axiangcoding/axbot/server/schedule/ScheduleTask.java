@@ -10,6 +10,8 @@ import com.github.axiangcoding.axbot.server.service.AxBotService;
 import com.github.axiangcoding.axbot.server.service.BotKookService;
 import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
 import jakarta.annotation.Resource;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,6 +25,16 @@ import java.util.List;
 @Slf4j
 @EnableScheduling
 public class ScheduleTask {
+
+    @AllArgsConstructor
+    @Getter
+    public enum LOCK {
+        CHECK_BILI_ROOM(CacheKeyGenerator.getCronJobLockKey("checkBiliRoom")),
+        RESET_USAGE(CacheKeyGenerator.getCronJobLockKey("resetUsage")),
+        LATEST_NEW(CacheKeyGenerator.getCronJobLockKey("latestWTNews"))
+        ;
+        private final String name;
+    }
 
     @Resource
     BotKookService botKookService;
@@ -42,9 +54,9 @@ public class ScheduleTask {
     @Resource
     WtNewsRepository wtNewsRepository;
 
-    private static final String LOCK_CHECK_BILI_ROOM_KEY = CacheKeyGenerator.getCronJobLockKey("checkBiliRoom");
-    private static final String LOCK_RESET_USAGE = CacheKeyGenerator.getCronJobLockKey("resetUsage");
-    private static final String LOCK_LATEST_NEW = CacheKeyGenerator.getCronJobLockKey("latestWTNews");
+    public void resetLock(LOCK lock){
+        stringRedisTemplate.delete(lock.getName());
+    }
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void checkBiliRoom() {
@@ -55,7 +67,7 @@ public class ScheduleTask {
         boolean lock = false;
         try {
             // 尝试获取锁
-            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK_CHECK_BILI_ROOM_KEY, "locked"));
+            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK.CHECK_BILI_ROOM.getName(), "locked"));
             if (lock) {
                 log.info("get lock, start regularly checking the status of bili streaming");
                 botKookService.checkBiliRoomStatus();
@@ -66,7 +78,7 @@ public class ScheduleTask {
         } finally {
             // 释放锁
             if (lock) {
-                stringRedisTemplate.delete(LOCK_CHECK_BILI_ROOM_KEY);
+                stringRedisTemplate.delete(LOCK.CHECK_BILI_ROOM.getName());
             }
         }
     }
@@ -76,7 +88,7 @@ public class ScheduleTask {
         boolean lock = false;
         try {
             // 尝试获取锁
-            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK_LATEST_NEW, "locked"));
+            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK.LATEST_NEW.getName(), "locked"));
             if (lock) {
                 log.info("get lock, start regularly checking the news of warthunder");
                 List<NewParseResult> zhNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.ZH);
@@ -108,7 +120,7 @@ public class ScheduleTask {
         } finally {
             // 释放锁
             if (lock) {
-                stringRedisTemplate.delete(LOCK_LATEST_NEW);
+                stringRedisTemplate.delete(LOCK.LATEST_NEW.getName());
             }
         }
     }
@@ -118,7 +130,7 @@ public class ScheduleTask {
         boolean lock = false;
         try {
             // 尝试获取锁
-            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK_RESET_USAGE, "locked"));
+            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK.RESET_USAGE.getName(), "locked"));
             if (lock) {
                 log.info("get lock, start regularly reset usage");
                 kookUserSettingService.resetTodayUsage();
@@ -129,7 +141,7 @@ public class ScheduleTask {
         } finally {
             // 释放锁
             if (lock) {
-                stringRedisTemplate.delete(LOCK_CHECK_BILI_ROOM_KEY);
+                stringRedisTemplate.delete(LOCK.RESET_USAGE.getName());
             }
         }
     }
