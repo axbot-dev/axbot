@@ -47,7 +47,7 @@ public class GameWTController {
         return CommonResult.success("missionId", mission.getMissionId());
     }
 
-    @RequireApiKey
+    @RequireApiKey(admin = true)
     @PostMapping("gamer/profile/update/lock/reset")
     public CommonResult resetUpdateLock(@Valid @ParameterObject GamerProfileReq obj) {
         wtGameProfileService.deleteRefreshFlag(obj.getNickname());

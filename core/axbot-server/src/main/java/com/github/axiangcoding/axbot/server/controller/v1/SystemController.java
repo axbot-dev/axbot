@@ -30,7 +30,7 @@ public class SystemController {
         return CommonResult.success();
     }
 
-    @RequireApiKey
+    @RequireApiKey(admin = true)
     @PostMapping("task/lock/reset")
     public CommonResult resetLock(@Valid @ParameterObject ResetLockReq req) {
         scheduleTask.resetLock(req.getLock());

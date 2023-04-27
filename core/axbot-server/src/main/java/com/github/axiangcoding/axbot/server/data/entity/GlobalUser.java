@@ -20,5 +20,5 @@ public class GlobalUser extends BasicEntity {
     String username;
     String password;
     LocalDateTime lastLoginTime;
-
+    Boolean isAdmin;
 }

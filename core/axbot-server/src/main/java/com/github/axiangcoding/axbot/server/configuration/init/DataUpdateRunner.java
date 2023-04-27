@@ -56,6 +56,7 @@ public class DataUpdateRunner implements ApplicationRunner {
 
             admin.setUsername(username);
             admin.setPassword(new BCryptPasswordEncoder().encode(password));
+            admin.setIsAdmin(true);
             globalUserRepository.save(admin);
             log.warn("set Default admin account, username: [{}], password: [{}]. " +
                             "you should always update admin password for security reason",

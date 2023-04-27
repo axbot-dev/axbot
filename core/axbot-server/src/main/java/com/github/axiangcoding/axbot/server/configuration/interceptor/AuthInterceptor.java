@@ -4,6 +4,7 @@ import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.configuration.annot.RequireLogin;
 import com.github.axiangcoding.axbot.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
+import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
 import com.github.axiangcoding.axbot.server.service.ApiKeyService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Slf4j
 @Configuration
@@ -64,6 +67,18 @@ public class AuthInterceptor implements HandlerInterceptor {
         String key = request.getHeader("api-key");
         if (StringUtils.isBlank(key) || !apiKeyService.isApiKeyValid(key)) {
             throw new BusinessException(CommonError.API_KEY_INVALID, "api-key not exist");
+        }
+
+        if (annotation.admin()) {
+            Optional<GlobalUser> opt = apiKeyService.findUserByKey(key);
+            if (opt.isEmpty()) {
+                return false;
+            } else {
+                GlobalUser user = opt.get();
+                if (!Boolean.TRUE.equals(user.getIsAdmin())) {
+                    throw new BusinessException(CommonError.NOT_PERMIT, "api-key owner is not admin");
+                }
+            }
         }
         return true;
     }

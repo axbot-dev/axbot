@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.ApiKey;
+import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
 import com.github.axiangcoding.axbot.server.data.repository.ApiKeyRepository;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,9 @@ import java.util.UUID;
 public class ApiKeyService {
     @Resource
     ApiKeyRepository apiKeyRepository;
+
+    @Resource
+    GlobalUserService globalUserService;
 
     public String getApiKeyFromRequest(HttpServletRequest request) {
         return request.getHeader("api-key");
@@ -30,6 +34,19 @@ public class ApiKeyService {
         }
         LocalDateTime expireTime = apiKey.getExpireTime();
         return expireTime.isAfter(LocalDateTime.now());
+    }
+
+
+    public Optional<ApiKey> findByKey(String key) {
+        return apiKeyRepository.findByKey(key);
+    }
+
+    public Optional<GlobalUser> findUserByKey(String key){
+        Optional<ApiKey> opt = findByKey(key);
+        if(opt.isEmpty()){
+            return Optional.empty();
+        }
+        return globalUserService.findByUserId(opt.get().getCreator().toString());
     }
 
     public boolean deleteByKey(String key) {

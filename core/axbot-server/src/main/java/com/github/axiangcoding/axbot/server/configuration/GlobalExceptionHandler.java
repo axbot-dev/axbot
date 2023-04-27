@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public CommonResult exceptionHandler(BusinessException e) {
         log.warn(e.getMessage(), e);
-        return CommonResult.error(e.getCommonError());
+        return CommonResult.error(e.getCommonError(), e.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
