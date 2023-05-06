@@ -31,8 +31,7 @@ public class ScheduleTask {
     public enum LOCK {
         CHECK_BILI_ROOM(CacheKeyGenerator.getCronJobLockKey("checkBiliRoom")),
         RESET_USAGE(CacheKeyGenerator.getCronJobLockKey("resetUsage")),
-        LATEST_NEW(CacheKeyGenerator.getCronJobLockKey("latestWTNews"))
-        ;
+        LATEST_NEW(CacheKeyGenerator.getCronJobLockKey("latestWTNews"));
         private final String name;
     }
 
@@ -54,7 +53,7 @@ public class ScheduleTask {
     @Resource
     WtNewsRepository wtNewsRepository;
 
-    public void resetLock(LOCK lock){
+    public void resetLock(LOCK lock) {
         stringRedisTemplate.delete(lock.getName());
     }
 
@@ -63,87 +62,60 @@ public class ScheduleTask {
         if (!axBotService.isPlatformEnabled(AxBotSupportPlatform.PLATFORM_KOOK)) {
             return;
         }
-
-        boolean lock = false;
-        try {
-            // 尝试获取锁
-            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK.CHECK_BILI_ROOM.getName(), "locked"));
-            if (lock) {
-                log.info("get lock, start regularly checking the status of bili streaming");
+        RedisLockRunner redisLockRunner = new RedisLockRunner(stringRedisTemplate) {
+            @Override
+            public void run() {
                 botKookService.checkBiliRoomStatus();
-            } else {
-                // 获取锁失败，放弃任务执行
-                log.warn("failed to get lock, abort checking the status of bili streaming");
             }
-        } finally {
-            // 释放锁
-            if (lock) {
-                stringRedisTemplate.delete(LOCK.CHECK_BILI_ROOM.getName());
-            }
-        }
+        };
+        redisLockRunner.execute(LOCK.CHECK_BILI_ROOM);
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/2 * * * ?")
     public void getWtLatestNews() {
-        boolean lock = false;
-        try {
-            // 尝试获取锁
-            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK.LATEST_NEW.getName(), "locked"));
-            if (lock) {
-                log.info("get lock, start regularly checking the news of warthunder");
-                List<NewParseResult> zhNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.ZH);
-                List<NewParseResult> enNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.EN);
-                zhNews.addAll(enNews);
+        RedisLockRunner redisLockRunner = new RedisLockRunner(stringRedisTemplate) {
+            @Override
+            public void run() {
+                try {
+                    List<NewParseResult> zhNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.ZH);
+                    List<NewParseResult> enNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.EN);
+                    zhNews.addAll(enNews);
 
-                List<NewParseResult> notExistNews = zhNews.stream().filter((item) -> {
-                    String url = item.getUrl();
-                    boolean exists = wtNewsRepository.existsByUrl(url);
-                    if (!exists) {
-                        WtNews entity = new WtNews();
-                        entity.setUrl(item.getUrl());
-                        entity.setTitle(item.getTitle());
-                        entity.setPosterUrl(item.getPosterUrl());
-                        entity.setComment(item.getComment());
-                        entity.setDateStr(item.getDateStr());
-                        wtNewsRepository.save(entity);
+                    List<NewParseResult> notExistNews = zhNews.stream().filter((item) -> {
+                        String url = item.getUrl();
+                        boolean exists = wtNewsRepository.existsByUrl(url);
+                        if (!exists) {
+                            WtNews entity = new WtNews();
+                            entity.setUrl(item.getUrl());
+                            entity.setTitle(item.getTitle());
+                            entity.setPosterUrl(item.getPosterUrl());
+                            entity.setComment(item.getComment());
+                            entity.setDateStr(item.getDateStr());
+                            wtNewsRepository.save(entity);
+                        }
+                        return !exists;
+                    }).toList();
+                    if (axBotService.isPlatformEnabled(AxBotSupportPlatform.PLATFORM_KOOK)) {
+                        notExistNews.forEach(item -> botKookService.sendLatestNews(item));
                     }
-                    return !exists;
-                }).toList();
-                if (axBotService.isPlatformEnabled(AxBotSupportPlatform.PLATFORM_KOOK)) {
-                    notExistNews.forEach(item -> botKookService.sendLatestNews(item));
+                } catch (IOException e) {
+                    log.warn("get warthunder news failed", e);
                 }
-            } else {
-                log.warn("failed to get lock, abort checking the news of warthunder");
+
             }
-        } catch (IOException e) {
-            log.warn("get warthunder latest news failed", e);
-        } finally {
-            // 释放锁
-            if (lock) {
-                stringRedisTemplate.delete(LOCK.LATEST_NEW.getName());
-            }
-        }
+        };
+        redisLockRunner.execute(LOCK.LATEST_NEW);
     }
 
     @Scheduled(cron = "@daily")
     public void cleanUsage() {
-        boolean lock = false;
-        try {
-            // 尝试获取锁
-            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(LOCK.RESET_USAGE.getName(), "locked"));
-            if (lock) {
-                log.info("get lock, start regularly reset usage");
+        RedisLockRunner redisLockRunner = new RedisLockRunner(stringRedisTemplate) {
+            @Override
+            public void run() {
                 kookUserSettingService.resetTodayUsage();
-            } else {
-                // 获取锁失败，放弃任务执行
-                log.warn("failed to get lock, abort reset usage");
             }
-        } finally {
-            // 释放锁
-            if (lock) {
-                stringRedisTemplate.delete(LOCK.RESET_USAGE.getName());
-            }
-        }
+        };
+        redisLockRunner.execute(LOCK.RESET_USAGE);
     }
 
 
