@@ -54,11 +54,12 @@ public class ApiKeyService {
         return deleted == 1;
     }
 
-    public String generateApiKey(String userId, boolean neverExpire, long expire) {
+    public String generateApiKey(String userId, String comment, boolean neverExpire, long expire) {
         ApiKey apiKey = new ApiKey();
         UUID key = UUID.randomUUID();
         apiKey.setKey(key.toString());
         apiKey.setCreator(UUID.fromString(userId));
+        apiKey.setComment(comment);
         if (neverExpire) {
             apiKey.setNeverExpire(true);
         } else {

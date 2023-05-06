@@ -3,7 +3,6 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UnlockKookUserReq;
-import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
 import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
@@ -27,8 +26,8 @@ public class KookManageController {
     KookGuildSettingService kookGuildSettingService;
 
     @RequireApiKey(admin = true)
-    @GetMapping("users/ban")
-    public CommonResult getBanUsers() {
+    @GetMapping("users/block")
+    public CommonResult getBlockUsers() {
         List<KookUserSetting> users = kookUserSettingService.findAllByBanned(true);
         return CommonResult.success("users", users);
     }

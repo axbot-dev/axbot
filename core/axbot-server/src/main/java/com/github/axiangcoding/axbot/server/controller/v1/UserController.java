@@ -110,7 +110,7 @@ public class UserController {
     @PostMapping("apikey/generate")
     public CommonResult generateApiKey(HttpServletRequest request, @Valid @RequestBody GenApiKeyReq req) {
         String userId = globalUserService.getUserIdFromRequest(request);
-        String key = apiKeyService.generateApiKey(userId, req.getNeverExpire(), req.getExpireInSecond());
+        String key = apiKeyService.generateApiKey(userId, req.getComment(), req.getNeverExpire(), req.getExpireInSecond());
         return CommonResult.success("apiKey", key);
     }
 
