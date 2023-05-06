@@ -11,6 +11,7 @@ public class GlobalUserVo {
     String username;
     LocalDateTime createTime;
     LocalDateTime lastLoginTime;
+    Boolean isAdmin;
 
     public static GlobalUserVo from(GlobalUser user) {
         GlobalUserVo vo = new GlobalUserVo();
@@ -18,6 +19,7 @@ public class GlobalUserVo {
         vo.setUsername(user.getUsername());
         vo.setCreateTime(user.getCreateTime());
         vo.setLastLoginTime(user.getLastLoginTime());
+        vo.setIsAdmin(user.getIsAdmin());
         return vo;
     }
 }

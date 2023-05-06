@@ -33,7 +33,7 @@ public class KookManageController {
     }
 
     @RequireApiKey(admin = true)
-    @PostMapping("users/unblock")
+    @PostMapping("user/unblock")
     public CommonResult unblockUser(@Valid @ParameterObject UnlockKookUserReq req) {
         kookUserSettingService.unblockUser(req.getUserId());
         return CommonResult.success();

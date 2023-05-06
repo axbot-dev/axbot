@@ -3,11 +3,10 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 import com.github.axiangcoding.axbot.server.configuration.annot.RequireLogin;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.GenApiKeyReq;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.LoginReq;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.RegisterReq;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UpdatePwdReq;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.*;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.resp.ApiKeyVo;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.resp.GlobalUserVo;
+import com.github.axiangcoding.axbot.server.data.entity.ApiKey;
 import com.github.axiangcoding.axbot.server.data.entity.GlobalUser;
 import com.github.axiangcoding.axbot.server.service.ApiKeyService;
 import com.github.axiangcoding.axbot.server.service.GlobalUserService;
@@ -16,12 +15,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -107,7 +109,7 @@ public class UserController {
     }
 
     @RequireLogin
-    @PostMapping("apikey/generate")
+    @PostMapping("apiKey/generate")
     public CommonResult generateApiKey(HttpServletRequest request, @Valid @RequestBody GenApiKeyReq req) {
         String userId = globalUserService.getUserIdFromRequest(request);
         String key = apiKeyService.generateApiKey(userId, req.getComment(), req.getNeverExpire(), req.getExpireInSecond());
@@ -115,9 +117,9 @@ public class UserController {
     }
 
     @RequireLogin
-    @PostMapping("apikey/expire")
-    public CommonResult expireApiKey(HttpServletRequest request) {
-        String apiKey = apiKeyService.getApiKeyFromRequest(request);
+    @PostMapping("apiKey/expire")
+    public CommonResult expireApiKey(@Valid @ParameterObject ExpireApiKeyReq req) {
+        String apiKey = req.getApiKey();
         boolean deleted = apiKeyService.deleteByKey(apiKey);
         if (deleted) {
             return CommonResult.success();
@@ -126,5 +128,14 @@ public class UserController {
         }
     }
 
+    @RequireLogin
+    @GetMapping("apiKeys")
+    public CommonResult getApiKeys(HttpServletRequest request) {
+        String userId = globalUserService.getUserIdFromRequest(request);
+        List<ApiKey> apiKeys = apiKeyService.findAllByCreator(userId);
+        List<ApiKeyVo> apiKeyVos = apiKeys.stream().map(ApiKeyVo::from)
+                .collect(Collectors.toList());
+        return CommonResult.success("apiKeys", apiKeyVos);
+    }
 
 }
