@@ -233,7 +233,7 @@ public class AxBotService {
             return out;
         } else if (overflow >= 10) {
             String reason = "超限使用";
-            kookUserSettingService.banUser(userId, reason);
+            kookUserSettingService.blockUser(userId, reason);
             out.setContent(axBotHandlerForKook.userBanned(reason));
             return out;
         }
@@ -256,7 +256,7 @@ public class AxBotService {
                 out.setContent(axBotHandlerForKook.sensitiveInput(leftTimes));
             } else {
                 String reason = "输入3次及以上的逆天内容";
-                kookUserSettingService.banUser(userId, reason);
+                kookUserSettingService.blockUser(userId, reason);
                 out.setContent(axBotHandlerForKook.userBanned(reason));
             }
             return out;

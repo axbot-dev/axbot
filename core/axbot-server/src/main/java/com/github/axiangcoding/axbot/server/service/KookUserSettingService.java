@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,9 +25,19 @@ public class KookUserSettingService {
         return kookUserSettingRepository.findByUserId(userId);
     }
 
-    public void banUser(String userId, String reason) {
-        log.info("kook user [{}] get banned, because [{}]", userId, reason);
+    public List<KookUserSetting> findAllByBanned(Boolean banned) {
+        return kookUserSettingRepository.findAllByBanned(banned);
+    }
+
+
+    public void blockUser(String userId, String reason) {
+        log.info("kook user [{}] get blocked, because [{}]", userId, reason);
         kookUserSettingRepository.updateBannedAndBannedReasonAndBannedTimeByUserId(true, reason, LocalDateTime.now(), userId);
+    }
+
+    public void unblockUser(String userId) {
+        log.info("kook user [{}] get unblocked", userId);
+        kookUserSettingRepository.updateBannedAndBannedReasonAndBannedTimeByUserId(false, null, null, userId);
     }
 
     public void upsertUsage(String userId) {

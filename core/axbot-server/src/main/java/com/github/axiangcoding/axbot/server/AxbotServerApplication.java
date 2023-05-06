@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 
 @SpringBootApplication(nameGenerator = AnnotationBeanNameGenerator.class, exclude = {SecurityAutoConfiguration.class})
-@EnableConfigurationProperties(BotConfProps.class)
 public class AxbotServerApplication {
 
     public static void main(String[] args) {
