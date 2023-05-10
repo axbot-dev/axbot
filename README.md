@@ -56,4 +56,4 @@ AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](ht
 
 机器人的部署本身需要消耗服务器资源，日常的维护也需要投入资金，这意味着部署和维护AXBot具有一定的成本。因此AXBot将向所有用户提供免费但有限的服务。如果您愿意赞助AXBot或者订阅服务，您将能够享受更高的使用限制和额外的功能。更多关于付费的内容，您可以查看下面的链接。除了下文提供的渠道外，开发者不会接受其他任何渠道的捐助
 
-爱发电：https://afdian.net/a/axbot 
+爱发电：[点击赞助](https://afdian.net/order/create?user_id=966767508b5811eca47c52540025c377&custom_price=10)
