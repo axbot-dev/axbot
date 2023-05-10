@@ -81,4 +81,21 @@ public class KookUserSettingService {
         permit.setCanUseAI(canUseAI);
         kookUserSettingRepository.save(entity);
     }
+
+    public void updateSubscribe(String userId, String plan, int month) {
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return;
+        }
+        KookUserSetting entity = opt.get();
+        if(entity.getSubscribe()==null){
+            entity.setSubscribe(new KookUserSetting.Subscribe());
+        }
+        KookUserSetting.Subscribe subscribe = entity.getSubscribe();
+        subscribe.setPlan(plan);
+        LocalDateTime startTime = subscribe.getExpireAt()==null?LocalDateTime.now(): subscribe.getExpireAt();
+        LocalDateTime endTime = startTime.plusMonths(month);
+        subscribe.setExpireAt(endTime);
+        kookUserSettingRepository.save(entity);
+    }
 }

@@ -16,6 +16,9 @@ public class SponsorOrderService {
     @Resource
     SponsorOrderRepository sponsorOrderRepository;
 
+    @Resource
+    KookUserSettingService kookUserSettingService;
+
     public Optional<SponsorOrder> findByOrderId(String orderId) {
         return sponsorOrderRepository.findByOrderId(UUID.fromString(orderId));
     }
@@ -41,10 +44,19 @@ public class SponsorOrderService {
             return;
         }
         SponsorOrder entity = opt.get();
+        if (!SponsorOrder.STATUS.PENDING.getName().equals(entity.getStatus())) {
+            log.info("order [{}] is not pending, active failed", orderId);
+            return;
+        }
         entity.setMonth(month);
-        entity.setPlanName(planName);
+        entity.setPlanTitle(planName);
         entity.setStatus(SponsorOrder.STATUS.SUCCESS.getName());
         sponsorOrderRepository.save(entity);
+
+        String platform = entity.getPlatform();
+        if (AxBotSupportPlatform.PLATFORM_KOOK.getName().equals(platform)) {
+            kookUserSettingService.updateSubscribe(entity.getFromUserId(), entity.getPlan(), month);
+        }
     }
 
     public void closeOrder(String orderId) {

@@ -294,7 +294,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
                         SponsorOrder entity = opt.get();
                         if (SponsorOrder.STATUS.SUCCESS.getName().equals(entity.getStatus())) {
                             Integer month = entity.getMonth();
-                            String planName = entity.getPlanName();
+                            String planName = entity.getPlanTitle();
                             req.setContent(SponsorFunction.sponsorSuccess(month, planName));
                             break;
                         }

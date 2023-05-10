@@ -32,7 +32,7 @@ public class SponsorOrder extends BasicEntity {
 
     UUID orderId;
     String plan;
-    String planName;
+    String planTitle;
     Integer month;
     String fromUserId;
     /**
