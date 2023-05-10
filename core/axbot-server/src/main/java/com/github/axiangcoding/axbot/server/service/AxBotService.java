@@ -284,6 +284,8 @@ public class AxBotService {
             } else if (jc == AxbotCommand.COMMAND_GUILD_MANAGE) {
                 out.setContent(axBotHandlerForKook.manageGuild(
                         in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
+            } else if (jc==AxbotCommand.COMMAND_CHAT_WITH_AI) {
+                out.setContent(axBotHandlerForKook.chatWithAI(in.getFromUserId(), cList[1]));
             } else {
                 out.setContent(axBotHandlerForKook.commandNotFound(command));
             }

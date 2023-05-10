@@ -12,32 +12,89 @@ import java.util.List;
 public class BotConfProps {
     CqhttpConf cqhttp;
     KookConf kook;
+    OpenAI openai;
+    /**
+     * 触发机器人命令的前缀
+     */
     List<String> triggerMessagePrefix;
     Censor censor;
 
     @Data
     public static class CqhttpConf {
+        /**
+         * 是否启动cqhttp机器人
+         */
         Boolean enabled;
+        /**
+         * cqhttp的url
+         */
         String baseUrl;
+        /**
+         * cqhttp的secret
+         */
         String secret;
     }
 
     @Data
     public static class KookConf {
+        /**
+         * 是否启动kook机器人
+         */
         Boolean enabled;
+        /**
+         * 机器人token
+         */
         String botToken;
+        /**
+         * 机器人的认证token
+         */
         String verifyToken;
     }
 
     @Data
     public static class Censor {
+        /**
+         * 是否启动文本审核
+         */
         Boolean enabled;
         Qiniu qiniu;
 
         @Data
         public static class Qiniu {
+            /**
+             * 七牛云的accessToken
+             */
             String accessToken;
+            /**
+             * 七牛云的secretToken
+             */
             String secretToken;
         }
+    }
+
+    @Data
+    public static class OpenAI {
+        /**
+         * openai的api key
+         */
+        String apiKey;
+        Proxy proxy;
+
+        @Data
+        public static class Proxy {
+            /**
+             * 代理方式。目前仅支持direct和http
+             */
+            String type;
+            /**
+             * 如果使用http形式的代理，这里填写的是代理的host
+             */
+            String host;
+            /**
+             * 如果使用http形式的代理，这里填写的是代理的port
+             */
+            Integer port;
+        }
+
     }
 }

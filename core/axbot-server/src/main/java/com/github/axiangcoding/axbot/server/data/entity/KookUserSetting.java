@@ -23,6 +23,8 @@ public class KookUserSetting extends BasicEntity {
     LocalDateTime bannedTime;
     @Embedded
     Usage usage;
+    @Embedded
+    Permit permit;
 
     public static KookUserSetting defaultSetting(String userId) {
         KookUserSetting setting = new KookUserSetting();
@@ -34,6 +36,9 @@ public class KookUserSetting extends BasicEntity {
         usage.setInputToday(0);
         usage.setQueryWtToday(0);
         setting.setUsage(usage);
+        Permit permit = new Permit();
+        permit.setCanUseAI(false);
+        setting.setPermit(permit);
         return setting;
     }
 
@@ -46,5 +51,13 @@ public class KookUserSetting extends BasicEntity {
         Long inputTotal;
         Integer queryWtToday;
         Long queryWtTotal;
+    }
+
+    @Embeddable
+    @Getter
+    @Setter
+    @ToString
+    public static class Permit {
+        Boolean canUseAI;
     }
 }

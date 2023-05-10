@@ -49,6 +49,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.15")
 
+    // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
+    implementation("com.theokanning.openai-gpt3-java:service:0.12.0")
+
 
 }
 

@@ -1,5 +1,9 @@
 package com.github.axiangcoding.axbot.server.service.axbot;
 
+import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
+import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
+import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
+import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
@@ -10,18 +14,11 @@ import com.github.axiangcoding.axbot.remote.kook.service.entity.KookRole;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookUser;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.resp.GuildRoleListData;
-import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
-import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
-import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
-import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.Mission;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
-import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
-import com.github.axiangcoding.axbot.server.service.MissionService;
-import com.github.axiangcoding.axbot.server.service.UserInputRecordService;
-import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
+import com.github.axiangcoding.axbot.server.service.*;
 import com.github.axiangcoding.axbot.server.service.axbot.function.*;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
@@ -33,7 +30,10 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -57,7 +57,10 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     BotConfProps botConfProps;
 
     @Resource
-    UserInputRecordService userInputRecordService;
+    KookUserSettingService kookUserSettingService;
+
+    @Resource
+    AIService aiService;
 
     @Override
     public String getDefault() {
@@ -246,6 +249,19 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         } else {
             return StatusFunction.settingFound(optKgs.get());
         }
+    }
+
+    @Override
+    public String chatWithAI(String userId, String ask) {
+        List<KookCardMessage> messages = KookCardMessage.defaultMsg("你好，我是智慧型AxBot", "success");
+        List<KookCardMessage> modules = messages.get(0).getModules();
+        if (kookUserSettingService.canUseAI(userId)) {
+            String chat = aiService.singleChat(ask);
+            modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(chat)));
+        } else {
+            modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown("对不起，你没有使用AI能力的权限")));
+        }
+        return JsonUtils.toJson(messages);
     }
 
     @Override

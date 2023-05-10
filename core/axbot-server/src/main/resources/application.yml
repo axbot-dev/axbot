@@ -46,6 +46,12 @@ bot:
     enabled: true
     bot-token:
     verify-token:
+  openai:
+    api-key:
+    proxy:
+      type: direct
+      host:
+      port:
   cqhttp:
     enabled: true
     base-url: http://localhost:5700/

@@ -75,6 +75,11 @@ public class AxBotHandlerForCqhttp implements IAxBotHandlerForCqhttp {
     }
 
     @Override
+    public String chatWithAI(String userId, String ask) {
+        return null;
+    }
+
+    @Override
     public String joinGuild(String guildId) {
         return null;
     }

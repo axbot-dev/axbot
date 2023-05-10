@@ -3,16 +3,13 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UnlockKookUserReq;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UserCanUseAIReq;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
 import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class KookManageController {
     KookGuildSettingService kookGuildSettingService;
 
     @RequireApiKey(admin = true)
-    @GetMapping("users/block")
+    @GetMapping("blockUsers")
     public CommonResult getBlockUsers() {
         List<KookUserSetting> users = kookUserSettingService.findAllByBanned(true);
         return CommonResult.success("users", users);
@@ -34,8 +31,16 @@ public class KookManageController {
 
     @RequireApiKey(admin = true)
     @PostMapping("user/unblock")
-    public CommonResult unblockUser(@Valid @ParameterObject UnlockKookUserReq req) {
+    public CommonResult unblockUser(@Valid @RequestBody UnlockKookUserReq req) {
         kookUserSettingService.unblockUser(req.getUserId());
         return CommonResult.success();
     }
+
+    @RequireApiKey(admin = true)
+    @PostMapping("user/canUseAI")
+    public CommonResult setUserCanUseAI(@Valid @RequestBody UserCanUseAIReq req) {
+        kookUserSettingService.setCanUseAI(req.getUserId(), req.getCanUseAI());
+        return CommonResult.success();
+    }
+
 }

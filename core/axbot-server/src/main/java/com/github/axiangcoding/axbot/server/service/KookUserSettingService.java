@@ -54,4 +54,31 @@ public class KookUserSettingService {
     public void resetTodayUsage() {
         kookUserSettingRepository.resetTodayUsage();
     }
+
+    public boolean canUseAI(String userId) {
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return false;
+        }
+        KookUserSetting entity = opt.get();
+        KookUserSetting.Permit permit = entity.getPermit();
+        if (permit == null) {
+            return false;
+        }
+        return Boolean.TRUE.equals(permit.getCanUseAI());
+    }
+
+    public void setCanUseAI(String userId, boolean canUseAI) {
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return;
+        }
+        KookUserSetting entity = opt.get();
+        if (entity.getPermit() == null) {
+            entity.setPermit(new KookUserSetting.Permit());
+        }
+        KookUserSetting.Permit permit = entity.getPermit();
+        permit.setCanUseAI(canUseAI);
+        kookUserSettingRepository.save(entity);
+    }
 }

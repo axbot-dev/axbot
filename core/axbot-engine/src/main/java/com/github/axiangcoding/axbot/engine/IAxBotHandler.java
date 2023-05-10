@@ -92,6 +92,8 @@ public interface IAxBotHandler {
 
     String getGuildStatus(String guildId);
 
+    String chatWithAI(String userId, String ask);
+
     String joinGuild(String guildId);
 
     void exitGuild(String guildId);
