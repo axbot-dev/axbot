@@ -12,9 +12,11 @@ public enum AxbotCommand {
     COMMAND_LUCKY(List.of("气运", "运气", "luck"), null),
     COMMAND_WT_QUERY_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("查询", "查找", "query")),
     COMMAND_WT_UPDATE_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("更新", "刷新", "update")),
-    COMMAND_GUILD_STATUS(List.of("状态", "社群状态", "群组状态", "status"), null),
+    COMMAND_GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
+    COMMAND_USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
     COMMAND_GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
-    COMMAND_CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null);
+    COMMAND_CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
+    COMMAND_SUBSCRIBE(List.of("赞助", "订阅", "subscribe"), null);
 
     private final List<String> t1;
     private final List<String> t2;

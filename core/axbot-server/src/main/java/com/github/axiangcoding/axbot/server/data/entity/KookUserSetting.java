@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 public class KookUserSetting extends BasicEntity {
+    public static final Integer INPUT_LIMIT = 50;
+
     @Column(unique = true)
     String userId;
 

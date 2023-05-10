@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class AxBotSysInputForKook extends AxBotSysInput {
     /**
-     * 请求来自的服务器
+     * 需要发送给的服务器
      */
     String fromGuild;
 }

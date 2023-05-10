@@ -92,7 +92,11 @@ public interface IAxBotHandler {
 
     String getGuildStatus(String guildId);
 
+    String getUserStatus(String userId);
+
     String chatWithAI(String userId, String ask);
+
+    String getSponsor(String guildId, String channelId, String userId, AxBotUserOutput output);
 
     String joinGuild(String guildId);
 
