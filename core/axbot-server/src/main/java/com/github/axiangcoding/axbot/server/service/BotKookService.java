@@ -104,22 +104,12 @@ public class BotKookService {
                             return;
                         }
                         AxBotUserOutputForKook out = ((AxBotUserOutputForKook) output);
-                        CreateMessageReq req = new CreateMessageReq();
-                        req.setType(KookEvent.TYPE_CARD);
-                        req.setQuote(out.getReplayToMsg());
-                        req.setTargetId(out.getToChannel());
-                        req.setContent(out.getContent());
-                        kookClient.createMessage(req);
+                        sendCardMessage(out.getToChannel(), out.getReplayToMsg(), out.getContent());
                     }
 
                     @Override
                     public void catchException(Exception e) {
-                        CreateMessageReq req = new CreateMessageReq();
-                        req.setType(KookEvent.TYPE_TEXT);
-                        req.setQuote(input.getFromMsgId());
-                        req.setTargetId(input.getFromChannel());
-                        req.setContent("系统内部错误，请报告开发者");
-                        kookClient.createMessage(req);
+                        sendTextMessage(input.getFromChannel(), input.getFromMsgId(), "系统内部错误，请报告开发者");
                     }
                 });
             }
@@ -149,11 +139,7 @@ public class BotKookService {
                         return;
                     }
                     AxBotSysOutputForKook out = ((AxBotSysOutputForKook) output);
-                    CreateMessageReq req = new CreateMessageReq();
-                    req.setType(KookEvent.TYPE_CARD);
-                    req.setTargetId(out.getToChannel());
-                    req.setContent(out.getContent());
-                    kookClient.createMessage(req);
+                    sendCardMessage(out.getToChannel(), null, out.getContent());
 
                 });
             }
@@ -192,11 +178,7 @@ public class BotKookService {
                         if (output == null) {
                             return;
                         }
-                        CreateMessageReq req = new CreateMessageReq();
-                        req.setType(KookEvent.TYPE_CARD);
-                        req.setTargetId(biliLiveChannelId);
-                        req.setContent(output.getContent());
-                        kookClient.createMessage(req);
+                        sendCardMessage(biliLiveChannelId, null, output.getContent());
                     });
                 }
                 stringRedisTemplate.opsForValue().set(cacheKey, "", 10, TimeUnit.MINUTES);
@@ -217,15 +199,30 @@ public class BotKookService {
             input.setEvent(AxBotSystemEvent.SYSTEM_EVENT_WT_NEWS);
             input.setExtraJson(extraJson);
             axBotService.genResponseForSystemAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, output -> {
-                if(output ==null){
+                if (output == null) {
                     return;
                 }
-                CreateMessageReq req = new CreateMessageReq();
-                req.setType(KookEvent.TYPE_CARD);
-                req.setTargetId(wtNewsChannelId);
-                req.setContent(output.getContent());
-                kookClient.createMessage(req);
+                sendCardMessage(wtNewsChannelId, null, output.getContent());
             });
         });
+    }
+
+    public void sendCardMessage(String targetId, String quoteId, String content) {
+        CreateMessageReq req = new CreateMessageReq();
+        req.setType(KookEvent.TYPE_CARD);
+        req.setQuote(quoteId);
+        req.setTargetId(targetId);
+        req.setContent(content);
+        kookClient.createMessage(req);
+    }
+
+
+    public void sendTextMessage(String targetId, String quoteId, String content) {
+        CreateMessageReq req = new CreateMessageReq();
+        req.setType(KookEvent.TYPE_TEXT);
+        req.setTargetId(targetId);
+        req.setQuote(quoteId);
+        req.setContent(content);
+        kookClient.createMessage(req);
     }
 }
