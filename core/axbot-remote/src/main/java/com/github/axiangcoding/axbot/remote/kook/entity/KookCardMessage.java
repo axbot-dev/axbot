@@ -85,6 +85,7 @@ public class KookCardMessage {
         return cardMessage;
     }
 
+
     public static KookCardMessage newPlainText(String content) {
         KookCardMessage cardMessage = new KookCardMessage();
         cardMessage.setType("plain-text");
@@ -116,6 +117,7 @@ public class KookCardMessage {
         return cardMessage;
     }
 
+
     public static KookCardMessage newParagraph(int cols, List<KookCardMessage> fields) {
         KookCardMessage cardMessage = new KookCardMessage();
         cardMessage.setType("paragraph");
@@ -132,4 +134,15 @@ public class KookCardMessage {
         cardMessage.setEndTime(endTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         return cardMessage;
     }
+
+
+    public static KookCardMessage quickMdSection(String content) {
+        return newSection(newKMarkdown(content));
+    }
+
+    public static KookCardMessage quickTextLinkSection(String text, String btnName, String theme, String url) {
+        return newSectionWithLink(KookCardMessage.newKMarkdown(text),
+                KookCardMessage.newButton(theme, btnName, "link", url));
+    }
+
 }

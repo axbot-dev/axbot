@@ -1,13 +1,13 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
-import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserInputForCqhttp;
 import com.github.axiangcoding.axbot.engine.entity.cqhttp.AxBotUserOutputForCqhttp;
 import com.github.axiangcoding.axbot.remote.cqhttp.CqHttpClient;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
-import com.github.axiangcoding.axbot.server.controller.entity.vo.req.QQWebhookEvent;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.CqhttpWebhookEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
@@ -23,6 +23,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
+@Deprecated
 public class BotQQService {
     @Resource
     BotConfProps botConfProps;
@@ -60,7 +61,7 @@ public class BotQQService {
         return false;
     }
 
-    public Map<String, Object> DetermineMessageResponse(QQWebhookEvent event) {
+    public Map<String, Object> DetermineMessageResponse(CqhttpWebhookEvent event) {
         String content = event.getRawMessage();
         Long userId = event.getUserId();
         Long groupId = event.getGroupId();
@@ -83,7 +84,7 @@ public class BotQQService {
                 input.setFromMsgId(String.valueOf(messageId));
                 input.setFromGroup(String.valueOf(groupId));
 
-                axBotService.genResponseForInputAsync(AxBotSupportPlatform.PLATFORM_CQHTTP, input, new UserInputCallback() {
+                axBotService.genResponseForInputAsync(SupportPlatform.PLATFORM_CQHTTP, input, new UserInputCallback() {
                     @Override
                     public void callback(AxBotUserOutput output) {
                         if (output == null) {

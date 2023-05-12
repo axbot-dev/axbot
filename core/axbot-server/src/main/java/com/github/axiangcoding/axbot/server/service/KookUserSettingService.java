@@ -21,6 +21,13 @@ public class KookUserSettingService {
         return kookUserSettingRepository.save(entity);
     }
 
+    public KookUserSetting getOrDefault(String userId) {
+        KookUserSetting userSetting;
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        userSetting = opt.orElseGet(() -> newSetting(userId));
+        return userSetting;
+    }
+
     public Optional<KookUserSetting> findByUserId(String userId) {
         return kookUserSettingRepository.findByUserId(userId);
     }

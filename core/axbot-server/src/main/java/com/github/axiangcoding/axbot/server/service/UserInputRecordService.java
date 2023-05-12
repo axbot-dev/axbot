@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.server.data.entity.UserInputRecord;
 import com.github.axiangcoding.axbot.server.data.repository.UserInputRecordRepository;
 import jakarta.annotation.Resource;
@@ -19,7 +19,7 @@ public class UserInputRecordService {
     public long saveRecordFromCqhttp(String userId, String message, String groupId) {
         UserInputRecord entity = new UserInputRecord();
         entity.setUserId(userId);
-        entity.setPlatform(AxBotSupportPlatform.PLATFORM_CQHTTP.getName());
+        entity.setPlatform(SupportPlatform.PLATFORM_CQHTTP.getName());
         entity.setInput(message);
         entity.setFromQGroup(groupId);
         userInputRecordRepository.save(entity);
@@ -29,7 +29,7 @@ public class UserInputRecordService {
     public long saveRecordFromKook(String userId, String message, String guildId, String channelId) {
         UserInputRecord entity = new UserInputRecord();
         entity.setUserId(userId);
-        entity.setPlatform(AxBotSupportPlatform.PLATFORM_KOOK.getName());
+        entity.setPlatform(SupportPlatform.PLATFORM_KOOK.getName());
         entity.setInput(message);
         entity.setFromKookGuild(guildId);
         entity.setFromKookChannel(channelId);
@@ -49,12 +49,12 @@ public class UserInputRecordService {
 
     public long countUserKookSensitiveInput(String userId) {
         return userInputRecordRepository.countByUserIdAndPlatformAndSensitive(userId,
-                AxBotSupportPlatform.PLATFORM_KOOK.getName(), true);
+                SupportPlatform.PLATFORM_KOOK.getName(), true);
     }
 
     public long countUserCqhttpSensitiveInput(String userId) {
         return userInputRecordRepository.countByUserIdAndPlatformAndSensitive(userId,
-                AxBotSupportPlatform.PLATFORM_CQHTTP.getName(), true);
+                SupportPlatform.PLATFORM_CQHTTP.getName(), true);
     }
 
 }

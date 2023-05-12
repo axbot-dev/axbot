@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.server.data.entity.SponsorOrder;
 import com.github.axiangcoding.axbot.server.data.repository.SponsorOrderRepository;
 import jakarta.annotation.Resource;
@@ -23,7 +23,7 @@ public class SponsorOrderService {
         return sponsorOrderRepository.findByOrderId(UUID.fromString(orderId));
     }
 
-    public String generatePersonalOrder(AxBotSupportPlatform platform, String guildId, String channelId, String userId) {
+    public String generatePersonalOrder(SupportPlatform platform, String guildId, String channelId, String userId) {
         SponsorOrder entity = new SponsorOrder();
         entity.setPlatform(platform.getName());
         entity.setFromUserId(userId);
@@ -54,7 +54,7 @@ public class SponsorOrderService {
         sponsorOrderRepository.save(entity);
 
         String platform = entity.getPlatform();
-        if (AxBotSupportPlatform.PLATFORM_KOOK.getName().equals(platform)) {
+        if (SupportPlatform.PLATFORM_KOOK.getName().equals(platform)) {
             kookUserSettingService.updateSubscribe(entity.getFromUserId(), entity.getPlan(), month);
         }
     }

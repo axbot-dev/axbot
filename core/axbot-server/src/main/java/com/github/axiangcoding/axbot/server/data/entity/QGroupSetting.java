@@ -15,4 +15,11 @@ public class QGroupSetting extends BasicEntity {
     String groupId;
 
     Boolean banned;
+
+    public static QGroupSetting defaultSetting(String groupId) {
+        QGroupSetting setting = new QGroupSetting();
+        setting.setGroupId(groupId);
+        setting.setBanned(false);
+        return setting;
+    }
 }

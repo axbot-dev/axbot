@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
-import com.github.axiangcoding.axbot.engine.AxbotCommand;
+import com.github.axiangcoding.axbot.engine.v1.InteractiveCommand;
 import com.github.axiangcoding.axbot.engine.SystemInputCallback;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
 import com.github.axiangcoding.axbot.engine.entity.*;
@@ -11,6 +11,7 @@ import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
@@ -49,9 +50,6 @@ public class AxBotService {
     AxBotHandlerForCqhttp axBotHandlerForCqhttp;
 
     @Resource
-    KookGuildSettingService kookGuildSettingService;
-
-    @Resource
     KookUserSettingService kookUserSettingService;
 
     @Resource
@@ -85,10 +83,10 @@ public class AxBotService {
      * @param input
      * @return
      */
-    public AxBotUserOutput genResponseForInput(AxBotSupportPlatform replyPlatform, AxBotUserInput input) {
-        if (replyPlatform == AxBotSupportPlatform.PLATFORM_KOOK) {
+    public AxBotUserOutput genResponseForInput(SupportPlatform replyPlatform, AxBotUserInput input) {
+        if (replyPlatform == SupportPlatform.PLATFORM_KOOK) {
             return processKookUserEvent(input);
-        } else if (replyPlatform == AxBotSupportPlatform.PLATFORM_CQHTTP) {
+        } else if (replyPlatform == SupportPlatform.PLATFORM_CQHTTP) {
             return processCqhttpUserEvent(input);
         }
         return null;
@@ -100,7 +98,7 @@ public class AxBotService {
      * @param input
      * @param callback
      */
-    public void genResponseForInputAsync(AxBotSupportPlatform replyPlatform, AxBotUserInput input, UserInputCallback callback) {
+    public void genResponseForInputAsync(SupportPlatform replyPlatform, AxBotUserInput input, UserInputCallback callback) {
         threadPoolTaskExecutor.execute(() -> {
             try {
                 AxBotUserOutput output = genResponseForInput(replyPlatform, input);
@@ -119,8 +117,8 @@ public class AxBotService {
      * @param input
      * @return
      */
-    public AxBotSysOutput genResponseForSystem(AxBotSupportPlatform replyPlatform, AxBotSysInput input) {
-        if (replyPlatform == AxBotSupportPlatform.PLATFORM_KOOK) {
+    public AxBotSysOutput genResponseForSystem(SupportPlatform replyPlatform, AxBotSysInput input) {
+        if (replyPlatform == SupportPlatform.PLATFORM_KOOK) {
             AxBotSysInputForKook in = (AxBotSysInputForKook) input;
             AxBotSysOutputForKook out = new AxBotSysOutputForKook();
 
@@ -164,7 +162,7 @@ public class AxBotService {
                 default -> log.warn("not support yet");
             }
             return out;
-        } else if (replyPlatform == AxBotSupportPlatform.PLATFORM_CQHTTP) {
+        } else if (replyPlatform == SupportPlatform.PLATFORM_CQHTTP) {
             // TODO
         } else {
 
@@ -179,7 +177,7 @@ public class AxBotService {
      * @param input
      * @param callback
      */
-    public void genResponseForSystemAsync(AxBotSupportPlatform replyPlatform, AxBotSysInput input, SystemInputCallback callback) {
+    public void genResponseForSystemAsync(SupportPlatform replyPlatform, AxBotSysInput input, SystemInputCallback callback) {
         threadPoolTaskExecutor.execute(() -> {
             try {
                 AxBotSysOutput output = genResponseForSystem(replyPlatform, input);
@@ -190,10 +188,10 @@ public class AxBotService {
         });
     }
 
-    public boolean isPlatformEnabled(AxBotSupportPlatform platform) {
-        if (platform == AxBotSupportPlatform.PLATFORM_KOOK && botConfProps.getKook().getEnabled()) {
+    public boolean isPlatformEnabled(SupportPlatform platform) {
+        if (platform == SupportPlatform.PLATFORM_KOOK && botConfProps.getKook().getEnabled()) {
             return true;
-        } else if (platform == AxBotSupportPlatform.PLATFORM_CQHTTP && botConfProps.getCqhttp().getEnabled()) {
+        } else if (platform == SupportPlatform.PLATFORM_CQHTTP && botConfProps.getCqhttp().getEnabled()) {
             return true;
         } else {
             return false;
@@ -264,30 +262,30 @@ public class AxBotService {
         if (StringUtils.isBlank(command)) {
             out.setContent(axBotHandlerForKook.getDefault());
         } else {
-            AxbotCommand jc = AxbotCommand.judgeCommand(command);
+            InteractiveCommand jc = InteractiveCommand.judgeCommand(command);
             if (jc == null) {
                 out.setContent(axBotHandlerForKook.commandNotFound(command));
-            } else if (jc == AxbotCommand.COMMAND_HELP) {
+            } else if (jc == InteractiveCommand.COMMAND_HELP) {
                 out.setContent(axBotHandlerForKook.getHelp());
-            } else if (jc == AxbotCommand.COMMAND_VERSION) {
+            } else if (jc == InteractiveCommand.COMMAND_VERSION) {
                 out.setContent(axBotHandlerForKook.getVersion());
-            } else if (jc == AxbotCommand.COMMAND_LUCKY) {
+            } else if (jc == InteractiveCommand.COMMAND_LUCKY) {
                 String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
                 out.setContent(axBotHandlerForKook.getTodayLucky(s.hashCode()));
-            } else if (jc == AxbotCommand.COMMAND_WT_QUERY_PROFILE) {
+            } else if (jc == InteractiveCommand.COMMAND_WT_QUERY_PROFILE) {
                 out.setContent(axBotHandlerForKook.queryWTProfile(cList[2], out));
-            } else if (jc == AxbotCommand.COMMAND_WT_UPDATE_PROFILE) {
+            } else if (jc == InteractiveCommand.COMMAND_WT_UPDATE_PROFILE) {
                 out.setContent(axBotHandlerForKook.updateWTProfile(cList[2], out));
-            } else if (jc == AxbotCommand.COMMAND_GUILD_STATUS) {
+            } else if (jc == InteractiveCommand.COMMAND_GUILD_STATUS) {
                 out.setContent(axBotHandlerForKook.getGuildStatus(in.getFromGuild()));
-            } else if (jc == AxbotCommand.COMMAND_USER_STATUS) {
+            } else if (jc == InteractiveCommand.COMMAND_USER_STATUS) {
                 out.setContent(axBotHandlerForKook.getUserStatus(in.getFromUserId()));
-            } else if (jc == AxbotCommand.COMMAND_GUILD_MANAGE) {
+            } else if (jc == InteractiveCommand.COMMAND_GUILD_MANAGE) {
                 out.setContent(axBotHandlerForKook.manageGuild(
                         in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
-            } else if (jc == AxbotCommand.COMMAND_CHAT_WITH_AI) {
+            } else if (jc == InteractiveCommand.COMMAND_CHAT_WITH_AI) {
                 out.setContent(axBotHandlerForKook.chatWithAI(in.getFromUserId(), cList[1]));
-            } else if (jc == AxbotCommand.COMMAND_SUBSCRIBE) {
+            } else if (jc == InteractiveCommand.COMMAND_SUBSCRIBE) {
                 out.setContent(axBotHandlerForKook.getSponsor(in.getFromGuild(), in.getFromChannel(), in.getFromUserId(), out));
             } else {
                 out.setContent(axBotHandlerForKook.commandNotFound(command));
@@ -332,10 +330,10 @@ public class AxBotService {
         if (StringUtils.isBlank(command)) {
             out.setContent(axBotHandlerForCqhttp.getDefault());
         } else {
-            AxbotCommand jc = AxbotCommand.judgeCommand(command);
+            InteractiveCommand jc = InteractiveCommand.judgeCommand(command);
             if (jc == null) {
                 out.setContent(axBotHandlerForCqhttp.commandNotFound(command));
-            } else if (jc == AxbotCommand.COMMAND_LUCKY) {
+            } else if (jc == InteractiveCommand.COMMAND_LUCKY) {
                 String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
                 out.setContent(axBotHandlerForCqhttp.getTodayLucky(s.hashCode()));
             } else {

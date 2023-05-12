@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.engine;
+package com.github.axiangcoding.axbot.engine.v1;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -6,7 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 @AllArgsConstructor
-public enum AxbotCommand {
+public enum InteractiveCommand {
+    COMMAND_DEFAULT(null, null),
     COMMAND_HELP(List.of("帮助", "文档", "help"), null),
     COMMAND_VERSION(List.of("版本", "version"), null),
     COMMAND_LUCKY(List.of("气运", "运气", "luck"), null),
@@ -21,23 +22,32 @@ public enum AxbotCommand {
     private final List<String> t1;
     private final List<String> t2;
 
-    public static AxbotCommand judgeCommand(String command) {
+    public static InteractiveCommand judgeCommand(String command) {
         if (StringUtils.isBlank(command)) {
-            return null;
+            return COMMAND_DEFAULT;
         }
-
         String[] c = StringUtils.split(command);
-        for (AxbotCommand value : AxbotCommand.values()) {
-            if (value.t1.contains(c[0])) {
-                if (value.t2 != null) {
-                    if (value.t2.contains(c[1])) {
+        for (InteractiveCommand value : InteractiveCommand.values()) {
+            if (value.t1 != null) {
+                if (value.t1.contains(c[0])) {
+                    if (value.t2 != null) {
+                        if (value.t2.contains(c[1])) {
+                            return value;
+                        }
+                    } else {
                         return value;
                     }
-                } else {
-                    return value;
                 }
             }
         }
-        return null;
+        return COMMAND_DEFAULT;
+    }
+
+    public static String[] getParamList(String command) {
+        if (StringUtils.isBlank(command)) {
+            return new String[0];
+        }
+        String[] split = StringUtils.split(command, null, 3);
+        return StringUtils.split(split[split.length - 1]);
     }
 }

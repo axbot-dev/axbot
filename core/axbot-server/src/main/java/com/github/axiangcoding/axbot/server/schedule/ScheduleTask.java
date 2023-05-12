@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.server.schedule;
 
 import com.github.axiangcoding.axbot.crawler.wt.WtCrawlerClient;
 import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
-import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.server.data.entity.WtNews;
 import com.github.axiangcoding.axbot.server.data.repository.WtNewsRepository;
@@ -59,7 +59,7 @@ public class ScheduleTask {
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void checkBiliRoom() {
-        if (!axBotService.isPlatformEnabled(AxBotSupportPlatform.PLATFORM_KOOK)) {
+        if (!axBotService.isPlatformEnabled(SupportPlatform.PLATFORM_KOOK)) {
             return;
         }
         RedisLockRunner redisLockRunner = new RedisLockRunner(stringRedisTemplate) {
@@ -95,7 +95,7 @@ public class ScheduleTask {
                         }
                         return !exists;
                     }).toList();
-                    if (axBotService.isPlatformEnabled(AxBotSupportPlatform.PLATFORM_KOOK)) {
+                    if (axBotService.isPlatformEnabled(SupportPlatform.PLATFORM_KOOK)) {
                         notExistNews.forEach(item -> botKookService.sendLatestNews(item));
                     }
                 } catch (IOException e) {

@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
-import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
+@Deprecated
 public class BotKookService {
     @Resource
     KookClient kookClient;
@@ -97,7 +98,7 @@ public class BotKookService {
                 input.setFromMsgId(msgId);
                 input.setFromChannel(channelId);
                 input.setFromGuild(guildId);
-                axBotService.genResponseForInputAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, new UserInputCallback() {
+                axBotService.genResponseForInputAsync(SupportPlatform.PLATFORM_KOOK, input, new UserInputCallback() {
                     @Override
                     public void callback(AxBotUserOutput output) {
                         if (output == null) {
@@ -134,7 +135,7 @@ public class BotKookService {
                     return map;
                 }
 
-                axBotService.genResponseForSystemAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, output -> {
+                axBotService.genResponseForSystemAsync(SupportPlatform.PLATFORM_KOOK, input, output -> {
                     if (output == null) {
                         return;
                     }
@@ -174,7 +175,7 @@ public class BotKookService {
             input.setExtraMap(extraMap);
             if (roomInfoData.getLiveStatus() == 1) {
                 if (!Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey))) {
-                    axBotService.genResponseForSystemAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, output -> {
+                    axBotService.genResponseForSystemAsync(SupportPlatform.PLATFORM_KOOK, input, output -> {
                         if (output == null) {
                             return;
                         }
@@ -198,7 +199,7 @@ public class BotKookService {
             AxBotSysInputForKook input = new AxBotSysInputForKook();
             input.setEvent(AxBotSystemEvent.SYSTEM_EVENT_WT_NEWS);
             input.setExtraJson(extraJson);
-            axBotService.genResponseForSystemAsync(AxBotSupportPlatform.PLATFORM_KOOK, input, output -> {
+            axBotService.genResponseForSystemAsync(SupportPlatform.PLATFORM_KOOK, input, output -> {
                 if (output == null) {
                     return;
                 }

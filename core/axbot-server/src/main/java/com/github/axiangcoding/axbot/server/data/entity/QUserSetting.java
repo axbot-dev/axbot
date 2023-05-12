@@ -19,4 +19,11 @@ public class QUserSetting extends BasicEntity {
     Boolean banned;
     String bannedReason;
     LocalDateTime bannedTime;
+
+    public static QUserSetting defaultSetting(String userId) {
+        QUserSetting setting = new QUserSetting();
+        setting.setUserId(userId);
+        setting.setBanned(false);
+        return setting;
+    }
 }

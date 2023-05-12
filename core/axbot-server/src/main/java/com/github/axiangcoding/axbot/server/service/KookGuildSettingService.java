@@ -20,6 +20,13 @@ public class KookGuildSettingService {
         return kookGuildSettingRepository.findByGuildId(guildId);
     }
 
+    public KookGuildSetting getOrDefault(String guildId) {
+        KookGuildSetting guildSetting;
+        Optional<KookGuildSetting> opt = findBytGuildId(guildId);
+        guildSetting = opt.orElseGet(() -> kookGuildSettingRepository.save(KookGuildSetting.defaultSetting(guildId)));
+        return guildSetting;
+    }
+
     public List<KookGuildSetting> findByEnabledBiliLiveReminder() {
         return kookGuildSettingRepository.findByFunctionSettingEnableBiliLiveReminder(true);
     }
@@ -27,6 +34,8 @@ public class KookGuildSettingService {
     public List<KookGuildSetting> findByEnableNewsReminder() {
         return kookGuildSettingRepository.findByFunctionSettingEnableWtNewsReminder(true);
     }
+
+
 
     /**
      * 加入群组时操作
@@ -36,8 +45,11 @@ public class KookGuildSettingService {
     public void updateWhenJoin(String guildId) {
         Optional<KookGuildSetting> opt = findBytGuildId(guildId);
         if (opt.isPresent()) {
-            opt.get().setActive(true);
-            kookGuildSettingRepository.save(opt.get());
+            KookGuildSetting setting = opt.get();
+            if (!setting.getActive()) {
+                setting.setActive(true);
+                kookGuildSettingRepository.save(setting);
+            }
             return;
         }
         KookGuildSetting entity = KookGuildSetting.defaultSetting(guildId);
@@ -81,7 +93,7 @@ public class KookGuildSettingService {
         }
     }
 
-    public void enableWtNewsRemind(String guildId, String channelId){
+    public void enableWtNewsRemind(String guildId, String channelId) {
         Optional<KookGuildSetting> opt = findBytGuildId(guildId);
         if (opt.isPresent()) {
             KookGuildSetting entity = opt.get();
@@ -92,7 +104,7 @@ public class KookGuildSettingService {
         }
     }
 
-    public void disableWtNewsRemind(String guildId){
+    public void disableWtNewsRemind(String guildId) {
         Optional<KookGuildSetting> opt = findBytGuildId(guildId);
         if (opt.isPresent()) {
             KookGuildSetting entity = opt.get();

@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.server.service.axbot;
 
 import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
-import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
@@ -278,7 +278,7 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
 
     @Override
     public String getSponsor(String guildId, String channelId, String userId, AxBotUserOutput output) {
-        String personalOrder = sponsorOrderService.generatePersonalOrder(AxBotSupportPlatform.PLATFORM_KOOK, guildId, channelId, userId);
+        String personalOrder = sponsorOrderService.generatePersonalOrder(SupportPlatform.PLATFORM_KOOK, guildId, channelId, userId);
         threadPoolTaskExecutor.execute(() -> {
             try {
                 AxBotUserOutputForKook out = (AxBotUserOutputForKook) output;

@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.server.controller.entity.vo.req;
 import lombok.Data;
 
 @Data
-public class QQWebhookEvent {
+public class CqhttpWebhookEvent {
     Long time;
     Long selfId;
     String postType;
