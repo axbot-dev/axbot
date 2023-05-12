@@ -75,7 +75,17 @@ public class AxBotHandlerForCqhttp implements IAxBotHandlerForCqhttp {
     }
 
     @Override
+    public String getUserStatus(String userId) {
+        return null;
+    }
+
+    @Override
     public String chatWithAI(String userId, String ask) {
+        return null;
+    }
+
+    @Override
+    public String getSponsor(String guildId, String channelId, String userId, AxBotUserOutput output) {
         return null;
     }
 

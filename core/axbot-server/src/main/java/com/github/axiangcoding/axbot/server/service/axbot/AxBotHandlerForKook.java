@@ -2,6 +2,7 @@ package com.github.axiangcoding.axbot.server.service.axbot;
 
 import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForKook;
+import com.github.axiangcoding.axbot.engine.entity.AxBotSupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
@@ -15,9 +16,7 @@ import com.github.axiangcoding.axbot.remote.kook.service.entity.KookUser;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.resp.GuildRoleListData;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
-import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
-import com.github.axiangcoding.axbot.server.data.entity.Mission;
-import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
+import com.github.axiangcoding.axbot.server.data.entity.*;
 import com.github.axiangcoding.axbot.server.service.*;
 import com.github.axiangcoding.axbot.server.service.axbot.function.*;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
@@ -61,6 +60,9 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
 
     @Resource
     AIService aiService;
+
+    @Resource
+    SponsorOrderService sponsorOrderService;
 
     @Override
     public String getDefault() {
@@ -245,9 +247,19 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     public String getGuildStatus(String guildId) {
         Optional<KookGuildSetting> optKgs = kookGuildSettingService.findBytGuildId(guildId);
         if (optKgs.isEmpty()) {
-            return StatusFunction.settingNotFound();
+            return StatusFunction.guildSettingNotFound();
         } else {
-            return StatusFunction.settingFound(optKgs.get());
+            return StatusFunction.guildSettingFound(optKgs.get());
+        }
+    }
+
+    @Override
+    public String getUserStatus(String userId) {
+        Optional<KookUserSetting> optKgs = kookUserSettingService.findByUserId(userId);
+        if (optKgs.isEmpty()) {
+            return StatusFunction.userSettingNotFound();
+        } else {
+            return StatusFunction.userSettingFound(optKgs.get());
         }
     }
 
@@ -263,6 +275,48 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
         }
         return JsonUtils.toJson(messages);
     }
+
+    @Override
+    public String getSponsor(String guildId, String channelId, String userId, AxBotUserOutput output) {
+        String personalOrder = sponsorOrderService.generatePersonalOrder(AxBotSupportPlatform.PLATFORM_KOOK, guildId, channelId, userId);
+        threadPoolTaskExecutor.execute(() -> {
+            try {
+                AxBotUserOutputForKook out = (AxBotUserOutputForKook) output;
+                CreateMessageReq req = new CreateMessageReq();
+                req.setType(KookEvent.TYPE_CARD);
+                req.setQuote(out.getReplayToMsg());
+                req.setTargetId(out.getToChannel());
+                int i = 0;
+                int maxTimes = 120;
+                while (i < maxTimes) {
+                    Optional<SponsorOrder> opt = sponsorOrderService.findByOrderId(personalOrder);
+                    if (opt.isPresent()) {
+                        SponsorOrder entity = opt.get();
+                        if (SponsorOrder.STATUS.SUCCESS.getName().equals(entity.getStatus())) {
+                            Integer month = entity.getMonth();
+                            String planName = entity.getPlanTitle();
+                            req.setContent(SponsorFunction.sponsorSuccess(month, planName));
+                            break;
+                        }
+                    }
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    i++;
+                }
+                if (i == maxTimes) {
+                    sponsorOrderService.closeOrder(personalOrder);
+                }
+                kookClient.createMessage(req);
+            } catch (Exception e) {
+                log.error("get sponsor result error", e);
+            }
+        });
+        return SponsorFunction.getPanel(personalOrder);
+    }
+
 
     @Override
     public String joinGuild(String guildId) {
@@ -354,7 +408,6 @@ public class AxBotHandlerForKook implements IAxBotHandlerForKook {
             return ManageFunction.getHelp(nickname, cmdPrefix);
         }
 
-        // TODO 解析命令，管理社群配置
         String manageCmd = cmdList[1];
         HashMap<String, Object> items = new HashMap<>();
         switch (manageCmd) {

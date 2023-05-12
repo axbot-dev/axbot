@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 public class KookUserSetting extends BasicEntity {
+    public static final Integer INPUT_LIMIT = 50;
+
     @Column(unique = true)
     String userId;
 
@@ -25,6 +27,8 @@ public class KookUserSetting extends BasicEntity {
     Usage usage;
     @Embedded
     Permit permit;
+    @Embedded
+    Subscribe subscribe;
 
     public static KookUserSetting defaultSetting(String userId) {
         KookUserSetting setting = new KookUserSetting();
@@ -39,6 +43,7 @@ public class KookUserSetting extends BasicEntity {
         Permit permit = new Permit();
         permit.setCanUseAI(false);
         setting.setPermit(permit);
+        setting.setSubscribe(new Subscribe());
         return setting;
     }
 
@@ -59,5 +64,14 @@ public class KookUserSetting extends BasicEntity {
     @ToString
     public static class Permit {
         Boolean canUseAI;
+    }
+
+    @Embeddable
+    @Getter
+    @Setter
+    @ToString
+    public static class Subscribe {
+        String plan;
+        LocalDateTime expireAt;
     }
 }

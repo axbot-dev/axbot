@@ -225,11 +225,10 @@ public class AxBotService {
             return out;
         }
 
-        int inputLimit = 50;
         Integer inputToday = kookUserSetting.getUsage().getInputToday();
-        int overflow = inputToday - inputLimit;
+        int overflow = inputToday - KookUserSetting.INPUT_LIMIT;
         if (overflow >= 0 && overflow < 10) {
-            out.setContent(axBotHandlerForKook.reachedUserLimit(inputToday, inputLimit));
+            out.setContent(axBotHandlerForKook.reachedUserLimit(inputToday, KookUserSetting.INPUT_LIMIT));
             return out;
         } else if (overflow >= 10) {
             String reason = "超限使用";
@@ -281,11 +280,15 @@ public class AxBotService {
                 out.setContent(axBotHandlerForKook.updateWTProfile(cList[2], out));
             } else if (jc == AxbotCommand.COMMAND_GUILD_STATUS) {
                 out.setContent(axBotHandlerForKook.getGuildStatus(in.getFromGuild()));
+            } else if (jc == AxbotCommand.COMMAND_USER_STATUS) {
+                out.setContent(axBotHandlerForKook.getUserStatus(in.getFromUserId()));
             } else if (jc == AxbotCommand.COMMAND_GUILD_MANAGE) {
                 out.setContent(axBotHandlerForKook.manageGuild(
                         in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
-            } else if (jc==AxbotCommand.COMMAND_CHAT_WITH_AI) {
+            } else if (jc == AxbotCommand.COMMAND_CHAT_WITH_AI) {
                 out.setContent(axBotHandlerForKook.chatWithAI(in.getFromUserId(), cList[1]));
+            } else if (jc == AxbotCommand.COMMAND_SUBSCRIBE) {
+                out.setContent(axBotHandlerForKook.getSponsor(in.getFromGuild(), in.getFromChannel(), in.getFromUserId(), out));
             } else {
                 out.setContent(axBotHandlerForKook.commandNotFound(command));
             }

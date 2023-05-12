@@ -23,7 +23,7 @@ public class KookManageController {
     KookGuildSettingService kookGuildSettingService;
 
     @RequireApiKey(admin = true)
-    @GetMapping("blockUsers")
+    @GetMapping("blockedUsers")
     public CommonResult getBlockUsers() {
         List<KookUserSetting> users = kookUserSettingService.findAllByBanned(true);
         return CommonResult.success("users", users);

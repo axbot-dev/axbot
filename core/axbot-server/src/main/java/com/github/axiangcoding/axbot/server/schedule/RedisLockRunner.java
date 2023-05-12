@@ -3,6 +3,8 @@ package com.github.axiangcoding.axbot.server.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 public abstract class RedisLockRunner {
     private final StringRedisTemplate stringRedisTemplate;
@@ -18,11 +20,10 @@ public abstract class RedisLockRunner {
         String lockName = taskLock.getName();
         try {
             // 尝试获取锁
-            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(lockName, "locked"));
+            lock = Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(lockName, "locked", 10, TimeUnit.MINUTES));
             if (lock) {
                 log.info("get lock, start schedule task {}", lockName);
                 run();
-
             } else {
                 // 获取锁失败，放弃任务执行
                 log.warn("failed to get lock, abort schedule task {}", lockName);
