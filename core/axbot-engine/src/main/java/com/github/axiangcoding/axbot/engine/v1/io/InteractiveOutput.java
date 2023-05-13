@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Duration;
-import java.util.UUID;
 
 /**
  * 交互类输出
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Setter
 @ToString
 public abstract class InteractiveOutput {
-    UUID interactiveId;
+    Long inputId;
     String userId;
     String messageId;
     String response;

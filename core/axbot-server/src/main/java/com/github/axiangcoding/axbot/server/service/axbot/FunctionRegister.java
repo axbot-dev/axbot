@@ -29,4 +29,6 @@ public class FunctionRegister {
     FuncUserBanned funcUserBanned;
     @Resource
     FuncUsageLimit funcUsageLimit;
+    @Resource
+    FuncCensorFailed funcCensorFailed;
 }

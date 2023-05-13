@@ -17,7 +17,6 @@ public class CqhttpInteractiveInput extends InteractiveInput {
     @Override
     public CqhttpInteractiveOutput response(String response) {
         CqhttpInteractiveOutput output = new CqhttpInteractiveOutput();
-        output.setInteractiveId(this.getInteractiveId());
         output.setUserId(this.getUserId());
         output.setMessageId(this.getMessageId());
         output.setResponse(response);

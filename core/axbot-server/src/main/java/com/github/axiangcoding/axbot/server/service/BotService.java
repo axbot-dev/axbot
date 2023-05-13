@@ -22,6 +22,7 @@ import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import com.github.axiangcoding.axbot.server.service.axbot.FunctionRegister;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,8 @@ public class BotService {
     QGroupSettingService qGroupSettingService;
     @Resource
     QUserSettingService qUserSettingService;
+    @Resource
+    UserInputRecordService userInputRecordService;
 
     /**
      * 同步响应用户输入
@@ -90,13 +93,18 @@ public class BotService {
     }
 
     public KookInteractiveOutput processKookInteractiveFunction(KookInteractiveInput input) {
-        // 检查是否被禁用
+        String userId = input.getUserId();
         String guildId = input.getGuildId();
+        String channelId = input.getChannelId();
+        String message = StringUtils.join(input.getParamList(), " ");
+        // 记录输入内容
+        long inputId = userInputRecordService.saveRecordFromKook(userId, message, input.getGuildId(), channelId);
+        input.setInputId(inputId);
+        // 检查是否被禁用
         KookGuildSetting guildSetting = kookGuildSettingService.getOrDefault(guildId);
         if (guildSetting.getBanned()) {
             return functionRegister.getFuncGuildBanned().execute(input);
         }
-        String userId = input.getUserId();
         KookUserSetting userSetting = kookUserSettingService.getOrDefault(userId);
         if (userSetting.getBanned()) {
             return functionRegister.getFuncUserBanned().execute(input);
@@ -109,6 +117,12 @@ public class BotService {
         int inputLimit = kookUserSettingService.getInputLimit(userId);
         if (usage.getInputToday() > inputLimit) {
             return functionRegister.getFuncUsageLimit().execute(input);
+        }
+        // 文本AI检查
+        boolean textPassCheck = textCensorService.isTextPassCheck(message);
+        if (!textPassCheck) {
+            userInputRecordService.updateSensitive(inputId, true);
+            return functionRegister.getFuncCensorFailed().execute(input);
         }
 
         InteractiveCommand command = input.getCommand();
@@ -127,13 +141,17 @@ public class BotService {
     }
 
     public CqhttpInteractiveOutput processCqhttpInteractiveFunction(CqhttpInteractiveInput input) {
-        // 检查是否被禁用
+        // 记录输入内容
+        String message = StringUtils.join(input.getParamList(), " ");
         String groupId = input.getGroupId();
+        String userId = input.getUserId();
+        long inputId = userInputRecordService.saveRecordFromCqhttp(userId, message, groupId);
+        input.setInputId(inputId);
+        // 检查是否被禁用
         QGroupSetting groupSetting = qGroupSettingService.getOrDefault(groupId);
         if (groupSetting.getBanned()) {
             return functionRegister.getFuncGuildBanned().execute(input);
         }
-        String userId = input.getUserId();
         QUserSetting userSetting = qUserSettingService.getOrDefault(userId);
         if (userSetting.getBanned()) {
             return functionRegister.getFuncUserBanned().execute(input);
@@ -147,7 +165,12 @@ public class BotService {
         if (usage.getInputToday() > inputLimit) {
             return functionRegister.getFuncUsageLimit().execute(input);
         }
-
+        // 文本AI检查
+        boolean textPassCheck = textCensorService.isTextPassCheck(message);
+        if (!textPassCheck) {
+            userInputRecordService.updateSensitive(inputId, true);
+            return functionRegister.getFuncCensorFailed().execute(input);
+        }
 
         InteractiveCommand command = input.getCommand();
         InteractiveFunction function;

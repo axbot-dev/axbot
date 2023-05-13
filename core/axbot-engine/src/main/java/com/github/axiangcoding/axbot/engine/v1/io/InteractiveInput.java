@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * 交互类输入
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Setter
 @ToString
 public abstract class InteractiveInput {
-    UUID interactiveId;
+    Long inputId;
     String userId;
     String messageId;
     InteractiveCommand command;
@@ -23,7 +22,6 @@ public abstract class InteractiveInput {
     LocalDateTime startTime;
 
     public InteractiveInput() {
-        interactiveId = UUID.randomUUID();
         startTime = LocalDateTime.now();
     }
 

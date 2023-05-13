@@ -18,7 +18,6 @@ public class KookInteractiveInput extends InteractiveInput {
     @Override
     public KookInteractiveOutput response(String response) {
         KookInteractiveOutput output = new KookInteractiveOutput();
-        output.setInteractiveId(getInteractiveId());
         output.setUserId(getUserId());
         output.setMessageId(getMessageId());
         output.setResponse(response);

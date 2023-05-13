@@ -34,7 +34,7 @@ public class FuncUserBanned extends InteractiveFunction {
             reason = opt.get().getBannedReason();
         }
         card.addModule(KookCardMessage.quickMdSection("你已被拉黑！原因：%s".formatted(reason)));
-        card.addModule(KookCardMessage.quickMdSection("如果你对本封禁有任何异议，请申诉"));
+        card.addModule(KookCardMessage.quickTextLinkSection("如果你对本封禁有任何异议，请申诉", "进入KOOK服务器申诉", "primary", "https://kook.top/eUTZK7"));
         return input.response(card.displayWithFooter());
     }
 
