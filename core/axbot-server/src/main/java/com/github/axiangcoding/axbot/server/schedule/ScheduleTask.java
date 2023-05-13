@@ -10,12 +10,14 @@ import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.BiliResponse;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.resp.RoomInfoData;
 import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
-import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QGroupSetting;
 import com.github.axiangcoding.axbot.server.data.entity.WtNews;
 import com.github.axiangcoding.axbot.server.data.repository.WtNewsRepository;
-import com.github.axiangcoding.axbot.server.service.*;
+import com.github.axiangcoding.axbot.server.service.BotService;
+import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
+import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
+import com.github.axiangcoding.axbot.server.service.QGroupSettingService;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,13 +47,8 @@ public class ScheduleTask {
     }
 
     @Resource
-    BotKookService botKookService;
-
-    @Resource
     StringRedisTemplate stringRedisTemplate;
 
-    @Resource
-    AxBotService axBotService;
 
     @Resource
     KookUserSettingService kookUserSettingService;
@@ -61,9 +58,6 @@ public class ScheduleTask {
 
     @Resource
     WtNewsRepository wtNewsRepository;
-
-    @Resource
-    BotConfProps botConfProps;
 
     @Resource
     KookGuildSettingService kookGuildSettingService;

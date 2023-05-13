@@ -185,6 +185,7 @@ public class BotService {
             case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
             case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
             case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
+            case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
             default -> function = functionRegister.getFuncDefault();
         }
         return function.execute(input);
@@ -236,6 +237,7 @@ public class BotService {
             case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
             case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
             case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
+            case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
             default -> function = functionRegister.getFuncDefault();
         }
         return function.execute(input);

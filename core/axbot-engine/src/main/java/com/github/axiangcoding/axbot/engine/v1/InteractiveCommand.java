@@ -19,7 +19,7 @@ public enum InteractiveCommand {
     COMMAND_USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
     COMMAND_GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
     COMMAND_CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
-    COMMAND_SUBSCRIBE(List.of("赞助", "订阅", "subscribe"), null);
+    COMMAND_SPONSOR(List.of("赞助", "订阅", "subscribe"), null);
 
     private final List<String> t1;
     private final List<String> t2;

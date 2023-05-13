@@ -278,7 +278,7 @@ public class AxBotService {
                         in.getFromUserId(), in.getFromGuild(), in.getFromChannel(), command));
             } else if (jc == InteractiveCommand.COMMAND_CHAT_WITH_AI) {
                 out.setContent(axBotHandlerForKook.chatWithAI(in.getFromUserId(), cList[1]));
-            } else if (jc == InteractiveCommand.COMMAND_SUBSCRIBE) {
+            } else if (jc == InteractiveCommand.COMMAND_SPONSOR) {
                 out.setContent(axBotHandlerForKook.getSponsor(in.getFromGuild(), in.getFromChannel(), in.getFromUserId(), out));
             } else {
                 out.setContent(axBotHandlerForKook.commandNotFound(command));

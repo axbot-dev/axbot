@@ -33,6 +33,8 @@ public class FunctionRegister {
     FuncManageGuild funcManageGuild;
     @Resource
     FuncChatWithAI funcChatWithAI;
+    @Resource
+    FuncSponsor funcSponsor;
 
     @Resource
     FuncGuildBanned funcGuildBanned;
