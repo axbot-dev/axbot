@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot.function;
+package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
 import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;

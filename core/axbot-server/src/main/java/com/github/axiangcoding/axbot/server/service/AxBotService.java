@@ -189,15 +189,7 @@ public class AxBotService {
         });
     }
 
-    public boolean isPlatformEnabled(SupportPlatform platform) {
-        if (platform == SupportPlatform.PLATFORM_KOOK && botConfProps.getKook().getEnabled()) {
-            return true;
-        } else if (platform == SupportPlatform.PLATFORM_CQHTTP && botConfProps.getCqhttp().getEnabled()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     private AxBotUserOutputForKook processKookUserEvent(AxBotUserInput input) {
         AxBotUserInputForKook in = ((AxBotUserInputForKook) input);

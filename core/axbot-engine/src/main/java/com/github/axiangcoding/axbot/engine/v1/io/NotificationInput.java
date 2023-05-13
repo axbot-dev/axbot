@@ -18,6 +18,7 @@ public abstract class NotificationInput {
     UUID notificationId;
     LocalDateTime startTime;
     NotificationEvent event;
+    Object data;
 
     public NotificationInput() {
         notificationId = UUID.randomUUID();

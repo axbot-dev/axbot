@@ -3,20 +3,17 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
 import com.github.axiangcoding.axbot.engine.UserInputCallback;
-import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.entity.AxBotSystemEvent;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotSysOutputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserInputForKook;
 import com.github.axiangcoding.axbot.engine.entity.kook.AxBotUserOutputForKook;
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
-import com.github.axiangcoding.axbot.remote.bilibili.service.entity.BiliResponse;
-import com.github.axiangcoding.axbot.remote.bilibili.service.entity.resp.RoomInfoData;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
-import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
@@ -28,7 +25,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -148,43 +144,6 @@ public class BotKookService {
             // do nothing yet
         }
         return map;
-    }
-
-    public void checkBiliRoomStatus() {
-        List<KookGuildSetting> guilds = kookGuildSettingService.findByEnabledBiliLiveReminder();
-
-        guilds.forEach(guild -> {
-            String biliRoomId = guild.getFunctionSetting().getBiliRoomId();
-            if (!StringUtils.isNumeric(biliRoomId)) {
-                return;
-            }
-            String biliLiveChannelId = guild.getFunctionSetting().getBiliLiveChannelId();
-            BiliResponse<RoomInfoData> liveRoomInfo = biliClient.getLiveRoomInfo(biliRoomId);
-
-            String cacheKey = CacheKeyGenerator.getBiliRoomRemindCacheKey(biliLiveChannelId, biliRoomId);
-
-            AxBotSysInputForKook input = new AxBotSysInputForKook();
-            input.setEvent(AxBotSystemEvent.SYSTEM_EVENT_BILI_ROOM_REMIND);
-            HashMap<String, Object> extraMap = new HashMap<>();
-            RoomInfoData roomInfoData = liveRoomInfo.getData();
-            extraMap.put("roomId", roomInfoData.getRoomId());
-            extraMap.put("title", roomInfoData.getTitle());
-            extraMap.put("areaName", roomInfoData.getAreaName());
-            extraMap.put("description", roomInfoData.getDescription());
-
-            input.setExtraMap(extraMap);
-            if (roomInfoData.getLiveStatus() == 1) {
-                if (!Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey))) {
-                    axBotService.genResponseForSystemAsync(SupportPlatform.PLATFORM_KOOK, input, output -> {
-                        if (output == null) {
-                            return;
-                        }
-                        sendCardMessage(biliLiveChannelId, null, output.getContent());
-                    });
-                }
-                stringRedisTemplate.opsForValue().set(cacheKey, "", 10, TimeUnit.MINUTES);
-            }
-        });
     }
 
 

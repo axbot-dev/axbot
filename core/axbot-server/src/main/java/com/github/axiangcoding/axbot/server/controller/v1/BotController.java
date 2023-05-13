@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.CqhttpWebhookEvent;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
-import com.github.axiangcoding.axbot.server.service.AxBotService;
+import com.github.axiangcoding.axbot.server.service.BotService;
 import com.github.axiangcoding.axbot.server.service.WebhookService;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
@@ -23,15 +23,15 @@ import java.util.Map;
 public class BotController {
 
     @Resource
-    AxBotService axBotService;
+    WebhookService webhookService;
 
     @Resource
-    WebhookService webhookService;
+    BotService botService;
 
     @PostMapping("kook/webhook")
     public Map<String, Object> KookWebhook(@RequestBody String body) {
         log.debug("receive kook webhook msg, plain: {}", body);
-        if (!axBotService.isPlatformEnabled(SupportPlatform.PLATFORM_KOOK)) {
+        if (!botService.isPlatformEnabled(SupportPlatform.PLATFORM_KOOK)) {
             log.info("platform kook not enabled, ignore webhook callback");
             return new HashMap<>();
         }
@@ -49,7 +49,7 @@ public class BotController {
             HttpServletRequest request,
             @RequestBody String body) {
         log.debug("receive cqhttp webhook msg, plain: {}", body);
-        if (!axBotService.isPlatformEnabled(SupportPlatform.PLATFORM_CQHTTP)) {
+        if (!botService.isPlatformEnabled(SupportPlatform.PLATFORM_CQHTTP)) {
             log.warn("platform cqhttp not enabled");
             return new HashMap<>();
         }

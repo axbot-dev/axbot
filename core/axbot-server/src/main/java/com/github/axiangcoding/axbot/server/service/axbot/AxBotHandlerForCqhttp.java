@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.server.service.axbot;
 
 import com.github.axiangcoding.axbot.engine.IAxBotHandlerForCqhttp;
 import com.github.axiangcoding.axbot.engine.entity.AxBotUserOutput;
-import com.github.axiangcoding.axbot.server.service.axbot.function.LuckyFunction;
+import com.github.axiangcoding.axbot.server.service.axbot.function.interactive.LuckyFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

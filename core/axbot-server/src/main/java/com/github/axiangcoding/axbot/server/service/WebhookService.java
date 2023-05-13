@@ -1,9 +1,11 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.engine.v1.InteractiveCommand;
+import com.github.axiangcoding.axbot.engine.v1.NotificationEvent;
 import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
+import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.CqhttpWebhookEvent;
@@ -104,7 +106,6 @@ public class WebhookService {
                 Objects.equals(d.getType(), KookEvent.TYPE_KMARKDOWN)) {
             String content = d.getContent();
             String[] contentSplit = StringUtils.split(content);
-
             String guildId = d.getExtra().getGuildId();
             String authorId = d.getAuthorId();
             String channelId = d.getTargetId();
@@ -129,14 +130,19 @@ public class WebhookService {
                 String challenge = d.getChallenge();
                 map.put("challenge", challenge);
             } else if (Objects.equals(channelType, KookEvent.CHANNEL_TYPE_PERSON)) {
-
                 String type = d.getExtra().getType();
+                String guildId = (String) d.getExtra().getBody().get("guild_id");
                 if ("self_joined_guild".equals(type)) {
-                    // FIXME 生成通知事件
+                    KookNotificationInput input = new KookNotificationInput();
+                    input.setEvent(NotificationEvent.EVENT_JOIN_GUILD);
+                    input.setGuildId(guildId);
+                    botService.responseForNotificationAsync(SupportPlatform.PLATFORM_KOOK, input);
                 } else if ("self_exited_guild".equals(type)) {
-                    // FIXME 生成通知事件
+                    KookNotificationInput input = new KookNotificationInput();
+                    input.setEvent(NotificationEvent.EVENT_EXIT_GUILD);
+                    input.setGuildId(guildId);
+                    botService.responseForNotificationAsync(SupportPlatform.PLATFORM_KOOK, input);
                 }
-                // FIXME 进入通知类响应流程
             }
         }
         return map;

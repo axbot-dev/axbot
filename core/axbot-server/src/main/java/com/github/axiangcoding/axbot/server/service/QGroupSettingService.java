@@ -5,6 +5,7 @@ import com.github.axiangcoding.axbot.server.data.repository.QGroupSettingReposit
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,4 +24,23 @@ public class QGroupSettingService {
         return qGroupSetting;
     }
 
+    public void updateWhenJoin(String groupId) {
+        QGroupSetting qGroupSetting = getOrDefault(groupId);
+        qGroupSetting.setActive(true);
+        qGroupSettingRepository.save(qGroupSetting);
+    }
+
+    public void updateWhenExit(String groupId) {
+        QGroupSetting qGroupSetting = getOrDefault(groupId);
+        qGroupSetting.setActive(false);
+        qGroupSettingRepository.save(qGroupSetting);
+    }
+
+    public List<QGroupSetting> findByEnabledBiliLiveReminder() {
+        return qGroupSettingRepository.findByFunctionSettingEnableBiliLiveReminder(true);
+    }
+
+    public List<QGroupSetting> findByEnableNewsReminder() {
+        return qGroupSettingRepository.findByFunctionSettingEnableWtNewsReminder(true);
+    }
 }

@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.server.service.axbot.function;
+package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
 import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;

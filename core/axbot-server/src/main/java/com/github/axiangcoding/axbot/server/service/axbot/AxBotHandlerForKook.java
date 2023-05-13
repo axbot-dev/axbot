@@ -18,7 +18,7 @@ import com.github.axiangcoding.axbot.remote.kook.service.entity.resp.GuildRoleLi
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.*;
 import com.github.axiangcoding.axbot.server.service.*;
-import com.github.axiangcoding.axbot.server.service.axbot.function.*;
+import com.github.axiangcoding.axbot.server.service.axbot.function.interactive.*;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

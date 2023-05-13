@@ -9,8 +9,7 @@ public class CacheKeyGenerator {
     private enum CACHE_PREFIX {
         GAMER_PROFILE_UPDATE("WTGamerProfileUpdate"),
         BILI_ROOM_REMIND("BiliBiliRoomRemind"),
-        CRON_JOB_LOCK("CronJobLock")
-        ;
+        CRON_JOB_LOCK("CronJobLock");
         private final String key;
     }
 
@@ -18,8 +17,12 @@ public class CacheKeyGenerator {
         return "%s:%s".formatted(CACHE_PREFIX.GAMER_PROFILE_UPDATE.getKey(), nickname);
     }
 
-    public static String getBiliRoomRemindCacheKey(String channelId, String roomId) {
-        return "%s:%s:%s".formatted(CACHE_PREFIX.BILI_ROOM_REMIND.getKey(), channelId, roomId);
+    public static String getKookBiliRoomRemindCacheKey(String channelId, String roomId) {
+        return "%s:kook:%s:%s".formatted(CACHE_PREFIX.BILI_ROOM_REMIND.getKey(), channelId, roomId);
+    }
+
+    public static String getCqhttpBiliRoomRemindCacheKey(String groupId, String roomId) {
+        return "%s:cqhttp:%s:%s".formatted(CACHE_PREFIX.BILI_ROOM_REMIND.getKey(), groupId, roomId);
     }
 
     public static String getCronJobLockKey(String jobName) {

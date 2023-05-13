@@ -11,9 +11,12 @@ import com.github.axiangcoding.axbot.engine.v1.io.NotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationInput;
+import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
+import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationOutput;
+import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QGroupSetting;
@@ -49,6 +52,19 @@ public class BotService {
     @Resource
     UserInputRecordService userInputRecordService;
 
+    @Resource
+    BotConfProps botConfProps;
+
+    public boolean isPlatformEnabled(SupportPlatform platform) {
+        if (platform == SupportPlatform.PLATFORM_KOOK && botConfProps.getKook().getEnabled()) {
+            return true;
+        } else if (platform == SupportPlatform.PLATFORM_CQHTTP && botConfProps.getCqhttp().getEnabled()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * 同步响应用户输入
      *
@@ -59,9 +75,15 @@ public class BotService {
     public void responseForInteractive(SupportPlatform platform, InteractiveInput input) {
         if (platform == SupportPlatform.PLATFORM_KOOK) {
             KookInteractiveOutput output = processKookInteractiveFunction((KookInteractiveInput) input);
+            if (output == null) {
+                return;
+            }
             remoteClientService.sendKookCardMsg(output);
         } else if (platform == SupportPlatform.PLATFORM_CQHTTP) {
             CqhttpInteractiveOutput output = processCqhttpInteractiveFunction((CqhttpInteractiveInput) input);
+            if (output == null) {
+                return;
+            }
             remoteClientService.sendCqhttpMsg(output);
         }
 
@@ -69,12 +91,19 @@ public class BotService {
 
     public void responseForNotification(SupportPlatform platform, NotificationInput input) {
         if (platform == SupportPlatform.PLATFORM_KOOK) {
-            processKookNotificationFunction((KookNotificationInput) input);
+            KookNotificationOutput output = processKookNotificationFunction((KookNotificationInput) input);
+            if (output == null) {
+                return;
+            }
+            remoteClientService.sendKookCardMsg(output);
         } else if (platform == SupportPlatform.PLATFORM_CQHTTP) {
-            processCqhttpNotificationFunction((CqhttpNotificationInput) input);
+            CqhttpNotificationOutput output = processCqhttpNotificationFunction((CqhttpNotificationInput) input);
+            if (output == null) {
+                return;
+            }
+            remoteClientService.sendCqhttpMsg(output);
         }
     }
-
 
     /**
      * 异步响应用户输入
@@ -87,10 +116,27 @@ public class BotService {
             try {
                 responseForInteractive(platform, input);
             } catch (Exception e) {
-                log.error("generate response for user input async error", e);
+                log.error("generate response for interactive async error", e);
             }
         });
     }
+
+    /**
+     * 异步响通知输入
+     *
+     * @param input
+     * @return
+     */
+    public void responseForNotificationAsync(SupportPlatform platform, NotificationInput input) {
+        threadPoolTaskExecutor.execute(() -> {
+            try {
+                responseForNotification(platform, input);
+            } catch (Exception e) {
+                log.error("generate response for notification async error", e);
+            }
+        });
+    }
+
 
     public KookInteractiveOutput processKookInteractiveFunction(KookInteractiveInput input) {
         String userId = input.getUserId();
@@ -196,22 +242,37 @@ public class BotService {
     }
 
 
-    private void processKookNotificationFunction(KookNotificationInput input) {
+    private KookNotificationOutput processKookNotificationFunction(KookNotificationInput input) {
         NotificationEvent event = input.getEvent();
         NotificationFunction function;
         switch (event) {
-            // FIXME 发送消息
-            default -> log.warn("no such notification event: {}", event);
+            case EVENT_JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
+            case EVENT_EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
+            case EVENT_BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
+            case EVENT_WT_NEWS -> function = functionRegister.getFuncWTNews();
+            default -> {
+                log.warn("no such notification event: {}", event);
+                return null;
+            }
         }
+        return function.execute(input);
     }
 
-    private void processCqhttpNotificationFunction(CqhttpNotificationInput input) {
+    private CqhttpNotificationOutput processCqhttpNotificationFunction(CqhttpNotificationInput input) {
         NotificationEvent event = input.getEvent();
         NotificationFunction function;
         switch (event) {
-            // FIXME 发送消息
-            default -> log.warn("no such notification event: {}", event);
+            case EVENT_JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
+            case EVENT_EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
+            case EVENT_BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
+            case EVENT_WT_NEWS -> function = functionRegister.getFuncWTNews();
+            default -> {
+                log.warn("no such notification event: {}", event);
+                return null;
+            }
+
         }
+        return function.execute(input);
     }
 
 

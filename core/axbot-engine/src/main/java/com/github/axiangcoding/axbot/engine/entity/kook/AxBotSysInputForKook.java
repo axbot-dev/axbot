@@ -8,6 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Deprecated
 public class AxBotSysInputForKook extends AxBotSysInput {
     /**
      * 需要发送给的服务器
