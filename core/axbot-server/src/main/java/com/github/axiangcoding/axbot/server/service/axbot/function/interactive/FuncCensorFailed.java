@@ -61,7 +61,7 @@ public class FuncCensorFailed extends InteractiveFunction {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("AXBot不会响应这条消息");
         msg.addLine("本条消息的输入被AI判断为不合时宜，不会做出任何响应");
         msg.addLine("累计5条消息被判定为不合时宜，你会被拉黑");
-        msg.addLine("你已输入 %d / %d 条不合时宜的消息".formatted(counted, (limit)));
+        msg.addLine("你已输入 %d / %d 条不合时宜的消息".formatted(counted, limit));
         msg.addDivider();
         msg.addLine("注意：如果你的ID是纯数字，请使用“查找”，这样可以减少误判几率");
         return input.response(msg.displayWithFooter());
