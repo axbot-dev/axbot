@@ -225,19 +225,19 @@ public class AxBotService {
         }
 
         Integer inputToday = kookUserSetting.getUsage().getInputToday();
-        int overflow = inputToday - KookUserSetting.INPUT_LIMIT;
-        if (overflow >= 0 && overflow < 10) {
-            out.setContent(axBotHandlerForKook.reachedUserLimit(inputToday, KookUserSetting.INPUT_LIMIT));
-            return out;
-        } else if (overflow >= 10) {
-            String reason = "超限使用";
-            kookUserSettingService.blockUser(userId, reason);
-            out.setContent(axBotHandlerForKook.userBanned(reason));
-            return out;
-        }
+        // int overflow = inputToday - KookUserSetting.INPUT_LIMIT;
+        // if (overflow >= 0 && overflow < 10) {
+        //     out.setContent(axBotHandlerForKook.reachedUserLimit(inputToday, KookUserSetting.INPUT_LIMIT));
+        //     return out;
+        // } else if (overflow >= 10) {
+        //     String reason = "超限使用";
+        //     kookUserSettingService.blockUser(userId, reason);
+        //     out.setContent(axBotHandlerForKook.userBanned(reason));
+        //     return out;
+        // }
 
 
-        boolean textPass = textCensorService.isTextPassCheck(command);
+        boolean textPass = textCensorService.checkAndCacheText(command);
         boolean isWarning = false;
         long leftTimes = 0;
         if (!textPass) {

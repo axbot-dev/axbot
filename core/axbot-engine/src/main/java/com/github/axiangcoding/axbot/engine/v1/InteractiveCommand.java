@@ -3,6 +3,8 @@ package com.github.axiangcoding.axbot.engine.v1;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -44,10 +46,15 @@ public enum InteractiveCommand {
     }
 
     public static String[] getParamList(String command) {
-        if (StringUtils.isBlank(command)) {
-            return new String[0];
+        String[] split = StringUtils.split(command);
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(split));
+        InteractiveCommand judgeCommand = judgeCommand(command);
+        if (judgeCommand.t1 != null) {
+            list.remove(0);
         }
-        String[] split = StringUtils.split(command, null, 3);
-        return StringUtils.split(split[split.length - 1]);
+        if (judgeCommand.t2 != null) {
+            list.remove(0);
+        }
+        return list.toArray(new String[0]);
     }
 }

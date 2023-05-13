@@ -2,6 +2,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.SponsorOrder;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import com.github.axiangcoding.axbot.server.data.repository.KookUserSettingRepository;
@@ -50,15 +51,11 @@ public class KookUserSettingService {
         kookUserSettingRepository.updateBannedAndBannedReasonAndBannedTimeByUserId(false, null, null, userId);
     }
 
-    public void updateInputUsage(String userId) {
-        Optional<KookUserSetting> opt = kookUserSettingRepository.findByUserId(userId);
-        KookUserSetting kookUserSetting;
-        kookUserSetting = opt.orElseGet(() -> newSetting(userId));
-
-        UserUsage usage = kookUserSetting.getUsage();
+    public void updateInputUsage(KookUserSetting setting) {
+        UserUsage usage = setting.getUsage();
         usage.setInputToday(usage.getInputToday() + 1);
         usage.setInputTotal(usage.getInputTotal() + 1);
-        kookUserSettingRepository.save(kookUserSetting);
+        kookUserSettingRepository.save(setting);
     }
 
     public void resetTodayUsage() {
@@ -71,11 +68,11 @@ public class KookUserSettingService {
             return false;
         }
         KookUserSetting entity = opt.get();
-        KookUserSetting.Permit permit = entity.getPermit();
+        UserPermit permit = entity.getPermit();
         if (permit == null) {
             return false;
         }
-        return Boolean.TRUE.equals(permit.getCanUseAI());
+        return Boolean.TRUE.equals(permit.getCanUseAIChat());
     }
 
     public void setCanUseAI(String userId, boolean canUseAI) {
@@ -85,10 +82,10 @@ public class KookUserSettingService {
         }
         KookUserSetting entity = opt.get();
         if (entity.getPermit() == null) {
-            entity.setPermit(new KookUserSetting.Permit());
+            entity.setPermit(UserPermit.defaultPermit());
         }
-        KookUserSetting.Permit permit = entity.getPermit();
-        permit.setCanUseAI(canUseAI);
+        UserPermit permit = entity.getPermit();
+        permit.setCanUseAIChat(canUseAI);
         kookUserSettingRepository.save(entity);
     }
 

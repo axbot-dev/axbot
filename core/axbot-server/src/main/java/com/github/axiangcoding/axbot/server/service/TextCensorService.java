@@ -23,12 +23,12 @@ public class TextCensorService {
     @Resource
     BotConfProps botConfProps;
 
-    public boolean isTextPassCheck(String text) {
+    public boolean checkAndCacheText(String text) {
         if (!botConfProps.getCensor().getEnabled()) {
             return true;
         }
 
-        if(StringUtils.isBlank(text)){
+        if (StringUtils.isBlank(text)) {
             return true;
         }
 
@@ -38,12 +38,16 @@ public class TextCensorService {
             return !censor.getSensitive();
         }
 
-        QiniuResponse<TextCensorResult> response = qiniuClient.textCensor(text);
-        boolean passed = "pass".equals(response.getResult().getSuggestion());
+        boolean passed = checkText(text);
         TextCensor entity = new TextCensor();
         entity.setText(text);
         entity.setSensitive(!passed);
         textCensorRepository.save(entity);
         return passed;
+    }
+
+    public boolean checkText(String text) {
+        QiniuResponse<TextCensorResult> response = qiniuClient.textCensor(text);
+        return "pass".equals(response.getResult().getSuggestion());
     }
 }

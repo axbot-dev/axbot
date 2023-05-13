@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 import com.github.axiangcoding.axbot.server.data.entity.basic.BasicEntity;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import jakarta.persistence.Column;
@@ -27,6 +28,8 @@ public class QUserSetting extends BasicEntity {
     UserUsage usage;
     @Embedded
     UserSubscribe subscribe;
+    @Embedded
+    UserPermit permit;
 
     public static QUserSetting defaultSetting(String userId) {
         QUserSetting setting = new QUserSetting();
@@ -34,6 +37,7 @@ public class QUserSetting extends BasicEntity {
         setting.setBanned(false);
         setting.setUsage(UserUsage.defaultUsage());
         setting.setSubscribe(new UserSubscribe());
+        setting.setPermit(UserPermit.defaultPermit());
         return setting;
     }
 }

@@ -22,6 +22,12 @@ public class FunctionRegister {
     FuncWtUpdateProfile funcWtUpdateProfile;
     @Resource
     FuncGuildStatus funcGuildStatus;
+    @Resource
+    FuncUserStatus funcUserStatus;
+    @Resource
+    FuncManageGuild funcManageGuild;
+    @Resource
+    FuncChatWithAI funcChatWithAI;
 
     @Resource
     FuncGuildBanned funcGuildBanned;

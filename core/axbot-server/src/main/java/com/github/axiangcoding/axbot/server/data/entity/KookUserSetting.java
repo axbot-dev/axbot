@@ -1,10 +1,10 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 import com.github.axiangcoding.axbot.server.data.entity.basic.BasicEntity;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 public class KookUserSetting extends BasicEntity {
-    public static final Integer INPUT_LIMIT = 50;
 
     @Column(unique = true)
     String userId;
@@ -29,7 +28,7 @@ public class KookUserSetting extends BasicEntity {
     @Embedded
     UserUsage usage;
     @Embedded
-    Permit permit;
+    UserPermit permit;
     @Embedded
     UserSubscribe subscribe;
 
@@ -38,19 +37,9 @@ public class KookUserSetting extends BasicEntity {
         setting.setUserId(userId);
         setting.setBanned(false);
         setting.setUsage(UserUsage.defaultUsage());
-        Permit permit = new Permit();
-        permit.setCanUseAI(false);
-        setting.setPermit(permit);
+        setting.setPermit(UserPermit.defaultPermit());
         setting.setSubscribe(new UserSubscribe());
         return setting;
-    }
-
-    @Embeddable
-    @Getter
-    @Setter
-    @ToString
-    public static class Permit {
-        Boolean canUseAI;
     }
 
 

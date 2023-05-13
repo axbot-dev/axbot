@@ -2,6 +2,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.QUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.SponsorOrder;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import com.github.axiangcoding.axbot.server.data.repository.QUserSettingRepository;
@@ -52,15 +53,7 @@ public class QUserSettingService {
         }
     }
 
-    public void updateInputUsage(String userId) {
-        Optional<QUserSetting> opt = findByUserId(userId);
-        if (opt.isEmpty()) {
-            return;
-        }
-        QUserSetting setting = opt.get();
-        if (setting.getUsage() == null) {
-            setting.setUsage(UserUsage.defaultUsage());
-        }
+    public void updateInputUsage(QUserSetting setting) {
         UserUsage usage = setting.getUsage();
         usage.setInputToday(usage.getInputToday() + 1);
         usage.setInputTotal(usage.getInputTotal() + 1);
@@ -75,5 +68,18 @@ public class QUserSettingService {
     public void unblockUser(String userId) {
         log.info("qq user [{}] get unblocked", userId);
         qUserSettingRepository.updateBannedAndBannedReasonAndBannedTimeByUserId(false, null, null, userId);
+    }
+
+    public boolean canUseAI(String userId) {
+        Optional<QUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return false;
+        }
+        QUserSetting entity = opt.get();
+        UserPermit permit = entity.getPermit();
+        if (permit == null) {
+            return false;
+        }
+        return Boolean.TRUE.equals(permit.getCanUseAIChat());
     }
 }

@@ -32,33 +32,13 @@ public class FuncGuildStatus extends InteractiveFunction {
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
         Optional<KookGuildSetting> opt = kookGuildSettingService.findBytGuildId(input.getGuildId());
-        if (opt.isEmpty()) {
-            return input.response(kookNotFound());
-        } else {
-            return input.response(kookFound(opt.get()));
-        }
+        return opt.map(setting -> input.response(kookFound(setting))).orElse(null);
     }
 
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
         Optional<QGroupSetting> opt = qGroupSettingService.findByGroupId(input.getGroupId());
-        if (opt.isEmpty()) {
-            return input.response(cqhttpNotFound());
-        } else {
-            return input.response(cqhttpFound(opt.get()));
-        }
-    }
-
-    private String kookNotFound() {
-        KookQuickCard card = new KookQuickCard("当前服务器状态", "danger");
-        card.addModule(KookCardMessage.quickMdSection("未找到当前服务器状态！"));
-        return card.displayWithFooter();
-    }
-
-    private String cqhttpNotFound() {
-        CqhttpQuickMsg msg = new CqhttpQuickMsg("当前服务器状态");
-        msg.addLine("未找到当前服务器状态！");
-        return msg.displayWithFooter();
+        return opt.map(qGroupSetting -> input.response(cqhttpFound(qGroupSetting))).orElse(null);
     }
 
     private String kookFound(KookGuildSetting setting) {

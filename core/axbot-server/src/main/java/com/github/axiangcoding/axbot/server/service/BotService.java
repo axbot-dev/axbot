@@ -97,20 +97,21 @@ public class BotService {
         String guildId = input.getGuildId();
         String channelId = input.getChannelId();
         String message = StringUtils.join(input.getParamList(), " ");
+        // 获取服务器和用户设置，如果不存在则创建一个新的
+        KookGuildSetting guildSetting = kookGuildSettingService.getOrDefault(guildId);
+        KookUserSetting userSetting = kookUserSettingService.getOrDefault(userId);
+
         // 记录输入内容
         long inputId = userInputRecordService.saveRecordFromKook(userId, message, input.getGuildId(), channelId);
+        kookUserSettingService.updateInputUsage(userSetting);
         input.setInputId(inputId);
         // 检查是否被禁用
-        KookGuildSetting guildSetting = kookGuildSettingService.getOrDefault(guildId);
         if (guildSetting.getBanned()) {
             return functionRegister.getFuncGuildBanned().execute(input);
         }
-        KookUserSetting userSetting = kookUserSettingService.getOrDefault(userId);
         if (userSetting.getBanned()) {
             return functionRegister.getFuncUserBanned().execute(input);
         }
-        // 更新使用次数
-        kookUserSettingService.updateInputUsage(userId);
 
         // 检查使用次数是否超限
         UserUsage usage = userSetting.getUsage();
@@ -119,7 +120,7 @@ public class BotService {
             return functionRegister.getFuncUsageLimit().execute(input);
         }
         // 文本AI检查
-        boolean textPassCheck = textCensorService.isTextPassCheck(message);
+        boolean textPassCheck = textCensorService.checkAndCacheText(message);
         if (!textPassCheck) {
             userInputRecordService.updateSensitive(inputId, true);
             return functionRegister.getFuncCensorFailed().execute(input);
@@ -135,6 +136,9 @@ public class BotService {
             case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
             case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
             case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
+            case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
+            case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
+            case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
             default -> function = functionRegister.getFuncDefault();
         }
         return function.execute(input);
@@ -145,19 +149,20 @@ public class BotService {
         String message = StringUtils.join(input.getParamList(), " ");
         String groupId = input.getGroupId();
         String userId = input.getUserId();
+        // 获取服务器和用户设置，如果不存在则创建一个新的
+        QGroupSetting groupSetting = qGroupSettingService.getOrDefault(groupId);
+        QUserSetting userSetting = qUserSettingService.getOrDefault(userId);
+
         long inputId = userInputRecordService.saveRecordFromCqhttp(userId, message, groupId);
+        qUserSettingService.updateInputUsage(userSetting);
         input.setInputId(inputId);
         // 检查是否被禁用
-        QGroupSetting groupSetting = qGroupSettingService.getOrDefault(groupId);
         if (groupSetting.getBanned()) {
             return functionRegister.getFuncGuildBanned().execute(input);
         }
-        QUserSetting userSetting = qUserSettingService.getOrDefault(userId);
         if (userSetting.getBanned()) {
             return functionRegister.getFuncUserBanned().execute(input);
         }
-        // 更新使用次数
-        qUserSettingService.updateInputUsage(userId);
 
         // 检查使用次数是否超限
         UserUsage usage = userSetting.getUsage();
@@ -166,7 +171,7 @@ public class BotService {
             return functionRegister.getFuncUsageLimit().execute(input);
         }
         // 文本AI检查
-        boolean textPassCheck = textCensorService.isTextPassCheck(message);
+        boolean textPassCheck = textCensorService.checkAndCacheText(message);
         if (!textPassCheck) {
             userInputRecordService.updateSensitive(inputId, true);
             return functionRegister.getFuncCensorFailed().execute(input);
@@ -182,6 +187,9 @@ public class BotService {
             case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
             case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
             case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
+            case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
+            case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
+            case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
             default -> function = functionRegister.getFuncDefault();
         }
         return function.execute(input);

@@ -22,8 +22,8 @@ public class FuncGuildBanned extends InteractiveFunction {
 
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
-        CqhttpQuickMsg msg = new CqhttpQuickMsg("服务器已被拉黑！");
-        msg.addLine("本服务器已被拉黑！");
+        CqhttpQuickMsg msg = new CqhttpQuickMsg("本群已被拉黑！");
+        msg.addLine("本群已被拉黑！");
         msg.addLine("如果你对本封禁有任何异议，请申诉");
         return input.response(msg.displayWithFooter());
     }

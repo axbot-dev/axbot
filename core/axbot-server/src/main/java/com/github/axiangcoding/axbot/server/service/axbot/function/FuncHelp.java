@@ -65,7 +65,7 @@ public class FuncHelp extends InteractiveFunction {
         commandMap.put("%s 战雷 刷新 <玩家昵称>".formatted(prefix), "刷新战雷的玩家数据");
         commandMap.put("%s 帮助".formatted(prefix), "获取帮助手册");
         commandMap.put("%s 状态".formatted(prefix), "查看个人的信息");
-        commandMap.put("%s 服务器状态状态".formatted(prefix), "查看当前所处的Kook服务器的信息");
+        commandMap.put("%s 群状态".formatted(prefix), "查看当前所处的Kook服务器的信息");
         commandMap.put("%s 管理 <管理命令>".formatted(prefix), "管理本Kook服务器的配置，服务器管理员角色可用");
         commandMap.put("%s 版本".formatted(prefix), "获取当前机器人的部署版本");
         commandMap.put("%s 赞助".formatted(prefix), "赞助机器人");
