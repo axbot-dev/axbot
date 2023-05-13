@@ -132,6 +132,7 @@ public class ScheduleTask {
                         KookNotificationInput input = new KookNotificationInput();
                         input.setEvent(NotificationEvent.EVENT_BILI_ROOM_REMIND);
                         input.setGuildId(guild.getGuildId());
+                        input.setChannelId(biliLiveChannelId);
                         input.setData(roomInfoData);
                         botService.responseForNotificationAsync(SupportPlatform.PLATFORM_KOOK, input);
 

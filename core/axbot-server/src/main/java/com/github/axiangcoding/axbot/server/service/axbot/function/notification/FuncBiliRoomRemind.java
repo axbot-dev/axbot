@@ -28,11 +28,8 @@ public class FuncBiliRoomRemind extends NotificationFunction {
 
         card.addModule(KookCardMessage.newHeader("直播间: %s".formatted(title)));
         card.addModule(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown(description))));
-
-        card.addModule(KookCardMessage.newSection(KookCardMessage.newKMarkdown("直播间链接: %s".formatted(
-                KookMDMessage.link("https://live.bilibili.com/%d".formatted(roomId))
-        ))));
         card.addModule(KookCardMessage.newSection(KookCardMessage.newKMarkdown("大家快来一起观看吧 " + KookMDMessage.mention("here"))));
+        card.addModule(KookCardMessage.quickTextLinkSection("点击按钮进入直播间观看", "跳转B站", "primary", "https://live.bilibili.com/%d".formatted(roomId)));
         return input.response(card.displayWithFooter());
     }
 
@@ -48,7 +45,7 @@ public class FuncBiliRoomRemind extends NotificationFunction {
         msg.addLine("直播间: %s".formatted(title));
         msg.addLine(description);
         msg.addLine("直播间链接: https://live.bilibili.com/%d".formatted(roomId));
-        msg.addLine("大家快来一起观看吧 " + KookMDMessage.mention("here"));
+        msg.addLine("大家快来一起观看吧");
         return input.response(msg.displayWithFooter());
     }
 
