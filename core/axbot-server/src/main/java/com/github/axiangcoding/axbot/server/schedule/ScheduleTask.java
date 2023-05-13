@@ -80,7 +80,6 @@ public class ScheduleTask {
                     List<NewParseResult> zhNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.ZH);
                     List<NewParseResult> enNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.EN);
                     zhNews.addAll(enNews);
-
                     List<NewParseResult> notExistNews = zhNews.stream().filter((item) -> {
                         String url = item.getUrl();
                         boolean exists = wtNewsRepository.existsByUrl(url);

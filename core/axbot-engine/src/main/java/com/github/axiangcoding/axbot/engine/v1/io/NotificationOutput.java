@@ -16,4 +16,7 @@ import java.util.UUID;
 public class NotificationOutput {
     UUID notificationId;
     Duration timeUsage;
+    String userId;
+    String messageId;
+    String response;
 }

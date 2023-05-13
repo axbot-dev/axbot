@@ -35,6 +35,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Deprecated
 public class AxBotService {
 
     @Resource

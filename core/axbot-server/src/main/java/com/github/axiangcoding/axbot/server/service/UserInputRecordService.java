@@ -34,7 +34,7 @@ public class UserInputRecordService {
         entity.setFromKookGuild(guildId);
         entity.setFromKookChannel(channelId);
         userInputRecordRepository.save(entity);
-        kookUserSettingService.upsertUsage(userId);
+        kookUserSettingService.updateInputUsage(userId);
         return entity.getId();
     }
 

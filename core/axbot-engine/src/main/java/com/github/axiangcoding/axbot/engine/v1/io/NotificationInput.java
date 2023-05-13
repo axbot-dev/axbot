@@ -1,5 +1,6 @@
 package com.github.axiangcoding.axbot.engine.v1.io;
 
+import com.github.axiangcoding.axbot.engine.v1.NotificationEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,11 +17,12 @@ import java.util.UUID;
 public abstract class NotificationInput {
     UUID notificationId;
     LocalDateTime startTime;
+    NotificationEvent event;
 
     public NotificationInput() {
         notificationId = UUID.randomUUID();
         startTime = LocalDateTime.now();
     }
 
-    public abstract NotificationOutput response();
+    public abstract NotificationOutput response(String response);
 }

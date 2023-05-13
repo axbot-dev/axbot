@@ -27,4 +27,6 @@ public class FunctionRegister {
     FuncGuildBanned funcGuildBanned;
     @Resource
     FuncUserBanned funcUserBanned;
+    @Resource
+    FuncUsageLimit funcUsageLimit;
 }

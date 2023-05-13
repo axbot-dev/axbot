@@ -36,6 +36,7 @@ import java.util.UUID;
 
 @Component
 @Slf4j
+@Deprecated
 public class AxBotHandlerForKook implements IAxBotHandlerForKook {
     @Resource
     WTGameProfileService wtGameProfileService;

@@ -2,17 +2,23 @@ package com.github.axiangcoding.axbot.server.service;
 
 
 import com.github.axiangcoding.axbot.engine.v1.InteractiveCommand;
+import com.github.axiangcoding.axbot.engine.v1.NotificationEvent;
 import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.NotificationFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;
+import com.github.axiangcoding.axbot.engine.v1.io.NotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
+import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveOutput;
+import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QGroupSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QUserSetting;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import com.github.axiangcoding.axbot.server.service.axbot.FunctionRegister;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -49,15 +55,23 @@ public class BotService {
      */
     public void responseForInteractive(SupportPlatform platform, InteractiveInput input) {
         if (platform == SupportPlatform.PLATFORM_KOOK) {
-            KookInteractiveOutput output = processKookUserEvent((KookInteractiveInput) input);
+            KookInteractiveOutput output = processKookInteractiveFunction((KookInteractiveInput) input);
             remoteClientService.sendKookCardMsg(output);
         } else if (platform == SupportPlatform.PLATFORM_CQHTTP) {
-
-            CqhttpInteractiveOutput output = processCqhttpUserEvent((CqhttpInteractiveInput) input);
+            CqhttpInteractiveOutput output = processCqhttpInteractiveFunction((CqhttpInteractiveInput) input);
             remoteClientService.sendCqhttpMsg(output);
         }
 
     }
+
+    public void responseForNotification(SupportPlatform platform, NotificationInput input) {
+        if (platform == SupportPlatform.PLATFORM_KOOK) {
+            processKookNotificationFunction((KookNotificationInput) input);
+        } else if (platform == SupportPlatform.PLATFORM_CQHTTP) {
+            processCqhttpNotificationFunction((CqhttpNotificationInput) input);
+        }
+    }
+
 
     /**
      * 异步响应用户输入
@@ -75,11 +89,8 @@ public class BotService {
         });
     }
 
-    public KookInteractiveOutput processKookUserEvent(KookInteractiveInput input) {
-        // FIXME 检查群组和用户是否被拉黑
-        // FIXME 检查使用情况是否超限
-        // FIXME 新增使用次数
-        // FIXME 文本检查
+    public KookInteractiveOutput processKookInteractiveFunction(KookInteractiveInput input) {
+        // 检查是否被禁用
         String guildId = input.getGuildId();
         KookGuildSetting guildSetting = kookGuildSettingService.getOrDefault(guildId);
         if (guildSetting.getBanned()) {
@@ -90,7 +101,15 @@ public class BotService {
         if (userSetting.getBanned()) {
             return functionRegister.getFuncUserBanned().execute(input);
         }
+        // 更新使用次数
+        kookUserSettingService.updateInputUsage(userId);
 
+        // 检查使用次数是否超限
+        UserUsage usage = userSetting.getUsage();
+        int inputLimit = kookUserSettingService.getInputLimit(userId);
+        if (usage.getInputToday() > inputLimit) {
+            return functionRegister.getFuncUsageLimit().execute(input);
+        }
 
         InteractiveCommand command = input.getCommand();
         InteractiveFunction function;
@@ -107,11 +126,8 @@ public class BotService {
         return function.execute(input);
     }
 
-    public CqhttpInteractiveOutput processCqhttpUserEvent(CqhttpInteractiveInput input) {
-        // FIXME 检查群组和用户是否被拉黑
-        // FIXME 检查使用情况是否超限
-        // FIXME 新增使用次数
-        // FIXME 文本检查
+    public CqhttpInteractiveOutput processCqhttpInteractiveFunction(CqhttpInteractiveInput input) {
+        // 检查是否被禁用
         String groupId = input.getGroupId();
         QGroupSetting groupSetting = qGroupSettingService.getOrDefault(groupId);
         if (groupSetting.getBanned()) {
@@ -122,6 +138,16 @@ public class BotService {
         if (userSetting.getBanned()) {
             return functionRegister.getFuncUserBanned().execute(input);
         }
+        // 更新使用次数
+        qUserSettingService.updateInputUsage(userId);
+
+        // 检查使用次数是否超限
+        UserUsage usage = userSetting.getUsage();
+        int inputLimit = qUserSettingService.getInputLimit(userId);
+        if (usage.getInputToday() > inputLimit) {
+            return functionRegister.getFuncUsageLimit().execute(input);
+        }
+
 
         InteractiveCommand command = input.getCommand();
         InteractiveFunction function;
@@ -137,4 +163,25 @@ public class BotService {
         }
         return function.execute(input);
     }
+
+
+    private void processKookNotificationFunction(KookNotificationInput input) {
+        NotificationEvent event = input.getEvent();
+        NotificationFunction function;
+        switch (event) {
+            // FIXME 发送消息
+            default -> log.warn("no such notification event: {}", event);
+        }
+    }
+
+    private void processCqhttpNotificationFunction(CqhttpNotificationInput input) {
+        NotificationEvent event = input.getEvent();
+        NotificationFunction function;
+        switch (event) {
+            // FIXME 发送消息
+            default -> log.warn("no such notification event: {}", event);
+        }
+    }
+
+
 }

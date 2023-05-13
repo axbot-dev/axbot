@@ -1,6 +1,9 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
+import com.github.axiangcoding.axbot.server.data.entity.SponsorOrder;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import com.github.axiangcoding.axbot.server.data.repository.KookUserSettingRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -47,12 +50,12 @@ public class KookUserSettingService {
         kookUserSettingRepository.updateBannedAndBannedReasonAndBannedTimeByUserId(false, null, null, userId);
     }
 
-    public void upsertUsage(String userId) {
+    public void updateInputUsage(String userId) {
         Optional<KookUserSetting> opt = kookUserSettingRepository.findByUserId(userId);
         KookUserSetting kookUserSetting;
         kookUserSetting = opt.orElseGet(() -> newSetting(userId));
 
-        KookUserSetting.Usage usage = kookUserSetting.getUsage();
+        UserUsage usage = kookUserSetting.getUsage();
         usage.setInputToday(usage.getInputToday() + 1);
         usage.setInputTotal(usage.getInputTotal() + 1);
         kookUserSettingRepository.save(kookUserSetting);
@@ -95,14 +98,46 @@ public class KookUserSettingService {
             return;
         }
         KookUserSetting entity = opt.get();
-        if(entity.getSubscribe()==null){
-            entity.setSubscribe(new KookUserSetting.Subscribe());
+        if (entity.getSubscribe() == null) {
+            entity.setSubscribe(new UserSubscribe());
         }
-        KookUserSetting.Subscribe subscribe = entity.getSubscribe();
+        UserSubscribe subscribe = entity.getSubscribe();
         subscribe.setPlan(plan);
-        LocalDateTime startTime = subscribe.getExpireAt()==null?LocalDateTime.now(): subscribe.getExpireAt();
+        LocalDateTime startTime;
+        LocalDateTime now = LocalDateTime.now();
+        // 如果过期时间为空或者已经过期了，那么从现在开始计算
+        if (subscribe.getExpireAt() == null || subscribe.getExpireAt().isBefore(now)) {
+            startTime = now;
+        }
+        // 如果还没过期，那么从过期时间开始计算
+        else {
+            startTime = subscribe.getExpireAt();
+        }
         LocalDateTime endTime = startTime.plusMonths(month);
         subscribe.setExpireAt(endTime);
         kookUserSettingRepository.save(entity);
+    }
+
+    public int getInputLimit(String userId) {
+        if (isSubscribedBasicPlan(userId)) {
+            return 10000;
+        } else{
+            return 100;
+        }
+    }
+
+    public boolean isSubscribedBasicPlan(String userId) {
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return false;
+        }
+        KookUserSetting setting = opt.get();
+        UserSubscribe subscribe = setting.getSubscribe();
+        if (subscribe != null) {
+            boolean b = SponsorOrder.PLAN.BASIC_PERSONAL.getName().equals(subscribe.getPlan());
+            return b && subscribe.getExpireAt().isAfter(LocalDateTime.now());
+        } else {
+            return false;
+        }
     }
 }

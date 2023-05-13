@@ -1,5 +1,6 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
+import com.github.axiangcoding.axbot.server.data.entity.basic.BasicEntity;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

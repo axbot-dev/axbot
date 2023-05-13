@@ -1,5 +1,8 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
+import com.github.axiangcoding.axbot.server.data.entity.basic.BasicEntity;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -24,38 +27,22 @@ public class KookUserSetting extends BasicEntity {
     String bannedReason;
     LocalDateTime bannedTime;
     @Embedded
-    Usage usage;
+    UserUsage usage;
     @Embedded
     Permit permit;
     @Embedded
-    Subscribe subscribe;
+    UserSubscribe subscribe;
 
     public static KookUserSetting defaultSetting(String userId) {
         KookUserSetting setting = new KookUserSetting();
         setting.setUserId(userId);
         setting.setBanned(false);
-        Usage usage = new Usage();
-        usage.setInputTotal(0L);
-        usage.setQueryWtTotal(0L);
-        usage.setInputToday(0);
-        usage.setQueryWtToday(0);
-        setting.setUsage(usage);
+        setting.setUsage(UserUsage.defaultUsage());
         Permit permit = new Permit();
         permit.setCanUseAI(false);
         setting.setPermit(permit);
-        setting.setSubscribe(new Subscribe());
+        setting.setSubscribe(new UserSubscribe());
         return setting;
-    }
-
-    @Embeddable
-    @Getter
-    @Setter
-    @ToString
-    public static class Usage {
-        Integer inputToday;
-        Long inputTotal;
-        Integer queryWtToday;
-        Long queryWtTotal;
     }
 
     @Embeddable
@@ -66,12 +53,5 @@ public class KookUserSetting extends BasicEntity {
         Boolean canUseAI;
     }
 
-    @Embeddable
-    @Getter
-    @Setter
-    @ToString
-    public static class Subscribe {
-        String plan;
-        LocalDateTime expireAt;
-    }
+
 }

@@ -4,6 +4,7 @@ import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
+import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class StatusFunction {
 
         Map<String, Object> map = new LinkedHashMap<>();
         KookUserSetting.Permit permit = setting.getPermit();
-        KookUserSetting.Usage usage = setting.getUsage();
+        UserUsage usage = setting.getUsage();
         map.put("用户ID", setting.getUserId());
         map.put("用户状态", setting.getBanned() ? "已拉黑" : "正常");
         map.put("授权状态 - AI聊天功能", permit.getCanUseAI() ? "开启" : "关闭");
