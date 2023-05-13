@@ -12,7 +12,7 @@ AXBot共有两个服务：core和crawler，分别作为其核心程序和数据�
 
 AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸缩数量，以提供稳定的服务质量
 
-需要注意的是，如果启用qq机器人，请自行部署cqhttp服务。部署的方式请参考cqhttp的文档介绍
+需要注意的是，如果启用qq机器人，请自行部署cqhttp服务。部署的方式请参考 [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 的文档介绍
 
 ## 部署方式
 
@@ -39,7 +39,7 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
    git clone https://github.com/axiangcoding/AXBot-deploy.git
    ```
 
-4. 执行安装docker脚本
+4. 执行安装docker脚本（如果你购买的服务器默认安装了docker，可以跳过）
    ```bash
    cd $your-app-root/AXBot-deploy
    sh ./install-docker-debian.sh
@@ -65,6 +65,8 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
    
    QINIU_ACCESS_TOKEN=[七牛云AK]
    QINIU_SECRET_TOKEN=[七牛云SK]
+   
+   OPENAI_API_KEY=[openai的AK]
    ```
    
 6. 执行服务部署脚本
@@ -83,7 +85,7 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
 
 ### Docker 方式部署单个服务
 
-暂不提供
+暂不提供，不过你可以参考上述Docker Compose部署方式的脚本，自己编写相关的命令
 
 ### 直接部署单个服务
 
@@ -91,4 +93,4 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
 
 ## 报告问题
 
-虽然我们已经对服务的部署进行了验证，但是我们的测试环境相对较为有限。如果您在部署过程中遇到任何问题，请不要犹豫，随时提交issue并寻求帮助！我们会尽力解决您的问题。
+虽然我们已经对服务的部署进行了验证，但是我们的测试环境相对较为有限。如果您在部署过程中遇到任何问题，请提交issue并寻求帮助。我们会尽力解决您的问题。
