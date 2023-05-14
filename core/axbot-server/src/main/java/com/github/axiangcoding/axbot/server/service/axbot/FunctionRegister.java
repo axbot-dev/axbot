@@ -16,6 +16,8 @@ public class FunctionRegister {
     @Resource
     FuncDefault funcDefault;
     @Resource
+    FuncError funcError;
+    @Resource
     FuncHelp funcHelp;
     @Resource
     FuncVersion funcVersion;

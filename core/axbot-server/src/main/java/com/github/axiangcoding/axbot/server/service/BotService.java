@@ -139,108 +139,118 @@ public class BotService {
 
 
     public KookInteractiveOutput processKookInteractiveFunction(KookInteractiveInput input) {
-        String userId = input.getUserId();
-        String guildId = input.getGuildId();
-        String channelId = input.getChannelId();
-        String message = StringUtils.join(input.getParamList(), " ");
-        // 获取服务器和用户设置，如果不存在则创建一个新的
-        KookGuildSetting guildSetting = kookGuildSettingService.getOrDefault(guildId);
-        KookUserSetting userSetting = kookUserSettingService.getOrDefault(userId);
+        try {
+            String userId = input.getUserId();
+            String guildId = input.getGuildId();
+            String channelId = input.getChannelId();
+            String message = StringUtils.join(input.getParamList(), " ");
+            // 获取服务器和用户设置，如果不存在则创建一个新的
+            KookGuildSetting guildSetting = kookGuildSettingService.getOrDefault(guildId);
+            KookUserSetting userSetting = kookUserSettingService.getOrDefault(userId);
 
-        // 记录输入内容
-        long inputId = userInputRecordService.saveRecordFromKook(userId, message, input.getGuildId(), channelId);
-        kookUserSettingService.updateInputUsage(userSetting);
-        input.setInputId(inputId);
-        // 检查是否被禁用
-        if (guildSetting.getBanned()) {
-            return functionRegister.getFuncGuildBanned().execute(input);
-        }
-        if (userSetting.getBanned()) {
-            return functionRegister.getFuncUserBanned().execute(input);
+            // 记录输入内容
+            long inputId = userInputRecordService.saveRecordFromKook(userId, message, input.getGuildId(), channelId);
+            kookUserSettingService.updateInputUsage(userSetting);
+            input.setInputId(inputId);
+            // 检查是否被禁用
+            if (guildSetting.getBanned()) {
+                return functionRegister.getFuncGuildBanned().execute(input);
+            }
+            if (userSetting.getBanned()) {
+                return functionRegister.getFuncUserBanned().execute(input);
+            }
+
+            // 检查使用次数是否超限
+            UserUsage usage = userSetting.getUsage();
+            int inputLimit = kookUserSettingService.getInputLimit(userId);
+            if (usage.getInputToday() > inputLimit) {
+                return functionRegister.getFuncUsageLimit().execute(input);
+            }
+            // 文本AI检查
+            boolean textPassCheck = textCensorService.checkAndCacheText(message);
+            if (!textPassCheck) {
+                userInputRecordService.updateSensitive(inputId, true);
+                return functionRegister.getFuncCensorFailed().execute(input);
+            }
+
+            InteractiveCommand command = input.getCommand();
+            InteractiveFunction function;
+            switch (command) {
+                case COMMAND_DEFAULT -> function = functionRegister.getFuncDefault();
+                case COMMAND_HELP -> function = functionRegister.getFuncHelp();
+                case COMMAND_VERSION -> function = functionRegister.getFuncVersion();
+                case COMMAND_LUCKY -> function = functionRegister.getFuncLuckyToday();
+                case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
+                case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
+                case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
+                case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
+                case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
+                case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
+                case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
+                default -> function = functionRegister.getFuncDefault();
+            }
+            return function.execute(input);
+        } catch (RuntimeException e) {
+            log.error("process kook interactive function error", e);
+            return functionRegister.getFuncError().execute(input);
         }
 
-        // 检查使用次数是否超限
-        UserUsage usage = userSetting.getUsage();
-        int inputLimit = kookUserSettingService.getInputLimit(userId);
-        if (usage.getInputToday() > inputLimit) {
-            return functionRegister.getFuncUsageLimit().execute(input);
-        }
-        // 文本AI检查
-        boolean textPassCheck = textCensorService.checkAndCacheText(message);
-        if (!textPassCheck) {
-            userInputRecordService.updateSensitive(inputId, true);
-            return functionRegister.getFuncCensorFailed().execute(input);
-        }
-
-        InteractiveCommand command = input.getCommand();
-        InteractiveFunction function;
-        switch (command) {
-            case COMMAND_DEFAULT -> function = functionRegister.getFuncDefault();
-            case COMMAND_HELP -> function = functionRegister.getFuncHelp();
-            case COMMAND_VERSION -> function = functionRegister.getFuncVersion();
-            case COMMAND_LUCKY -> function = functionRegister.getFuncLuckyToday();
-            case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
-            case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
-            case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
-            case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
-            case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
-            case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
-            case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
-            default -> function = functionRegister.getFuncDefault();
-        }
-        return function.execute(input);
     }
 
     public CqhttpInteractiveOutput processCqhttpInteractiveFunction(CqhttpInteractiveInput input) {
-        // 记录输入内容
-        String message = StringUtils.join(input.getParamList(), " ");
-        String groupId = input.getGroupId();
-        String userId = input.getUserId();
-        // 获取服务器和用户设置，如果不存在则创建一个新的
-        QGroupSetting groupSetting = qGroupSettingService.getOrDefault(groupId);
-        QUserSetting userSetting = qUserSettingService.getOrDefault(userId);
+        try {
+            // 记录输入内容
+            String message = StringUtils.join(input.getParamList(), " ");
+            String groupId = input.getGroupId();
+            String userId = input.getUserId();
+            // 获取服务器和用户设置，如果不存在则创建一个新的
+            QGroupSetting groupSetting = qGroupSettingService.getOrDefault(groupId);
+            QUserSetting userSetting = qUserSettingService.getOrDefault(userId);
 
-        long inputId = userInputRecordService.saveRecordFromCqhttp(userId, message, groupId);
-        qUserSettingService.updateInputUsage(userSetting);
-        input.setInputId(inputId);
-        // 检查是否被禁用
-        if (groupSetting.getBanned()) {
-            return functionRegister.getFuncGuildBanned().execute(input);
-        }
-        if (userSetting.getBanned()) {
-            return functionRegister.getFuncUserBanned().execute(input);
-        }
+            long inputId = userInputRecordService.saveRecordFromCqhttp(userId, message, groupId);
+            qUserSettingService.updateInputUsage(userSetting);
+            input.setInputId(inputId);
+            // 检查是否被禁用
+            if (groupSetting.getBanned()) {
+                return functionRegister.getFuncGuildBanned().execute(input);
+            }
+            if (userSetting.getBanned()) {
+                return functionRegister.getFuncUserBanned().execute(input);
+            }
 
-        // 检查使用次数是否超限
-        UserUsage usage = userSetting.getUsage();
-        int inputLimit = qUserSettingService.getInputLimit(userId);
-        if (usage.getInputToday() > inputLimit) {
-            return functionRegister.getFuncUsageLimit().execute(input);
+            // 检查使用次数是否超限
+            UserUsage usage = userSetting.getUsage();
+            int inputLimit = qUserSettingService.getInputLimit(userId);
+            if (usage.getInputToday() > inputLimit) {
+                return functionRegister.getFuncUsageLimit().execute(input);
+            }
+            // 文本AI检查
+            boolean textPassCheck = textCensorService.checkAndCacheText(message);
+            if (!textPassCheck) {
+                userInputRecordService.updateSensitive(inputId, true);
+                return functionRegister.getFuncCensorFailed().execute(input);
+            }
+            InteractiveCommand command = input.getCommand();
+            InteractiveFunction function;
+            switch (command) {
+                case COMMAND_DEFAULT -> function = functionRegister.getFuncDefault();
+                case COMMAND_HELP -> function = functionRegister.getFuncHelp();
+                case COMMAND_VERSION -> function = functionRegister.getFuncVersion();
+                case COMMAND_LUCKY -> function = functionRegister.getFuncLuckyToday();
+                case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
+                case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
+                case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
+                case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
+                case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
+                case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
+                case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
+                default -> function = functionRegister.getFuncDefault();
+            }
+            return function.execute(input);
+        } catch (RuntimeException e) {
+            log.error("process cqhttp interactive function error", e);
+            return functionRegister.getFuncError().execute(input);
         }
-        // 文本AI检查
-        boolean textPassCheck = textCensorService.checkAndCacheText(message);
-        if (!textPassCheck) {
-            userInputRecordService.updateSensitive(inputId, true);
-            return functionRegister.getFuncCensorFailed().execute(input);
-        }
-
-        InteractiveCommand command = input.getCommand();
-        InteractiveFunction function;
-        switch (command) {
-            case COMMAND_DEFAULT -> function = functionRegister.getFuncDefault();
-            case COMMAND_HELP -> function = functionRegister.getFuncHelp();
-            case COMMAND_VERSION -> function = functionRegister.getFuncVersion();
-            case COMMAND_LUCKY -> function = functionRegister.getFuncLuckyToday();
-            case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
-            case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
-            case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
-            case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
-            case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
-            case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
-            case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
-            default -> function = functionRegister.getFuncDefault();
-        }
-        return function.execute(input);
     }
 
 
