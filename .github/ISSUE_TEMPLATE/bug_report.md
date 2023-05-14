@@ -7,32 +7,25 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**介绍下你遇到的错误**
+清晰而简明地描述什么是错误。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**重现步骤**
+重现该行为的步骤：
+1. 发送命令`axbot xxx`
+2. 发现问题
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**预期的行为**
+清晰而简明地描述你所期望发生的事情。
 
-**Screenshots**
+**截图**
+如果可以，为你的问题添加截图
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**错误发生的平台:**
+ - 浏览器 [例如 chrome]
+ - 版本 [例如 22]
+ - 平台 [例如 KOOK]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+**额外信息**
+你可以为这个错误添加更多信息
