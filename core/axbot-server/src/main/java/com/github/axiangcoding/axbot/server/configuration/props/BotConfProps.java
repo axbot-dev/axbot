@@ -11,6 +11,7 @@ import java.util.List;
 @Configuration
 public class BotConfProps {
     CqhttpConf cqhttp;
+    BotMarketConf botMarket;
     KookConf kook;
     OpenAI openai;
     /**
@@ -49,6 +50,14 @@ public class BotConfProps {
          * 机器人的认证token
          */
         String verifyToken;
+    }
+
+    @Data
+    public static class BotMarketConf {
+        /**
+         * 设置bot market在线的uuid
+         */
+        String uuid;
     }
 
     @Data

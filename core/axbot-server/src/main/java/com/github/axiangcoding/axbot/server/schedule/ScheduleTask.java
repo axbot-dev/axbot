@@ -9,7 +9,9 @@ import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
 import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.BiliResponse;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.resp.RoomInfoData;
+import com.github.axiangcoding.axbot.remote.botmarket.BotMarketClient;
 import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
+import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QGroupSetting;
 import com.github.axiangcoding.axbot.server.data.entity.WtNews;
@@ -42,7 +44,9 @@ public class ScheduleTask {
     public enum LOCK {
         CHECK_BILI_ROOM(CacheKeyGenerator.getCronJobLockKey("checkBiliRoom")),
         RESET_USAGE(CacheKeyGenerator.getCronJobLockKey("resetUsage")),
-        LATEST_NEW(CacheKeyGenerator.getCronJobLockKey("latestWTNews"));
+        LATEST_NEW(CacheKeyGenerator.getCronJobLockKey("latestWTNews")),
+        SET_BOT_MARKET_ONLINE(CacheKeyGenerator.getCronJobLockKey("setBotMarketOnline")),
+        ;
         private final String name;
     }
 
@@ -70,6 +74,12 @@ public class ScheduleTask {
 
     @Resource
     BotService botService;
+
+    @Resource
+    BotMarketClient botMarketClient;
+
+    @Resource
+    BotConfProps botConfProps;
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void checkBiliRoom() {
@@ -102,6 +112,22 @@ public class ScheduleTask {
             }
         };
         redisLockRunner.execute(LOCK.RESET_USAGE);
+    }
+
+
+    /**
+     * 设置bot market 在线
+     */
+    @Scheduled(cron = "0 0/30 * * * ?")
+    public void botMarketOnline() {
+        RedisLockRunner redisLockRunner = new RedisLockRunner(stringRedisTemplate) {
+            @Override
+            public void run() {
+                String uuid = botConfProps.getBotMarket().getUuid();
+                botMarketClient.setOnline(uuid);
+            }
+        };
+        redisLockRunner.execute(LOCK.SET_BOT_MARKET_ONLINE);
     }
 
     public void resetLock(LOCK lock) {

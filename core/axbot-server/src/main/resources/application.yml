@@ -46,6 +46,8 @@ bot:
     enabled: true
     bot-token:
     verify-token:
+  bot-market:
+    uuid:
   openai:
     api-key:
     proxy:

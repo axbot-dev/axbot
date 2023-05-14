@@ -2,6 +2,7 @@ package com.github.axiangcoding.axbot.server.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
+import com.github.axiangcoding.axbot.remote.botmarket.BotMarketClient;
 import com.github.axiangcoding.axbot.remote.cqhttp.CqHttpClient;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.qiniu.QiniuClient;
@@ -72,5 +73,15 @@ public class RemoteServerConfiguration {
         Retrofit retrofit = defaultRetrofit(client, mapper);
         OpenAiApi api = retrofit.create(OpenAiApi.class);
         return new OpenAiService(api);
+    }
+
+    /**
+     * bot market的请求客户端
+     *
+     * @return
+     */
+    @Bean
+    public BotMarketClient botMarketClient() {
+        return new BotMarketClient();
     }
 }
