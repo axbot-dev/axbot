@@ -67,6 +67,8 @@ AXBot的服务均是无状态的，您可以根据实际情况调整服务的伸
    QINIU_SECRET_TOKEN=[七牛云SK]
    
    OPENAI_API_KEY=[openai的AK]
+   
+   BOT_BOT_MARKET_UUID=[botMarket设置在线状态的uuid]
    ```
    
 6. 执行服务部署脚本
