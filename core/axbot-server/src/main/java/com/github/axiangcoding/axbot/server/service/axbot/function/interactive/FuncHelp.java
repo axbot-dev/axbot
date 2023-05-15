@@ -38,8 +38,6 @@ public class FuncHelp extends InteractiveFunction {
         quickCard.addModule(KookCardMessage.newHeader("完整命令"));
         quickCard.addModule(KookCardMessage.quickTextLinkSection("上面列出的只是常用命令的常用调用形式，更多调用方式请点击按钮查看文档",
                 "跳转到文档", "info", DOC_URL));
-
-        quickCard.addModule(KookCardMessage.newDivider());
         return input.response(quickCard.displayWithFooter());
     }
 
