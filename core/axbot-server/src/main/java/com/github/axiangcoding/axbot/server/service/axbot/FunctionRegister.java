@@ -23,10 +23,14 @@ public class FunctionRegister {
     FuncVersion funcVersion;
     @Resource
     FuncLuckyToday funcLuckyToday;
+
     @Resource
     FuncWtQueryProfile funcWtQueryProfile;
     @Resource
     FuncWtUpdateProfile funcWtUpdateProfile;
+    @Resource
+    FuncWtQueryHistory funcWtQueryHistory;
+
     @Resource
     FuncGuildStatus funcGuildStatus;
     @Resource

@@ -25,7 +25,7 @@ public class SponsorOrderService {
 
     public String generatePersonalOrder(SupportPlatform platform, String guildId, String channelId, String userId) {
         SponsorOrder entity = new SponsorOrder();
-        entity.setPlatform(platform.getName());
+        entity.setPlatform(platform.getLabel());
         entity.setFromUserId(userId);
         entity.setFromGuildId(guildId);
         entity.setFromChannelId(channelId);
@@ -54,7 +54,7 @@ public class SponsorOrderService {
         sponsorOrderRepository.save(entity);
 
         String platform = entity.getPlatform();
-        if (SupportPlatform.PLATFORM_KOOK.getName().equals(platform)) {
+        if (SupportPlatform.PLATFORM_KOOK.getLabel().equals(platform)) {
             kookUserSettingService.updateSubscribe(entity.getFromUserId(), entity.getPlan(), month);
         }
     }

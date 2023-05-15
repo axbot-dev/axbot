@@ -149,7 +149,7 @@ public class BotService {
             KookUserSetting userSetting = kookUserSettingService.getOrDefault(userId);
 
             // 记录输入内容
-            long inputId = userInputRecordService.saveRecordFromKook(userId, message, input.getGuildId(), channelId);
+            long inputId = userInputRecordService.saveRecordFromKook(userId, input.getCommand(), message, input.getGuildId(), channelId);
             kookUserSettingService.updateInputUsage(userSetting);
             input.setInputId(inputId);
             // 检查是否被禁用
@@ -176,17 +176,18 @@ public class BotService {
             InteractiveCommand command = input.getCommand();
             InteractiveFunction function;
             switch (command) {
-                case COMMAND_DEFAULT -> function = functionRegister.getFuncDefault();
-                case COMMAND_HELP -> function = functionRegister.getFuncHelp();
-                case COMMAND_VERSION -> function = functionRegister.getFuncVersion();
-                case COMMAND_LUCKY -> function = functionRegister.getFuncLuckyToday();
-                case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
-                case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
-                case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
-                case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
-                case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
-                case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
-                case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
+                case DEFAULT -> function = functionRegister.getFuncDefault();
+                case HELP -> function = functionRegister.getFuncHelp();
+                case VERSION -> function = functionRegister.getFuncVersion();
+                case LUCKY -> function = functionRegister.getFuncLuckyToday();
+                case WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
+                case WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
+                case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
+                case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
+                case USER_STATUS -> function = functionRegister.getFuncUserStatus();
+                case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
+                case CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
+                case SPONSOR -> function = functionRegister.getFuncSponsor();
                 default -> function = functionRegister.getFuncDefault();
             }
             return function.execute(input);
@@ -207,7 +208,7 @@ public class BotService {
             QGroupSetting groupSetting = qGroupSettingService.getOrDefault(groupId);
             QUserSetting userSetting = qUserSettingService.getOrDefault(userId);
 
-            long inputId = userInputRecordService.saveRecordFromCqhttp(userId, message, groupId);
+            long inputId = userInputRecordService.saveRecordFromCqhttp(userId, input.getCommand(), message, groupId);
             qUserSettingService.updateInputUsage(userSetting);
             input.setInputId(inputId);
             // 检查是否被禁用
@@ -233,17 +234,18 @@ public class BotService {
             InteractiveCommand command = input.getCommand();
             InteractiveFunction function;
             switch (command) {
-                case COMMAND_DEFAULT -> function = functionRegister.getFuncDefault();
-                case COMMAND_HELP -> function = functionRegister.getFuncHelp();
-                case COMMAND_VERSION -> function = functionRegister.getFuncVersion();
-                case COMMAND_LUCKY -> function = functionRegister.getFuncLuckyToday();
-                case COMMAND_WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
-                case COMMAND_WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
-                case COMMAND_GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
-                case COMMAND_USER_STATUS -> function = functionRegister.getFuncUserStatus();
-                case COMMAND_GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
-                case COMMAND_CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
-                case COMMAND_SPONSOR -> function = functionRegister.getFuncSponsor();
+                case DEFAULT -> function = functionRegister.getFuncDefault();
+                case HELP -> function = functionRegister.getFuncHelp();
+                case VERSION -> function = functionRegister.getFuncVersion();
+                case LUCKY -> function = functionRegister.getFuncLuckyToday();
+                case WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
+                case WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
+                case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
+                case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
+                case USER_STATUS -> function = functionRegister.getFuncUserStatus();
+                case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
+                case CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
+                case SPONSOR -> function = functionRegister.getFuncSponsor();
                 default -> function = functionRegister.getFuncDefault();
             }
             return function.execute(input);
