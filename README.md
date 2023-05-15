@@ -32,12 +32,12 @@ AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](ht
 
 [使用手册](docs/user_guide.md)
 
-（除了这个文档外，我们还提供了可以在中国大陆访问的文档，但不一定保证为最新）
+（除了这个跟随仓库更新的文档外，我们还提供了可以在中国大陆访问的 [使用手册](https://www.yuque.com/axiangcoding/ei27mo/omy4cgwvsikrwue1)，但不一定保证为最新）
 
 你可以通过以下方式将官方维护的AXBot机器人邀请到您的群组或者服务器中：
 
 - Kook: [点击邀请Kook机器人](https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=923648&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot)，需要邀请人的Kook账号具备邀请服务器的管理员身份
-- QQ: 暂不开放邀请
+- QQ: （由于Cqhttp部署不太稳定，故不再维护qq机器人，但代码上依然cqhttp进行支持）
 
 ### 高级用户
 
