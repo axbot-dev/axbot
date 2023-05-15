@@ -13,13 +13,16 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(indexes = {
+        @Index(columnList = "userId"),
         @Index(columnList = "platform"),
+        @Index(columnList = "command"),
         @Index(columnList = "sensitive"),
         @Index(columnList = "userId")})
 
 public class UserInputRecord extends BasicEntity {
     String userId;
     String platform;
+    String command;
     String input;
     String fromKookGuild;
     String fromKookChannel;

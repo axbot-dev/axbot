@@ -9,24 +9,37 @@ import java.util.List;
 
 @AllArgsConstructor
 public enum InteractiveCommand {
-    COMMAND_DEFAULT(null, null),
-    COMMAND_HELP(List.of("帮助", "文档", "help"), null),
-    COMMAND_VERSION(List.of("版本", "version"), null),
-    COMMAND_LUCKY(List.of("气运", "运气", "luck"), null),
-    COMMAND_WT_QUERY_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("查询", "查找", "query")),
-    COMMAND_WT_UPDATE_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("更新", "刷新", "update")),
-    COMMAND_GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
-    COMMAND_USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
-    COMMAND_GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
-    COMMAND_CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
-    COMMAND_SPONSOR(List.of("赞助", "订阅", "subscribe"), null);
+    DEFAULT(null, null),
+    HELP(List.of("帮助", "文档", "help"), null),
+    VERSION(List.of("版本", "version"), null),
+    LUCKY(List.of("气运", "运气", "luck"), null),
+    WT_QUERY_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("查询", "查找", "query")),
+    WT_QUERY_HISTORY(List.of("战雷", "战争雷霆", "wt"), List.of("历史", "历史记录", "history")),
+    WT_UPDATE_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("更新", "刷新", "update")),
+    GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
+    USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
+    GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
+    CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
+    SPONSOR(List.of("赞助", "订阅", "subscribe"), null);
 
     private final List<String> t1;
     private final List<String> t2;
 
+    public String toCommand() {
+        StringBuilder sb = new StringBuilder();
+        if (t1 != null) {
+            sb.append(t1.get(0));
+        }
+        if (t2 != null) {
+            sb.append(" ");
+            sb.append(t2.get(0));
+        }
+        return sb.toString();
+    }
+
     public static InteractiveCommand judgeCommand(String command) {
         if (StringUtils.isBlank(command)) {
-            return COMMAND_DEFAULT;
+            return DEFAULT;
         }
         String[] c = StringUtils.split(command);
         for (InteractiveCommand value : InteractiveCommand.values()) {
@@ -42,7 +55,7 @@ public enum InteractiveCommand {
                 }
             }
         }
-        return COMMAND_DEFAULT;
+        return DEFAULT;
     }
 
     public static String[] getParamList(String command) {
