@@ -26,8 +26,8 @@ public class SwaggerConfiguration {
         String appVersion = System.getenv("APP_VERSION");
         return new OpenAPI().
                 addServersItem(new Server().url(contextPath))
-                .info(new Info().title("AXBot API")
-                        .description("AXBot api description")
+                .info(new Info().title("AXBot API文档")
+                        .description("这里列出的是AXBot的接口，包括了机器人的接口和管理后台的接口，如果接口需要权限，请咨询开发者应该如何调用。")
                         .version(appVersion));
     }
 }
