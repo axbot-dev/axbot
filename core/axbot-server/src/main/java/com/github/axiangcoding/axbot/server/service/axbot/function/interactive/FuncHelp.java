@@ -21,6 +21,8 @@ public class FuncHelp extends InteractiveFunction {
     @Resource
     BotConfProps botConfProps;
 
+    private static final String DOC_URL = "https://www.yuque.com/axiangcoding/ei27mo/omy4cgwvsikrwue1";
+
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
         KookQuickCard quickCard = new KookQuickCard("AXBot 帮助手册", "success");
@@ -35,7 +37,7 @@ public class FuncHelp extends InteractiveFunction {
         quickCard.addModule(KookCardMessage.newDivider());
         quickCard.addModule(KookCardMessage.newHeader("完整命令"));
         quickCard.addModule(KookCardMessage.quickTextLinkSection("上面列出的只是常用命令的常用调用形式，更多调用方式请点击按钮查看文档",
-                "跳转到文档", "info", "https://github.com/axiangcoding/AXBot/blob/master/docs/user_guide.md"));
+                "跳转到文档", "info", DOC_URL));
 
         quickCard.addModule(KookCardMessage.newDivider());
         return input.response(quickCard.displayWithFooter());
@@ -53,7 +55,7 @@ public class FuncHelp extends InteractiveFunction {
         quickMsg.addLine("-----");
         quickMsg.addLine("完整命令");
         quickMsg.addLine("上面列出的只是常用命令的常用调用形式，更多调用方式请查看文档");
-        quickMsg.addLine("https://github.com/axiangcoding/AXBot/blob/master/docs/user_guide.md");
+        quickMsg.addLine(DOC_URL);
 
         return input.response(quickMsg.displayWithFooter());
     }
