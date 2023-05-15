@@ -31,7 +31,7 @@ public class FuncWtQueryHistory extends InteractiveFunction {
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
         KookQuickCard card = new KookQuickCard("战争雷霆查询的历史记录", "success");
-        List<String> list = genList(input.getUserId(), SupportPlatform.PLATFORM_KOOK);
+        List<String> list = genList(input.getUserId(), SupportPlatform.KOOK);
         for (String item : list) {
             card.addModule(KookCardMessage.quickMdSection(KookMDMessage.code(item)));
         }
@@ -41,7 +41,7 @@ public class FuncWtQueryHistory extends InteractiveFunction {
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("战争雷霆查询的历史记录");
-        List<String> list = genList(input.getUserId(), SupportPlatform.PLATFORM_CQHTTP);
+        List<String> list = genList(input.getUserId(), SupportPlatform.CQHTTP);
         for (String item : list) {
             msg.addLine(item);
         }

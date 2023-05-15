@@ -31,7 +31,7 @@ public class BotController {
     @PostMapping("kook/webhook")
     public Map<String, Object> KookWebhook(@RequestBody String body) {
         log.debug("receive kook webhook msg, plain: {}", body);
-        if (!botService.isPlatformEnabled(SupportPlatform.PLATFORM_KOOK)) {
+        if (!botService.isPlatformEnabled(SupportPlatform.KOOK)) {
             log.info("platform kook not enabled, ignore webhook callback");
             return new HashMap<>();
         }
@@ -49,7 +49,7 @@ public class BotController {
             HttpServletRequest request,
             @RequestBody String body) {
         log.debug("receive cqhttp webhook msg, plain: {}", body);
-        if (!botService.isPlatformEnabled(SupportPlatform.PLATFORM_CQHTTP)) {
+        if (!botService.isPlatformEnabled(SupportPlatform.CQHTTP)) {
             log.warn("platform cqhttp not enabled");
             return new HashMap<>();
         }

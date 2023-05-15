@@ -18,7 +18,7 @@ public class UserInputRecordService {
     public long saveRecordFromCqhttp(String userId, InteractiveCommand command, String message, String groupId) {
         UserInputRecord entity = new UserInputRecord();
         entity.setUserId(userId);
-        entity.setPlatform(SupportPlatform.PLATFORM_CQHTTP.getLabel());
+        entity.setPlatform(SupportPlatform.CQHTTP.getLabel());
         entity.setCommand(command.name());
         entity.setInput(message);
         entity.setFromQGroup(groupId);
@@ -29,7 +29,7 @@ public class UserInputRecordService {
     public long saveRecordFromKook(String userId, InteractiveCommand command, String message, String guildId, String channelId) {
         UserInputRecord entity = new UserInputRecord();
         entity.setUserId(userId);
-        entity.setPlatform(SupportPlatform.PLATFORM_KOOK.getLabel());
+        entity.setPlatform(SupportPlatform.KOOK.getLabel());
         entity.setCommand(command.name());
         entity.setInput(message);
         entity.setFromKookGuild(guildId);
@@ -49,12 +49,12 @@ public class UserInputRecordService {
 
     public long countUserKookSensitiveInput(String userId) {
         return userInputRecordRepository.countByUserIdAndPlatformAndSensitive(userId,
-                SupportPlatform.PLATFORM_KOOK.getLabel(), true);
+                SupportPlatform.KOOK.getLabel(), true);
     }
 
     public long countUserCqhttpSensitiveInput(String userId) {
         return userInputRecordRepository.countByUserIdAndPlatformAndSensitive(userId,
-                SupportPlatform.PLATFORM_CQHTTP.getLabel(), true);
+                SupportPlatform.CQHTTP.getLabel(), true);
     }
 
     public List<UserInputRecord> findWtQueryHistory(String userId, String platform) {

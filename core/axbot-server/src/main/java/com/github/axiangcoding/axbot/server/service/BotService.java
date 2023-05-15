@@ -56,9 +56,9 @@ public class BotService {
     BotConfProps botConfProps;
 
     public boolean isPlatformEnabled(SupportPlatform platform) {
-        if (platform == SupportPlatform.PLATFORM_KOOK && botConfProps.getKook().getEnabled()) {
+        if (platform == SupportPlatform.KOOK && botConfProps.getKook().getEnabled()) {
             return true;
-        } else if (platform == SupportPlatform.PLATFORM_CQHTTP && botConfProps.getCqhttp().getEnabled()) {
+        } else if (platform == SupportPlatform.CQHTTP && botConfProps.getCqhttp().getEnabled()) {
             return true;
         } else {
             return false;
@@ -73,13 +73,13 @@ public class BotService {
      * @return
      */
     public void responseForInteractive(SupportPlatform platform, InteractiveInput input) {
-        if (platform == SupportPlatform.PLATFORM_KOOK) {
+        if (platform == SupportPlatform.KOOK) {
             KookInteractiveOutput output = processKookInteractiveFunction((KookInteractiveInput) input);
             if (output == null) {
                 return;
             }
             remoteClientService.sendKookCardMsg(output);
-        } else if (platform == SupportPlatform.PLATFORM_CQHTTP) {
+        } else if (platform == SupportPlatform.CQHTTP) {
             CqhttpInteractiveOutput output = processCqhttpInteractiveFunction((CqhttpInteractiveInput) input);
             if (output == null) {
                 return;
@@ -90,13 +90,13 @@ public class BotService {
     }
 
     public void responseForNotification(SupportPlatform platform, NotificationInput input) {
-        if (platform == SupportPlatform.PLATFORM_KOOK) {
+        if (platform == SupportPlatform.KOOK) {
             KookNotificationOutput output = processKookNotificationFunction((KookNotificationInput) input);
             if (output == null) {
                 return;
             }
             remoteClientService.sendKookCardMsg(output);
-        } else if (platform == SupportPlatform.PLATFORM_CQHTTP) {
+        } else if (platform == SupportPlatform.CQHTTP) {
             CqhttpNotificationOutput output = processCqhttpNotificationFunction((CqhttpNotificationInput) input);
             if (output == null) {
                 return;
@@ -260,10 +260,10 @@ public class BotService {
         NotificationEvent event = input.getEvent();
         NotificationFunction function;
         switch (event) {
-            case EVENT_JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
-            case EVENT_EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
-            case EVENT_BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
-            case EVENT_WT_NEWS -> function = functionRegister.getFuncWTNews();
+            case JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
+            case EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
+            case BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
+            case WT_NEWS -> function = functionRegister.getFuncWTNews();
             default -> {
                 log.warn("no such notification event: {}", event);
                 return null;
@@ -276,10 +276,10 @@ public class BotService {
         NotificationEvent event = input.getEvent();
         NotificationFunction function;
         switch (event) {
-            case EVENT_JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
-            case EVENT_EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
-            case EVENT_BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
-            case EVENT_WT_NEWS -> function = functionRegister.getFuncWTNews();
+            case JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
+            case EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
+            case BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
+            case WT_NEWS -> function = functionRegister.getFuncWTNews();
             default -> {
                 log.warn("no such notification event: {}", event);
                 return null;
