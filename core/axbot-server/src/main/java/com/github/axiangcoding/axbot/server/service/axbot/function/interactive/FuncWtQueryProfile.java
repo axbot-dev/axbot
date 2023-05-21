@@ -1,5 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
+import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
@@ -8,7 +9,13 @@ import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveOutput;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
+import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
+import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
+import com.github.axiangcoding.axbot.server.data.entity.QUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
+import com.github.axiangcoding.axbot.server.data.entity.basic.BindProfile;
+import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
+import com.github.axiangcoding.axbot.server.service.QUserSettingService;
 import com.github.axiangcoding.axbot.server.service.WTGameProfileService;
 import com.github.axiangcoding.axbot.server.service.axbot.template.CqhttpQuickMsg;
 import com.github.axiangcoding.axbot.server.service.axbot.template.KookQuickCard;
@@ -29,13 +36,24 @@ public class FuncWtQueryProfile extends InteractiveFunction {
     @Resource
     WTGameProfileService wtGameProfileService;
 
+    @Resource
+    KookUserSettingService kookUserSettingService;
+
+    @Resource
+    QUserSettingService qUserSettingService;
 
     @Resource
     FuncWtUpdateProfile funcWtUpdateProfile;
 
+    @Resource
+    BotConfProps botConfProps;
+
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
-        String nickname = getUserNickname(input);
+        String nickname = getUserNickname(input, SupportPlatform.KOOK);
+        if (StringUtils.isEmpty(nickname)) {
+            return input.response(kookInvalidNickname(botConfProps.getDefaultTriggerPrefix()));
+        }
         Optional<WtGamerProfile> optGp = wtGameProfileService.findByNickname(nickname);
         if (optGp.isEmpty()) {
             boolean canBeRefresh = wtGameProfileService.canBeRefresh(nickname);
@@ -50,12 +68,15 @@ public class FuncWtQueryProfile extends InteractiveFunction {
 
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
-        String nickname = getUserNickname(input);
+        String nickname = getUserNickname(input, SupportPlatform.CQHTTP);
+        if (StringUtils.isEmpty(nickname)) {
+            return input.response(cqhttpInvalidNickname(botConfProps.getDefaultTriggerPrefix()));
+        }
         Optional<WtGamerProfile> optGp = wtGameProfileService.findByNickname(nickname);
         if (optGp.isEmpty()) {
             boolean canBeRefresh = wtGameProfileService.canBeRefresh(nickname);
             if (!canBeRefresh) {
-                return input.response(kookProfileNotFound(nickname, "未找到该玩家"));
+                return input.response(cqhttpProfileNotFound(nickname, "未找到该玩家"));
             }
             return funcWtUpdateProfile.execute(input);
         } else {
@@ -64,9 +85,29 @@ public class FuncWtQueryProfile extends InteractiveFunction {
     }
 
 
-    private String getUserNickname(InteractiveInput input) {
+    private String getUserNickname(InteractiveInput input, SupportPlatform platform) {
         String[] paramList = input.getParamList();
-        return StringUtils.join(paramList, " ");
+        String nickname = StringUtils.join(paramList, " ");
+        if (StringUtils.isBlank(nickname)) {
+            if (platform == SupportPlatform.KOOK) {
+                Optional<KookUserSetting> opt = kookUserSettingService.findByUserId(input.getUserId());
+                if (opt.isPresent()) {
+                    BindProfile bindProfile = opt.get().getBindProfile();
+                    if (bindProfile != null) {
+                        nickname = bindProfile.getWtNickname();
+                    }
+                }
+            } else if (platform == SupportPlatform.CQHTTP) {
+                Optional<QUserSetting> opt = qUserSettingService.findByUserId(input.getUserId());
+                if (opt.isPresent()) {
+                    BindProfile bindProfile = opt.get().getBindProfile();
+                    if (bindProfile != null) {
+                        nickname = bindProfile.getWtNickname();
+                    }
+                }
+            }
+        }
+        return nickname;
     }
 
     public static String kookProfileNotFound(String nickname, String moreMsg) {
@@ -237,6 +278,24 @@ public class FuncWtQueryProfile extends InteractiveFunction {
         quickMsg.addLine("海战街机KA: %s".formatted(df.format(fabKa)));
         quickMsg.addLine("海战史实KA: %s".formatted(df.format(frbKa)));
         quickMsg.addLine("海战全真KA: %s".formatted(df.format(fsbKa)));
+        return quickMsg.displayWithFooter();
+    }
+
+    public static String kookInvalidNickname(String prefix) {
+        KookQuickCard quickCard = new KookQuickCard("不正确的战雷玩家昵称", "warning");
+        quickCard.addModuleMdSection("请检查你的昵称是否输入正确");
+        quickCard.addModuleDivider();
+        quickCard.addModuleMdSection("如果使用的是快捷查询，请先进行绑定哦");
+        quickCard.addModuleMdSection("绑定命令为 %s".formatted(
+                KookMDMessage.code(prefix + " 战雷 绑定 <昵称>")));
+        return quickCard.displayWithFooter();
+    }
+
+    public static String cqhttpInvalidNickname(String prefix) {
+        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("不正确的战雷玩家昵称");
+        quickMsg.addLine("请检查你的昵称是否输入正确");
+        quickMsg.addLine("如果使用的是快捷查询，请先进行绑定哦");
+        quickMsg.addLine("绑定命令为 `%s 战雷 绑定 <昵称>`".formatted(prefix));
         return quickMsg.displayWithFooter();
     }
 }

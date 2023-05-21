@@ -54,7 +54,7 @@ public class SponsorOrderService {
         sponsorOrderRepository.save(entity);
 
         String platform = entity.getPlatform();
-        if (SupportPlatform.PLATFORM_KOOK.getLabel().equals(platform)) {
+        if (SupportPlatform.KOOK.getLabel().equals(platform)) {
             kookUserSettingService.updateSubscribe(entity.getFromUserId(), entity.getPlan(), month);
         }
     }

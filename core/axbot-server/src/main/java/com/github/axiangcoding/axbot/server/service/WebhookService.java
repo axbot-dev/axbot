@@ -121,7 +121,7 @@ public class WebhookService {
                 input.setMessageId(msgId);
                 input.setCommand(InteractiveCommand.judgeCommand(command));
                 input.setParamList(InteractiveCommand.getParamList(command));
-                botService.responseForInteractiveAsync(SupportPlatform.PLATFORM_KOOK, input);
+                botService.responseForInteractiveAsync(SupportPlatform.KOOK, input);
             }
         } else if (Objects.equals(d.getType(), KookEvent.TYPE_SYSTEM_MESSAGE)) {
             String channelType = d.getChannelType();
@@ -134,14 +134,14 @@ public class WebhookService {
                 String guildId = (String) d.getExtra().getBody().get("guild_id");
                 if ("self_joined_guild".equals(type)) {
                     KookNotificationInput input = new KookNotificationInput();
-                    input.setEvent(NotificationEvent.EVENT_JOIN_GUILD);
+                    input.setEvent(NotificationEvent.JOIN_GUILD);
                     input.setGuildId(guildId);
-                    botService.responseForNotificationAsync(SupportPlatform.PLATFORM_KOOK, input);
+                    botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
                 } else if ("self_exited_guild".equals(type)) {
                     KookNotificationInput input = new KookNotificationInput();
-                    input.setEvent(NotificationEvent.EVENT_EXIT_GUILD);
+                    input.setEvent(NotificationEvent.EXIT_GUILD);
                     input.setGuildId(guildId);
-                    botService.responseForNotificationAsync(SupportPlatform.PLATFORM_KOOK, input);
+                    botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
                 }
             }
         }
@@ -173,7 +173,7 @@ public class WebhookService {
                 input.setParamList(InteractiveCommand.getParamList(command));
                 input.setGroupId(String.valueOf(groupId));
                 input.setMessageId(String.valueOf(messageId));
-                botService.responseForInteractiveAsync(SupportPlatform.PLATFORM_CQHTTP, input);
+                botService.responseForInteractiveAsync(SupportPlatform.CQHTTP, input);
             }
 
         }

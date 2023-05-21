@@ -41,7 +41,7 @@ public class FuncSponsor extends InteractiveFunction {
         String guildId = input.getGuildId();
         String channelId = input.getChannelId();
         String userId = input.getUserId();
-        String orderId = sponsorOrderService.generatePersonalOrder(SupportPlatform.PLATFORM_KOOK, guildId, channelId, userId);
+        String orderId = sponsorOrderService.generatePersonalOrder(SupportPlatform.KOOK, guildId, channelId, userId);
         threadPoolTaskExecutor.execute(() -> {
             try {
                 int i = 0;

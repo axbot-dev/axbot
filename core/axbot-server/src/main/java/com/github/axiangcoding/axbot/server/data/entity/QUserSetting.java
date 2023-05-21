@@ -1,9 +1,6 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
-import com.github.axiangcoding.axbot.server.data.entity.basic.BasicEntity;
-import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
-import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
-import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
+import com.github.axiangcoding.axbot.server.data.entity.basic.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -30,6 +27,8 @@ public class QUserSetting extends BasicEntity {
     UserSubscribe subscribe;
     @Embedded
     UserPermit permit;
+    @Embedded
+    BindProfile bindProfile;
 
     public static QUserSetting defaultSetting(String userId) {
         QUserSetting setting = new QUserSetting();

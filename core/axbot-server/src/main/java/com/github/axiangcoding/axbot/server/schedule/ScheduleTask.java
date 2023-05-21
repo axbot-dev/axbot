@@ -136,7 +136,7 @@ public class ScheduleTask {
 
 
     private void checkBiliRoomStatus() {
-        if (botService.isPlatformEnabled(SupportPlatform.PLATFORM_KOOK)) {
+        if (botService.isPlatformEnabled(SupportPlatform.KOOK)) {
             List<KookGuildSetting> guilds = kookGuildSettingService.findByEnabledBiliLiveReminder();
             guilds.forEach(guild -> {
                 String biliRoomId = guild.getFunctionSetting().getBiliRoomId();
@@ -150,18 +150,18 @@ public class ScheduleTask {
                 if (roomInfoData.getLiveStatus() == 1) {
                     if (!Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey))) {
                         KookNotificationInput input = new KookNotificationInput();
-                        input.setEvent(NotificationEvent.EVENT_BILI_ROOM_REMIND);
+                        input.setEvent(NotificationEvent.BILI_ROOM_REMIND);
                         input.setGuildId(guild.getGuildId());
                         input.setChannelId(biliLiveChannelId);
                         input.setData(roomInfoData);
-                        botService.responseForNotificationAsync(SupportPlatform.PLATFORM_KOOK, input);
+                        botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
 
                     }
                     stringRedisTemplate.opsForValue().set(cacheKey, "", 10, TimeUnit.MINUTES);
                 }
             });
         }
-        if (botService.isPlatformEnabled(SupportPlatform.PLATFORM_CQHTTP)) {
+        if (botService.isPlatformEnabled(SupportPlatform.CQHTTP)) {
             List<QGroupSetting> groups = qGroupSettingService.findByEnabledBiliLiveReminder();
             groups.forEach(group -> {
                 String biliRoomId = group.getFunctionSetting().getBiliRoomId();
@@ -174,10 +174,10 @@ public class ScheduleTask {
                 if (roomInfoData.getLiveStatus() == 1) {
                     if (!Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey))) {
                         CqhttpNotificationInput input = new CqhttpNotificationInput();
-                        input.setEvent(NotificationEvent.EVENT_BILI_ROOM_REMIND);
+                        input.setEvent(NotificationEvent.BILI_ROOM_REMIND);
                         input.setGroupId(group.getGroupId());
                         input.setData(roomInfoData);
-                        botService.responseForNotificationAsync(SupportPlatform.PLATFORM_CQHTTP, input);
+                        botService.responseForNotificationAsync(SupportPlatform.CQHTTP, input);
                     }
                     stringRedisTemplate.opsForValue().set(cacheKey, "", 10, TimeUnit.MINUTES);
                 }
@@ -204,7 +204,7 @@ public class ScheduleTask {
                 }
                 return !exists;
             }).toList();
-            if (botService.isPlatformEnabled(SupportPlatform.PLATFORM_KOOK)) {
+            if (botService.isPlatformEnabled(SupportPlatform.KOOK)) {
                 List<KookGuildSetting> guilds = kookGuildSettingService.findByEnableNewsReminder();
                 guilds.forEach(guild -> {
                     String wtNewsChannelId = guild.getFunctionSetting().getWtNewsChannelId();
@@ -213,23 +213,23 @@ public class ScheduleTask {
                     }
                     notExistNews.forEach(item -> {
                         KookNotificationInput input = new KookNotificationInput();
-                        input.setEvent(NotificationEvent.EVENT_WT_NEWS);
+                        input.setEvent(NotificationEvent.WT_NEWS);
                         input.setGuildId(guild.getGuildId());
                         input.setChannelId(wtNewsChannelId);
                         input.setData(item);
-                        botService.responseForNotificationAsync(SupportPlatform.PLATFORM_KOOK, input);
+                        botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
                     });
                 });
             }
-            if (botService.isPlatformEnabled(SupportPlatform.PLATFORM_CQHTTP)) {
+            if (botService.isPlatformEnabled(SupportPlatform.CQHTTP)) {
                 List<QGroupSetting> groups = qGroupSettingService.findByEnableNewsReminder();
                 groups.forEach(group -> {
                     notExistNews.forEach(item -> {
                         CqhttpNotificationInput input = new CqhttpNotificationInput();
-                        input.setEvent(NotificationEvent.EVENT_WT_NEWS);
+                        input.setEvent(NotificationEvent.WT_NEWS);
                         input.setGroupId(group.getGroupId());
                         input.setData(item);
-                        botService.responseForNotificationAsync(SupportPlatform.PLATFORM_CQHTTP, input);
+                        botService.responseForNotificationAsync(SupportPlatform.CQHTTP, input);
                     });
                 });
             }

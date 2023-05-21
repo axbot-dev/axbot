@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SupportPlatform {
-    PLATFORM_KOOK("kook"),
-    PLATFORM_CQHTTP("cqhttp");
+    KOOK("kook"),
+    CQHTTP("cqhttp");
 
     private final String label;
 

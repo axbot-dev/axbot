@@ -2,6 +2,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.SponsorOrder;
+import com.github.axiangcoding.axbot.server.data.entity.basic.BindProfile;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
@@ -118,7 +119,7 @@ public class KookUserSettingService {
     public int getInputLimit(String userId) {
         if (isSubscribedBasicPlan(userId)) {
             return 10000;
-        } else{
+        } else {
             return 100;
         }
     }
@@ -136,5 +137,37 @@ public class KookUserSettingService {
         } else {
             return false;
         }
+    }
+
+    public void bindWtNickname(String userId, String nickname) {
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return;
+        }
+        KookUserSetting setting = opt.get();
+        BindProfile bindProfile = setting.getBindProfile();
+        if (bindProfile == null) {
+            bindProfile = new BindProfile();
+            bindProfile.setWtNickname(nickname);
+            setting.setBindProfile(bindProfile);
+        } else {
+            bindProfile.setWtNickname(nickname);
+        }
+        kookUserSettingRepository.save(setting);
+    }
+
+    public void unbindWtNickname(String userId) {
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return;
+        }
+        KookUserSetting setting = opt.get();
+        BindProfile bindProfile = setting.getBindProfile();
+        if (bindProfile == null) {
+            return;
+        } else {
+            bindProfile.setWtNickname(null);
+        }
+        kookUserSettingRepository.save(setting);
     }
 }
