@@ -30,6 +30,10 @@ public class FunctionRegister {
     FuncWtUpdateProfile funcWtUpdateProfile;
     @Resource
     FuncWtQueryHistory funcWtQueryHistory;
+    @Resource
+    FuncWtBind funcWtBind;
+    @Resource
+    FuncWtUnbind funcWtUnbind;
 
     @Resource
     FuncGuildStatus funcGuildStatus;

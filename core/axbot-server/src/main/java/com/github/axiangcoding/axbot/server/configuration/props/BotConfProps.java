@@ -106,4 +106,8 @@ public class BotConfProps {
         }
 
     }
+
+    public String getDefaultTriggerPrefix() {
+        return triggerMessagePrefix.get(0);
+    }
 }

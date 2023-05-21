@@ -1,9 +1,6 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
-import com.github.axiangcoding.axbot.server.data.entity.basic.BasicEntity;
-import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
-import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
-import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
+import com.github.axiangcoding.axbot.server.data.entity.basic.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -26,6 +23,8 @@ public class KookUserSetting extends BasicEntity {
     String bannedReason;
     LocalDateTime bannedTime;
     @Embedded
+    BindProfile bindProfile;
+    @Embedded
     UserUsage usage;
     @Embedded
     UserPermit permit;
@@ -39,6 +38,7 @@ public class KookUserSetting extends BasicEntity {
         setting.setUsage(UserUsage.defaultUsage());
         setting.setPermit(UserPermit.defaultPermit());
         setting.setSubscribe(new UserSubscribe());
+        setting.setBindProfile(new BindProfile());
         return setting;
     }
 

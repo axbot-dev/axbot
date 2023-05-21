@@ -2,6 +2,7 @@ package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.QUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.SponsorOrder;
+import com.github.axiangcoding.axbot.server.data.entity.basic.BindProfile;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserPermit;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserSubscribe;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
@@ -81,5 +82,37 @@ public class QUserSettingService {
             return false;
         }
         return Boolean.TRUE.equals(permit.getCanUseAIChat());
+    }
+
+    public void bindWtNickname(String userId, String nickname) {
+        Optional<QUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return;
+        }
+        QUserSetting setting = opt.get();
+        BindProfile bindProfile = setting.getBindProfile();
+        if (bindProfile == null) {
+            bindProfile = new BindProfile();
+            bindProfile.setWtNickname(nickname);
+            setting.setBindProfile(bindProfile);
+        } else {
+            bindProfile.setWtNickname(nickname);
+        }
+        qUserSettingRepository.save(setting);
+    }
+
+    public void unbindWtNickname(String userId) {
+        Optional<QUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return;
+        }
+        QUserSetting setting = opt.get();
+        BindProfile bindProfile = setting.getBindProfile();
+        if (bindProfile == null) {
+            return;
+        } else {
+            bindProfile.setWtNickname(null);
+        }
+        qUserSettingRepository.save(setting);
     }
 }

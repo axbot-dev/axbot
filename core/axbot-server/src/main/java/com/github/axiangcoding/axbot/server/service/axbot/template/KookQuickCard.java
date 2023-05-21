@@ -22,6 +22,16 @@ public class KookQuickCard {
         modules.add(item);
     }
 
+    public void addModuleDivider() {
+        List<KookCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KookCardMessage.newDivider());
+    }
+
+    public void addModuleMdSection(String content) {
+        List<KookCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KookCardMessage.quickMdSection(content));
+    }
+
     public String display() {
         return JsonUtils.toJson(messages);
     }
