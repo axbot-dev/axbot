@@ -54,21 +54,22 @@ def main():
         logger.info(f"missionId is {mission_id}, url is {url}, xpath condition is {xpath_condition}")
         driver.get(url)
 
-        wait = WebDriverWait(driver, 15, 1)
+        wait = WebDriverWait(driver, 25, 2)
         try:
             wait.until(EC.presence_of_element_located((By.XPATH, xpath_condition)))
         except TimeoutException:
             logger.error("timeout when wait element")
             return
         page_source = driver.page_source
-        end_time = time.time()
-        logger.info("get page_source success, use %.2f sec", end_time - start_time)
+        time_usage = time.time() - start_time
+        logger.info(f"get page_source success, use {time_usage} sec", )
         out_obj = {
             "missionId": mission_id,
             "pageSource": page_source,
-            "timeUsage": end_time - start_time
+            "timeUsage": time_usage
         }
-        channel.basic_publish(exchange='', routing_key=queue_out, body=json.dumps(out_obj, ensure_ascii=False))
+        body = json.dumps(out_obj, ensure_ascii=False)
+        channel.basic_publish(exchange='', routing_key=queue_out, body=body.encode('utf-8'))
         logger.info(f"send a message to queue {queue_out}")
 
         driver.close()
