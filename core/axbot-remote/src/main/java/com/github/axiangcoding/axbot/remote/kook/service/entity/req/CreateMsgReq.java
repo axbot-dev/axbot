@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CreateMessageReq {
+public class CreateMsgReq {
     Integer type;
     String targetId;
     String content;
