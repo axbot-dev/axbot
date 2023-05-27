@@ -17,7 +17,7 @@ public enum InteractiveCommand {
     WT_QUERY_HISTORY(List.of("战雷", "战争雷霆", "wt"), List.of("历史", "历史记录", "history")),
     WT_UPDATE_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("更新", "刷新", "update")),
     WT_BIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("绑定", "快捷绑定", "bind")),
-    WT_UNBIND_RPOFILE(List.of("战雷", "战争雷霆", "wt"), List.of("解绑", "快捷解绑", "unbind")),
+    WT_UNBIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("解绑", "快捷解绑", "unbind")),
     GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
     USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
     GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
