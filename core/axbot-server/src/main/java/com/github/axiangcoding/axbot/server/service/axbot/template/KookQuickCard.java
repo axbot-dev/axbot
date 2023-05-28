@@ -11,7 +11,7 @@ public class KookQuickCard {
     private final List<KookCardMessage> messages;
 
     @Setter
-    KookCardMessage footer = KookCardMessage.quickTextLinkSection("Powered By AXBot.", "关注开发者", "info", "https://space.bilibili.com/8696650");
+    KookCardMessage footer = KookCardMessage.quickTextLinkSection("Powered By AXBot.", "GitHub", "info", "https://github.com/axiangcoding/AXBot");
 
     public KookQuickCard(String title, String theme) {
         this.messages = KookCardMessage.defaultMsg(title, theme);
@@ -30,6 +30,11 @@ public class KookQuickCard {
     public void addModuleMdSection(String content) {
         List<KookCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KookCardMessage.quickMdSection(content));
+    }
+
+    public void addModuleContentSection(String content) {
+        List<KookCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KookCardMessage.quickContent(content));
     }
 
     public String display() {

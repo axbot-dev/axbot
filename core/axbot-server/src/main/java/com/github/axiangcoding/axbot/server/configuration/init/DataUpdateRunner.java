@@ -30,18 +30,20 @@ public class DataUpdateRunner implements ApplicationRunner {
     }
 
     private void update0() {
-        Optional<GlobalSetting> opt = globalSettingRepository.findByKey(GlobalSetting.KEY_DB_UPDATE_VERSION);
+        String label = GlobalSetting.KEY.DB_UPDATE_VERSION.getLabel();
+        Optional<GlobalSetting> opt = globalSettingRepository.findByKey(label);
         if (opt.isEmpty()) {
             log.info("execute update0");
             GlobalSetting entity = new GlobalSetting();
-            entity.setKey(GlobalSetting.KEY_DB_UPDATE_VERSION);
+            entity.setKey(label);
             entity.setValue("0");
             globalSettingRepository.save(entity);
         }
     }
 
     private void update1() {
-        Optional<GlobalSetting> opt = globalSettingRepository.findByKey(GlobalSetting.KEY_DB_UPDATE_VERSION);
+        String label = GlobalSetting.KEY.DB_UPDATE_VERSION.getLabel();
+        Optional<GlobalSetting> opt = globalSettingRepository.findByKey(label);
         if (opt.isEmpty()) {
             return;
         }

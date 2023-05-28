@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 @Component
-public class FuncLuckyToday extends InteractiveFunction {
+public class FuncLuckyToday extends AbstractInteractiveFunction {
 
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {

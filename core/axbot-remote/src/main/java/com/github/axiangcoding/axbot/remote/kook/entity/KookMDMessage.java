@@ -57,7 +57,7 @@ public class KookMDMessage {
     }
 
     public static String colorful(String text, String color) {
-        return "(font)%s(font)[%s]\n\n".formatted(text, color);
+        return "(font)%s(font)[%s]".formatted(text, color);
     }
 
     public static String mention(String text) {

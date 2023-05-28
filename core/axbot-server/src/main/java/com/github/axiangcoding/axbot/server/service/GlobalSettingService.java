@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.server.data.entity.GlobalSetting;
+import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.repository.GlobalSettingRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class GlobalSettingService {
     @Resource
     GlobalSettingRepository globalSettingRepository;
 
+    @Resource
+    KookUserSettingService kookUserSettingService;
 
     public List<GlobalSetting> findAll() {
         return globalSettingRepository.findAll();
@@ -37,4 +40,6 @@ public class GlobalSettingService {
     public void save(GlobalSetting gs) {
         globalSettingRepository.save(gs);
     }
+
+
 }

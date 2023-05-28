@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
-public class WTGameProfileService {
+public class WTGamerProfileService {
 
     @Resource
     WtGamerProfileRepository wtGamerProfileRepository;
@@ -115,7 +115,7 @@ public class WTGameProfileService {
             return;
         }
         missionService.setRunning(missionId, 10.0);
-        Optional<GlobalSetting> optKey = globalSettingRepository.findByKey(GlobalSetting.KEY_WT_PROFILE_CRAWLER_MODE);
+        Optional<GlobalSetting> optKey = globalSettingRepository.findByKey(GlobalSetting.KEY.WT_PROFILE_CRAWLER_MODE.getLabel());
         // 如果配置项为空或者为direct模式，直接获取数据即可
         if (optKey.isEmpty() || optKey.get().getValue().equals(WtCrawlerClient.MODE.DIRECT.getName())) {
             try {

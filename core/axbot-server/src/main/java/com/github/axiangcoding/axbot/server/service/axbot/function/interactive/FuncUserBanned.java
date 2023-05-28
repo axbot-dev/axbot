@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class FuncUserBanned extends InteractiveFunction {
+public class FuncUserBanned extends AbstractInteractiveFunction {
     @Resource
     KookUserSettingService kookUserSettingService;
 

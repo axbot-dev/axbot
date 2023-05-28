@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuncChatWithAI extends InteractiveFunction {
+public class FuncChatWithAI extends AbstractInteractiveFunction {
     @Resource
     KookUserSettingService kookUserSettingService;
 

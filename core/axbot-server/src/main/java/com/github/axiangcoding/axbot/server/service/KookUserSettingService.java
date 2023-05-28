@@ -170,4 +170,22 @@ public class KookUserSettingService {
         }
         kookUserSettingRepository.save(setting);
     }
+
+    public List<KookUserSetting> findByBindWtNickname(String nickname) {
+        return kookUserSettingRepository.findByBindProfileWtNickname(nickname);
+    }
+
+    public List<KookUserSetting> getKookSuperAdminUser() {
+        return kookUserSettingRepository.findByRole(KookUserSetting.ROLE.SUPER_ADMIN.getLabel());
+    }
+
+    public void setKookSuperAdminUser(String userId) {
+        Optional<KookUserSetting> opt = findByUserId(userId);
+        if (opt.isEmpty()) {
+            return;
+        }
+        KookUserSetting setting = opt.get();
+        setting.setRole(KookUserSetting.ROLE.SUPER_ADMIN.getLabel());
+        kookUserSettingRepository.save(setting);
+    }
 }

@@ -23,6 +23,8 @@ public class FunctionRegister {
     FuncVersion funcVersion;
     @Resource
     FuncLuckyToday funcLuckyToday;
+    @Resource
+    FuncBugReport funcBugReport;
 
     @Resource
     FuncWtQueryProfile funcWtQueryProfile;
@@ -34,6 +36,8 @@ public class FunctionRegister {
     FuncWtBind funcWtBind;
     @Resource
     FuncWtUnbind funcWtUnbind;
+    @Resource
+    FuncWtReportGamer funcWtReportGamer;
 
     @Resource
     FuncGuildStatus funcGuildStatus;

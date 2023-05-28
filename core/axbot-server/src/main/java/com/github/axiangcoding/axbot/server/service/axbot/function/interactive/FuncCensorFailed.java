@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
@@ -16,7 +16,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuncCensorFailed extends InteractiveFunction {
+public class FuncCensorFailed extends AbstractInteractiveFunction {
     @Resource
     UserInputRecordService userInputRecordService;
 

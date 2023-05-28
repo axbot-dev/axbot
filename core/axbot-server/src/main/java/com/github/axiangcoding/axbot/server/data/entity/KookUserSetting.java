@@ -1,9 +1,8 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 import com.github.axiangcoding.axbot.server.data.entity.basic.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +13,20 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
+@Table(indexes = {
+        @Index(columnList = "bindProfile_wtNickname"),
+})
 public class KookUserSetting extends BasicEntity {
+    @AllArgsConstructor
+    @Getter
+    public enum ROLE {
+        SUPER_ADMIN("superAdmin"),
+        ADMIN("admin"),
+        NORMAL("normal");
+
+        private final String label;
+    }
+
 
     @Column(unique = true)
     String userId;
@@ -22,6 +34,8 @@ public class KookUserSetting extends BasicEntity {
     Boolean banned;
     String bannedReason;
     LocalDateTime bannedTime;
+
+    String role;
     @Embedded
     BindProfile bindProfile;
     @Embedded

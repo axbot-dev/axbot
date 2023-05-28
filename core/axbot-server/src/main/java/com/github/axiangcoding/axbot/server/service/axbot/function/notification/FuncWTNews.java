@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.notification;
 
 import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
-import com.github.axiangcoding.axbot.engine.v1.function.NotificationFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractNotificationFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.NotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationOutput;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class FuncWTNews extends NotificationFunction {
+public class FuncWTNews extends AbstractNotificationFunction {
     @Override
     public KookNotificationOutput execute(KookNotificationInput input) {
         NewParseResult parseResult = getNewParseResult(input);

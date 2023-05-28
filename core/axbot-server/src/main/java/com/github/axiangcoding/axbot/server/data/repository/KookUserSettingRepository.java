@@ -25,4 +25,10 @@ public interface KookUserSettingRepository extends JpaRepository<KookUserSetting
     @Query("update KookUserSetting k set k.usage.inputToday = 0, k.usage.queryWtToday = 0")
     int resetTodayUsage();
 
+    List<KookUserSetting> findByBindProfileWtNickname(String wtNickname);
+
+    List<KookUserSetting> findByRole(String role);
+
+
+
 }

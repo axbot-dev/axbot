@@ -2,10 +2,10 @@ package com.github.axiangcoding.axbot.server.controller.v1;
 
 import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
+import com.github.axiangcoding.axbot.server.controller.entity.vo.req.SetSuperAdminReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UnlockKookUserReq;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.UserCanUseAIReq;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
-import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
 import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -18,9 +18,6 @@ import java.util.List;
 public class KookManageController {
     @Resource
     KookUserSettingService kookUserSettingService;
-
-    @Resource
-    KookGuildSettingService kookGuildSettingService;
 
     @RequireApiKey(admin = true)
     @GetMapping("blockedUsers")
@@ -43,4 +40,10 @@ public class KookManageController {
         return CommonResult.success();
     }
 
+    @RequireApiKey(admin = true)
+    @PostMapping("user/superAdmin")
+    public CommonResult setSuperAdminUser(@Valid @RequestBody SetSuperAdminReq req) {
+        kookUserSettingService.setKookSuperAdminUser(req.getUserId());
+        return CommonResult.success();
+    }
 }

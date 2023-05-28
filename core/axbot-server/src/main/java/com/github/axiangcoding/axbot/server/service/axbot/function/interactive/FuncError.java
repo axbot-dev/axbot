@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
@@ -11,7 +11,7 @@ import com.github.axiangcoding.axbot.server.service.axbot.template.KookQuickCard
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuncError extends InteractiveFunction {
+public class FuncError extends AbstractInteractiveFunction {
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
         KookQuickCard card = new KookQuickCard("服务器内部错误！", "danger");

@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.notification;
 
-import com.github.axiangcoding.axbot.engine.v1.function.NotificationFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractNotificationFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
@@ -23,7 +23,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class FuncJoinGuild extends NotificationFunction {
+public class FuncJoinGuild extends AbstractNotificationFunction {
     @Resource
     KookGuildSettingService kookGuildSettingService;
 

@@ -1,14 +1,12 @@
 package com.github.axiangcoding.axbot.remote.kook;
 
 
-import com.github.axiangcoding.axbot.remote.kook.service.GuildRoleService;
-import com.github.axiangcoding.axbot.remote.kook.service.GuildService;
-import com.github.axiangcoding.axbot.remote.kook.service.MessageService;
-import com.github.axiangcoding.axbot.remote.kook.service.UserService;
+import com.github.axiangcoding.axbot.remote.kook.service.*;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookGuild;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookResponse;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.KookUser;
-import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMessageReq;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateDirectMsgReq;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMsgReq;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.resp.CreateMessageData;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.resp.GuildRoleListData;
 import com.google.gson.FieldNamingPolicy;
@@ -31,6 +29,7 @@ public class KookClient {
     private final MessageService messageService;
     private final UserService userService;
     private final GuildRoleService guildRoleService;
+    private final DirectMessageService directMessageService;
 
     private static final String BASE_URL = "https://www.kookapp.cn/";
 
@@ -90,9 +89,10 @@ public class KookClient {
         this.messageService = retrofit.create(MessageService.class);
         this.userService = retrofit.create(UserService.class);
         this.guildRoleService = retrofit.create(GuildRoleService.class);
+        this.directMessageService = retrofit.create(DirectMessageService.class);
     }
 
-    public KookResponse<CreateMessageData> createMessage(CreateMessageReq req) {
+    public KookResponse<CreateMessageData> createMessage(CreateMsgReq req) {
         return execute(messageService.createMessage(req));
     }
 
@@ -106,5 +106,9 @@ public class KookClient {
 
     public KookResponse<GuildRoleListData> getGuildRoleList(String guildId, Integer page, Integer pageSize) {
         return execute(guildRoleService.getView(guildId, page, pageSize));
+    }
+
+    public KookResponse<CreateMessageData> createDirectMessage(CreateDirectMsgReq req) {
+        return execute(directMessageService.createDirectMessage(req));
     }
 }

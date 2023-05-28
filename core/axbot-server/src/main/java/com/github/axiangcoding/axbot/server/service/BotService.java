@@ -4,8 +4,8 @@ package com.github.axiangcoding.axbot.server.service;
 import com.github.axiangcoding.axbot.engine.v1.InteractiveCommand;
 import com.github.axiangcoding.axbot.engine.v1.NotificationEvent;
 import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
-import com.github.axiangcoding.axbot.engine.v1.function.NotificationFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractNotificationFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.NotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
@@ -174,17 +174,21 @@ public class BotService {
             }
 
             InteractiveCommand command = input.getCommand();
-            InteractiveFunction function;
+            AbstractInteractiveFunction function;
             switch (command) {
                 case DEFAULT -> function = functionRegister.getFuncDefault();
                 case HELP -> function = functionRegister.getFuncHelp();
                 case VERSION -> function = functionRegister.getFuncVersion();
                 case LUCKY -> function = functionRegister.getFuncLuckyToday();
+                case BUG_REPORT -> function = functionRegister.getFuncBugReport();
+
                 case WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
                 case WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
                 case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
                 case WT_BIND_PROFILE -> function = functionRegister.getFuncWtBind();
                 case WT_UNBIND_PROFILE -> function = functionRegister.getFuncWtUnbind();
+                case WT_REPORT_GAMER -> function = functionRegister.getFuncWtReportGamer();
+
                 case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
                 case USER_STATUS -> function = functionRegister.getFuncUserStatus();
                 case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
@@ -234,17 +238,21 @@ public class BotService {
                 return functionRegister.getFuncCensorFailed().execute(input);
             }
             InteractiveCommand command = input.getCommand();
-            InteractiveFunction function;
+            AbstractInteractiveFunction function;
             switch (command) {
                 case DEFAULT -> function = functionRegister.getFuncDefault();
                 case HELP -> function = functionRegister.getFuncHelp();
                 case VERSION -> function = functionRegister.getFuncVersion();
                 case LUCKY -> function = functionRegister.getFuncLuckyToday();
+                case BUG_REPORT -> function = functionRegister.getFuncBugReport();
+
                 case WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
                 case WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
                 case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
                 case WT_BIND_PROFILE -> function = functionRegister.getFuncWtBind();
                 case WT_UNBIND_PROFILE -> function = functionRegister.getFuncWtUnbind();
+                case WT_REPORT_GAMER -> function = functionRegister.getFuncWtReportGamer();
+
                 case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
                 case USER_STATUS -> function = functionRegister.getFuncUserStatus();
                 case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
@@ -262,7 +270,7 @@ public class BotService {
 
     private KookNotificationOutput processKookNotificationFunction(KookNotificationInput input) {
         NotificationEvent event = input.getEvent();
-        NotificationFunction function;
+        AbstractNotificationFunction function;
         switch (event) {
             case JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
             case EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
@@ -278,7 +286,7 @@ public class BotService {
 
     private CqhttpNotificationOutput processCqhttpNotificationFunction(CqhttpNotificationInput input) {
         NotificationEvent event = input.getEvent();
-        NotificationFunction function;
+        AbstractNotificationFunction function;
         switch (event) {
             case JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
             case EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
