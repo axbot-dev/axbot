@@ -145,4 +145,8 @@ public class KookCardMessage {
                 KookCardMessage.newButton(theme, btnName, "link", url));
     }
 
+    public static KookCardMessage quickContent(String content) {
+        return newContext(List.of(newKMarkdown(content)));
+    }
+
 }

@@ -25,7 +25,7 @@ public class CqhttpQuickMsg {
         this.lines.add(line);
     }
 
-    public void addDivider(){
+    public void addDivider() {
         this.lines.add("-------------");
     }
 
@@ -34,6 +34,8 @@ public class CqhttpQuickMsg {
     }
 
     public String displayWithFooter() {
-        return display() + "-------------\n" + footer;
+        return display();
+        // QQ受到字数限制，不再展示页脚
+        // return display() + "-------------\n" + footer;
     }
 }

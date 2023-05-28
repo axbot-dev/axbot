@@ -34,6 +34,8 @@ public class FunctionRegister {
     FuncWtBind funcWtBind;
     @Resource
     FuncWtUnbind funcWtUnbind;
+    @Resource
+    FuncWtReportGamer funcWtReportGamer;
 
     @Resource
     FuncGuildStatus funcGuildStatus;

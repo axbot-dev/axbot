@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
-public class WTGameProfileService {
+public class WTGamerProfileService {
 
     @Resource
     WtGamerProfileRepository wtGamerProfileRepository;

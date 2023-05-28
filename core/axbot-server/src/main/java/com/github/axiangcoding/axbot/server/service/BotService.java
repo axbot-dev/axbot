@@ -185,6 +185,8 @@ public class BotService {
                 case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
                 case WT_BIND_PROFILE -> function = functionRegister.getFuncWtBind();
                 case WT_UNBIND_PROFILE -> function = functionRegister.getFuncWtUnbind();
+                case WT_REPORT_GAMER -> function = functionRegister.getFuncWtReportGamer();
+
                 case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
                 case USER_STATUS -> function = functionRegister.getFuncUserStatus();
                 case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
@@ -245,6 +247,8 @@ public class BotService {
                 case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
                 case WT_BIND_PROFILE -> function = functionRegister.getFuncWtBind();
                 case WT_UNBIND_PROFILE -> function = functionRegister.getFuncWtUnbind();
+                case WT_REPORT_GAMER -> function = functionRegister.getFuncWtReportGamer();
+
                 case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
                 case USER_STATUS -> function = functionRegister.getFuncUserStatus();
                 case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();

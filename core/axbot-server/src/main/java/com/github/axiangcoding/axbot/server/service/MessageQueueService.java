@@ -21,7 +21,7 @@ public class MessageQueueService {
 
 
     @Resource
-    WTGameProfileService wtGameProfileService;
+    WTGamerProfileService wtGamerProfileService;
 
     @Resource
     MissionService missionService;
@@ -44,7 +44,7 @@ public class MessageQueueService {
             // 找到用户资料
             if (pr.getFound()) {
                 WtGamerProfile wtGamerProfile = WtGamerProfile.from(pr.getProfile());
-                wtGameProfileService.upsertByNickname(wtGamerProfile.getNickname(), wtGamerProfile);
+                wtGamerProfileService.upsertByNickname(wtGamerProfile.getNickname(), wtGamerProfile);
             } else {
                 log.info("user not found at mission {}", missionId);
 

@@ -12,17 +12,23 @@ public enum InteractiveCommand {
     DEFAULT(null, null),
     HELP(List.of("帮助", "文档", "help"), null),
     VERSION(List.of("版本", "version"), null),
+
     LUCKY(List.of("气运", "运气", "luck"), null),
+    CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
+    SPONSOR(List.of("赞助", "订阅", "subscribe"), null),
+
     WT_QUERY_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("查询", "查找", "query")),
     WT_QUERY_HISTORY(List.of("战雷", "战争雷霆", "wt"), List.of("历史", "历史记录", "history")),
     WT_UPDATE_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("更新", "刷新", "update")),
     WT_BIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("绑定", "快捷绑定", "bind")),
     WT_UNBIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("解绑", "快捷解绑", "unbind")),
+    WT_REPORT_GAMER(List.of("战雷", "战争雷霆", "wt"), List.of("举办", "举报", "举报玩家", "report")),
+
     GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
     USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
     GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
-    CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
-    SPONSOR(List.of("赞助", "订阅", "subscribe"), null);
+
+    ;
 
     private final List<String> t1;
     private final List<String> t2;
