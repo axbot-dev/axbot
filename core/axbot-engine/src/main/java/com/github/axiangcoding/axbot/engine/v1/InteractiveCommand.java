@@ -12,6 +12,7 @@ public enum InteractiveCommand {
     DEFAULT(null, null),
     HELP(List.of("帮助", "文档", "help"), null),
     VERSION(List.of("版本", "version"), null),
+    BUG_REPORT(List.of("反馈", "bug", "bug反馈", "bugReport"), null),
 
     LUCKY(List.of("气运", "运气", "luck"), null),
     CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),

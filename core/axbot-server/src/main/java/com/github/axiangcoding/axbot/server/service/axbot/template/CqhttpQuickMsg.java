@@ -38,4 +38,8 @@ public class CqhttpQuickMsg {
         // QQ受到字数限制，不再展示页脚
         // return display() + "-------------\n" + footer;
     }
+
+    public static CqhttpQuickMsg notSupport() {
+        return new CqhttpQuickMsg("暂不支持该功能");
+    }
 }

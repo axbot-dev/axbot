@@ -17,7 +17,9 @@ public class GlobalSetting extends BasicEntity {
     @Getter
     public enum KEY {
         WT_PROFILE_CRAWLER_MODE("WTProfileCrawlerMode"),
-        DB_UPDATE_VERSION("DBUpdateVersion");
+        DB_UPDATE_VERSION("DBUpdateVersion"),
+        KOOK_SUPER_ADMIN_USERID("KookSuperAdminUserId"),
+        ;
 
         private final String label;
     }

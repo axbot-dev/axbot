@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
@@ -12,7 +12,7 @@ import com.github.axiangcoding.axbot.server.service.axbot.template.KookQuickCard
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuncVersion extends InteractiveFunction {
+public class FuncVersion extends AbstractInteractiveFunction {
 
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {

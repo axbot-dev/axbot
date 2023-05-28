@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.notification;
 
-import com.github.axiangcoding.axbot.engine.v1.function.NotificationFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractNotificationFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationOutput;
 import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
@@ -11,7 +11,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuncExitGuild extends NotificationFunction {
+public class FuncExitGuild extends AbstractNotificationFunction {
     @Resource
     KookGuildSettingService kookGuildSettingService;
 

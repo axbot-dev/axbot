@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
 import com.github.axiangcoding.axbot.crawler.wt.entity.ProfileParseResult;
 import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class FuncWtUpdateProfile extends InteractiveFunction {
+public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
     @Resource
     WTGamerProfileService wtGamerProfileService;
     @Resource

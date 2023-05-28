@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service.axbot.function.interactive;
 
 import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
-import com.github.axiangcoding.axbot.engine.v1.function.InteractiveFunction;
+import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
 import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class FuncWtQueryProfile extends InteractiveFunction {
+public class FuncWtQueryProfile extends AbstractInteractiveFunction {
     @Resource
     WTGamerProfileService wtGamerProfileService;
 

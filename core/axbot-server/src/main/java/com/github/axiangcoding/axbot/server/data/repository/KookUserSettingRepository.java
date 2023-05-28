@@ -27,5 +27,8 @@ public interface KookUserSettingRepository extends JpaRepository<KookUserSetting
 
     List<KookUserSetting> findByBindProfileWtNickname(String wtNickname);
 
+    List<KookUserSetting> findByRole(String role);
+
+
 
 }
