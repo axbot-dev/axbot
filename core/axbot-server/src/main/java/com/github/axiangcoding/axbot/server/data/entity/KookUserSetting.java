@@ -1,9 +1,7 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 import com.github.axiangcoding.axbot.server.data.entity.basic.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +12,9 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
+@Table(indexes = {
+        @Index(columnList = "bindProfile_wtNickname"),
+})
 public class KookUserSetting extends BasicEntity {
 
     @Column(unique = true)

@@ -170,4 +170,8 @@ public class KookUserSettingService {
         }
         kookUserSettingRepository.save(setting);
     }
+
+    public List<KookUserSetting> findByBindWtNickname(String nickname) {
+        return kookUserSettingRepository.findByBindProfileWtNickname(nickname);
+    }
 }

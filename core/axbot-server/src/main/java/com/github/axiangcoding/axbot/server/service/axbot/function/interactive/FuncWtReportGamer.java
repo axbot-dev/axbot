@@ -9,13 +9,18 @@ import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveOutput;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
+import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerProfile;
+import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
+import com.github.axiangcoding.axbot.server.service.RemoteClientService;
 import com.github.axiangcoding.axbot.server.service.WTGamerProfileService;
 import com.github.axiangcoding.axbot.server.service.WtGamerTagService;
+import com.github.axiangcoding.axbot.server.service.axbot.template.CqhttpQuickMsg;
 import com.github.axiangcoding.axbot.server.service.axbot.template.KookQuickCard;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -34,6 +39,15 @@ public class FuncWtReportGamer extends InteractiveFunction {
     @Resource
     BotConfProps botConfProps;
 
+    @Resource
+    RemoteClientService remoteClientService;
+
+    @Resource
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+    @Resource
+    KookUserSettingService kookUserSettingService;
+
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
         String[] paramList = input.getParamList();
@@ -51,12 +65,20 @@ public class FuncWtReportGamer extends InteractiveFunction {
             return input.response(kookReportTooFrequent(nickname));
         }
         wtGamerTagService.markTag(nickname, tag, input.getUserId(), SupportPlatform.KOOK);
+        threadPoolTaskExecutor.execute(() -> {
+            List<KookUserSetting> kookUsers = kookUserSettingService.findByBindWtNickname(nickname);
+            kookUsers.forEach(item -> {
+                remoteClientService.sendKookPrivateCardMsg(item.getUserId(), kookBeReport(nickname));
+            });
+
+        });
         return input.response(kookReportSuccess(nickname, tag));
     }
 
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
-        return null;
+        CqhttpQuickMsg msg = new CqhttpQuickMsg("暂不支持在Q上举办玩家");
+        return input.response(msg.displayWithFooter());
     }
 
     private String getNickname(String[] paramList) {
@@ -105,5 +127,15 @@ public class FuncWtReportGamer extends InteractiveFunction {
         return card.displayWithFooter();
     }
 
+    private String kookBeReport(String nickname) {
+        KookQuickCard card = new KookQuickCard("AXBot温馨提示", "success");
+        card.addModuleMdSection("AXBot非常遗憾地通知你，你绑定的战雷账号 %s 被其他用户举办了".formatted(
+                KookMDMessage.code(nickname)
+        ));
+        card.addModuleMdSection("请注意，被其他用户举办，仅会在AXBot查询时显示标记，并不具备任何强制效力");
+        card.addModuleMdSection("如果你认为这个标记会影响你的声誉，请加入AXBot服务器进行申诉消除");
+        card.addModule(KookCardMessage.quickTextLinkSection("进入Kook服务器，到#问题反馈和意见建议频道进行反馈", "进入KOOK服务器", "primary", "https://kook.top/eUTZK7"));
 
+        return card.displayWithFooter();
+    }
 }

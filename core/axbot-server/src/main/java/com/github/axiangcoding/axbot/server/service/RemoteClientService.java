@@ -7,6 +7,7 @@ import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationOutput;
 import com.github.axiangcoding.axbot.remote.cqhttp.CqHttpClient;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
+import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateDirectMsgReq;
 import com.github.axiangcoding.axbot.remote.kook.service.entity.req.CreateMsgReq;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,14 @@ public class RemoteClientService {
         req.setTargetId(output.getChannelId());
         req.setContent(output.getResponse());
         kookClient.createMessage(req);
+    }
+
+    public void sendKookPrivateCardMsg(String userId, String content) {
+        CreateDirectMsgReq req = new CreateDirectMsgReq();
+        req.setType(KookEvent.TYPE_CARD);
+        req.setTargetId(userId);
+        req.setContent(content);
+        kookClient.createDirectMessage(req);
     }
 
     public void sendCqhttpMsg(CqhttpInteractiveOutput output) {
