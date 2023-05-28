@@ -48,7 +48,7 @@ public class FuncBugReport extends AbstractInteractiveFunction {
     }
 
     private String userReportDetail(String userId, String guildId, String content) {
-        KookQuickCard card = new KookQuickCard("你好超管，收到了一条用户反馈", "info");
+        KookQuickCard card = new KookQuickCard("你好超管用户，收到了一条用户反馈", "info");
         card.addModuleMdSection("用户ID：" + userId);
         card.addModuleMdSection("服务器ID：" + guildId);
         card.addModuleMdSection("反馈内容：" + content);
