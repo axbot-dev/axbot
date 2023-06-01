@@ -60,6 +60,8 @@ def main():
         except TimeoutException:
             logger.error("timeout when wait element")
             return
+        finally:
+            driver.close()
         page_source = driver.page_source
         time_usage = time.time() - start_time
         logger.info(f"get page_source success, use {time_usage} sec", )
