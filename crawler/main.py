@@ -38,8 +38,6 @@ def main():
         options = uc.ChromeOptions()
         options.add_argument("--disable-gpu")
         options.add_argument('--no-sandbox')
-        # comment driver_executable_path when you test in local
-
         execute_path = os.getenv("DRIVER_EXECUTABLE_PATH")
         if execute_path is None:
             driver = uc.Chrome(version_main=113, options=options, headless=True)
