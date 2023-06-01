@@ -59,9 +59,9 @@ def main():
             wait.until(EC.presence_of_element_located((By.XPATH, xpath_condition)))
         except TimeoutException:
             logger.error("timeout when wait element")
-            return
-        finally:
             driver.close()
+            return
+
         page_source = driver.page_source
         time_usage = time.time() - start_time
         logger.info(f"get page_source success, use {time_usage} sec", )
