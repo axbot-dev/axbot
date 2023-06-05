@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,15 +47,12 @@ public class UserInputRecordService {
         return userInputRecordRepository.findByUserId(userId);
     }
 
-
-    public long countUserKookSensitiveInput(String userId) {
-        return userInputRecordRepository.countByUserIdAndPlatformAndSensitive(userId,
-                SupportPlatform.KOOK.getLabel(), true);
-    }
-
-    public long countUserCqhttpSensitiveInput(String userId) {
-        return userInputRecordRepository.countByUserIdAndPlatformAndSensitive(userId,
-                SupportPlatform.CQHTTP.getLabel(), true);
+    public long countLatestSensitiveInput(String userId, SupportPlatform platform) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.minusMonths(1);
+        return userInputRecordRepository.countByUserIdAndPlatformAndSensitiveAndCreateTimeAfter(
+                userId, platform.getLabel(), true, start
+        );
     }
 
     public List<UserInputRecord> findWtQueryHistory(String userId, String platform) {

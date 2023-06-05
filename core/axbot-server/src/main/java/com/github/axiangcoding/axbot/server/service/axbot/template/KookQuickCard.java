@@ -37,6 +37,11 @@ public class KookQuickCard {
         modules.add(KookCardMessage.quickContent(content));
     }
 
+    public void addModuleGetHelp(String content) {
+        List<KookCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KookCardMessage.quickTextLinkSection(content, "进入AXBot研究所", "primary", "https://kook.top/eUTZK7"));
+    }
+
     public String display() {
         return JsonUtils.toJson(messages);
     }
