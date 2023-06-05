@@ -11,6 +11,7 @@ import com.qiniu.http.Response;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -22,13 +23,19 @@ public class QiniuClient {
     private static final Gson gson = new Gson();
 
     public QiniuClient(String accessKey, String secretKey) {
+        if (StringUtils.isBlank(accessKey) || StringUtils.isBlank(secretKey)) {
+            log.warn("qiniu accessKey or secretKey is blank, client will not work");
+            this.auth = null;
+            this.client = null;
+            return;
+        }
         this.auth = Auth.create(accessKey, secretKey);
         this.client = new Client();
     }
 
     public QiniuResponse<TextCensorResult> textCensor(String text) {
         try {
-            String url = "http://ai.qiniuapi.com/v3/text/censor";
+            String url = "https://ai.qiniuapi.com/v3/text/censor";
             TextCensorReq req = new TextCensorReq();
             req.getParams().setScenes(List.of("antispam"));
             req.getData().setText(text);
