@@ -240,6 +240,30 @@ public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
                 List.of(KookCardMessage.newKMarkdown("数据最后更新于 %s".formatted(
                         new PrettyTime(Locale.CHINA).format(profile.getUpdateTime()))))));
 
+        quickCard.addModuleDivider();
+        List<WtGamerTag> latestTag = wtGamerTagService.findLatestTag(nickname);
+        int size = latestTag.size();
+        String def = size > 0 ? KookMDMessage.colorful("【不佳】", "warning") : KookMDMessage.colorful("【良好】", "success");
+        quickCard.addModuleMdSection("axbot 名誉度（近30天）" + def);
+
+        if (size > 0) {
+            quickCard.addModuleContentSection("以下标记均为用户标记，不代表Gaijin官方和AXBot的意见");
+            // 将latestTag中的属性tag一样的合并为一项，并附加X1,x2类似的标记
+            StringBuilder content = new StringBuilder();
+            Map<String, List<WtGamerTag>> tagMap = latestTag.stream().collect(Collectors.groupingBy(WtGamerTag::getTag));
+            tagMap.forEach((tag, tags) -> {
+                if (wtGamerTagService.isDangerTag(tag)) {
+                    tag = "疑似" + tag;
+                }
+                String tagName = "%s x %d".formatted(tag, tags.size());
+                content.append(KookMDMessage.code(tagName)).append(" ");
+
+            });
+            quickCard.addModuleMdSection(content.toString());
+        }
+        quickCard.addModuleDivider();
+
+
         ArrayList<KookCardMessage> f1 = new ArrayList<>();
 
         f1.add(KookCardMessage.newKMarkdown(KookMDMessage.bold("联队") + "\n" + profile.getClan()));
@@ -316,28 +340,6 @@ public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
         quickCard.addModule(KookCardMessage.newDivider());
         quickCard.addModule(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown("击杀数/出击数简称为'KA'"))));
         quickCard.addModule(KookCardMessage.newSection(KookCardMessage.newParagraph(3, f3)));
-
-
-        List<WtGamerTag> latestTag = wtGamerTagService.findLatestTag(nickname);
-        if (latestTag.size() > 0) {
-            quickCard.addModuleDivider();
-            quickCard.addModuleMdSection("该玩家在最近30天的标记");
-            quickCard.addModuleContentSection("以下标记均为用户标记，不代表Gaijin官方意见，同时AXBot不对真实性负责");
-
-            // 将latestTag中的属性tag一样的合并为一项，并附加X1,x2类似的标记
-            StringBuilder content = new StringBuilder();
-            Map<String, List<WtGamerTag>> tagMap = latestTag.stream().collect(Collectors.groupingBy(WtGamerTag::getTag));
-            tagMap.forEach((tag, tags) -> {
-                if (wtGamerTagService.isDangerTag(tag)) {
-                    tag = "疑似" + tag;
-                }
-                String tagName = "%s x %d".formatted(tag, tags.size());
-                content.append(KookMDMessage.code(tagName)).append(" ");
-
-            });
-            quickCard.addModuleMdSection(content.toString());
-        }
-
 
         return quickCard.displayWithFooter();
     }
