@@ -23,6 +23,12 @@ public class TextCensorService {
     @Resource
     BotConfProps botConfProps;
 
+    public long cleanTextCensorCache() {
+        long d1 = textCensorRepository.deleteBySensitive(true);
+        long d2 = textCensorRepository.deleteBySensitive(false);
+        return d1 + d2;
+    }
+
     public boolean checkAndCacheText(String text) {
         if (!botConfProps.getCensor().getEnabled()) {
             return true;
@@ -48,6 +54,7 @@ public class TextCensorService {
 
     public boolean checkText(String text) {
         QiniuResponse<TextCensorResult> response = qiniuClient.textCensor(text);
-        return "pass".equals(response.getResult().getSuggestion());
+        String suggestion = response.getResult().getSuggestion();
+        return "pass".equals(suggestion) || "review".equals(suggestion);
     }
 }

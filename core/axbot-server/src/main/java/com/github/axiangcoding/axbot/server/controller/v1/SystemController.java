@@ -4,6 +4,7 @@ import com.github.axiangcoding.axbot.server.configuration.annot.RequireApiKey;
 import com.github.axiangcoding.axbot.server.controller.entity.CommonResult;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.ResetLockReq;
 import com.github.axiangcoding.axbot.server.schedule.ScheduleTask;
+import com.github.axiangcoding.axbot.server.service.TextCensorService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,9 @@ public class SystemController {
     @Resource
     ScheduleTask scheduleTask;
 
+    @Resource
+    TextCensorService textCensorService;
+
     @GetMapping("version")
     public CommonResult getVersion() {
         return CommonResult.success("version", System.getenv("APP_VERSION"));
@@ -35,5 +39,12 @@ public class SystemController {
     public CommonResult resetLock(@Valid @ParameterObject ResetLockReq req) {
         scheduleTask.resetLock(req.getLock());
         return CommonResult.success();
+    }
+
+    @RequireApiKey(admin = true)
+    @PostMapping("textCensor/cleanCache")
+    public CommonResult cleanTextCensorCache() {
+        long deleted = textCensorService.cleanTextCensorCache();
+        return CommonResult.success("deleted", deleted);
     }
 }
