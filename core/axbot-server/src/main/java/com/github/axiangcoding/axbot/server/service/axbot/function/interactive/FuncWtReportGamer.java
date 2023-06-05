@@ -119,9 +119,9 @@ public class FuncWtReportGamer extends AbstractInteractiveFunction {
         card.addModuleMdSection("已成功举办玩家：%s, 标记为：%s".formatted(KookMDMessage.code(nickname), KookMDMessage.code(tag)));
 
         if (wtGamerTagService.isDangerTag(tag)) {
-            String url = "https://warthunder.com/zh/tournament/replay/type/replays?Filter%5Bnick%5D=" + nickname;
+            String url = "https://warthunder.com/en/tournament/replay/type/replays?Filter%5Bnick%5D=" + nickname;
             card.addModuleDivider();
-            card.addModule(KookCardMessage.quickTextLinkSection("点击查看该玩家的近期服务器回放，在回放中举报才能引起官方重视哦", "服务器回放", "primary", url));
+            card.addModule(KookCardMessage.quickTextLinkSection("点击查看该玩家的近期服务器录像，在回放中举报才能引起官方重视", "服务器回放", "primary", url));
         }
 
         return card.displayWithFooter();
@@ -134,8 +134,7 @@ public class FuncWtReportGamer extends AbstractInteractiveFunction {
         ));
         card.addModuleMdSection("请注意，被其他用户举办，仅会在AXBot查询时显示标记，并不具备任何强制效力");
         card.addModuleMdSection("如果你认为这个标记会影响你的声誉，请加入AXBot服务器进行申诉消除");
-        card.addModule(KookCardMessage.quickTextLinkSection("进入Kook服务器，到#问题反馈和意见建议频道进行反馈", "进入KOOK服务器", "primary", "https://kook.top/eUTZK7"));
-
+        card.addModuleGetHelp("可以到“#问题反馈和意见建议”频道进行申诉消除标记");
         return card.displayWithFooter();
     }
 }

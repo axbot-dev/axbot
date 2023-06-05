@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,12 @@ public class TextCensorService {
 
     @Resource
     BotConfProps botConfProps;
+
+    public long cleanTextCensorCache() {
+        long d1 = textCensorRepository.deleteBySensitive(true);
+        long d2 = textCensorRepository.deleteBySensitive(false);
+        return d1 + d2;
+    }
 
     public boolean checkAndCacheText(String text) {
         if (!botConfProps.getCensor().getEnabled()) {
@@ -48,6 +55,21 @@ public class TextCensorService {
 
     public boolean checkText(String text) {
         QiniuResponse<TextCensorResult> response = qiniuClient.textCensor(text);
-        return "pass".equals(response.getResult().getSuggestion());
+        String suggestion = response.getResult().getSuggestion();
+        boolean pass = true;
+        if ("pass".equals(suggestion)) {
+            pass = true;
+        } else if ("review".equals(suggestion)) {
+            List<TextCensorResult.Scense.Antispam.Detail> details = response.getResult().getScenes().getAntispam().getDetails();
+            for (TextCensorResult.Scense.Antispam.Detail detail : details) {
+                if ("politics".equals(detail.getLabel())) {
+                    pass = false;
+                    break;
+                }
+            }
+        } else {
+            return false;
+        }
+        return pass;
     }
 }

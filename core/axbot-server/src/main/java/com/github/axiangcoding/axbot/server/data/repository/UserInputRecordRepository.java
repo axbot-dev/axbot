@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserInputRecordRepository extends JpaRepository<UserInputRecord, Long> {
@@ -17,7 +18,7 @@ public interface UserInputRecordRepository extends JpaRepository<UserInputRecord
 
     List<UserInputRecord> findByUserId(String userId);
 
-    long countByUserIdAndPlatformAndSensitive(String userId, String platform, Boolean sensitive);
+    long countByUserIdAndPlatformAndSensitiveAndCreateTimeAfter(String userId, String platform, Boolean sensitive, LocalDateTime createTime);
 
     List<UserInputRecord> findByUserIdAndPlatformAndCommandOrderByCreateTimeDesc(String userId,
                                                                                  String platform,
