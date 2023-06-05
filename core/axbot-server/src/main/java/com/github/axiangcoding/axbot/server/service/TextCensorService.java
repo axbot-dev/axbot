@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -55,6 +56,21 @@ public class TextCensorService {
     public boolean checkText(String text) {
         QiniuResponse<TextCensorResult> response = qiniuClient.textCensor(text);
         String suggestion = response.getResult().getSuggestion();
-        return "pass".equals(suggestion) || "review".equals(suggestion);
+        boolean pass = false;
+        if ("pass".equals(suggestion)) {
+            pass = true;
+        } else if ("review".equals(suggestion)) {
+            ArrayList<TextCensorResult.Detail> details = response.getResult().getDetails();
+            for (TextCensorResult.Detail detail : details) {
+                if ("politics".equals(detail.getLabel())) {
+                    pass = false;
+                    break;
+                }
+            }
+            pass = true;
+        } else {
+            return false;
+        }
+        return pass;
     }
 }
