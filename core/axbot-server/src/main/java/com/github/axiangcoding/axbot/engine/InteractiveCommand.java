@@ -9,15 +9,21 @@ import java.util.List;
 
 @AllArgsConstructor
 public enum InteractiveCommand {
+    /*
+    以下是系统类的交互
+     */
     DEFAULT(null, null),
     HELP(List.of("帮助", "文档", "help"), null),
     VERSION(List.of("版本", "version"), null),
+    GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
+    USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
+    SPONSOR(List.of("赞助", "订阅", "subscribe"), null),
+    GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
     BUG_REPORT(List.of("反馈", "bug", "bug反馈", "bugReport"), null),
 
-    LUCKY(List.of("气运", "运气", "luck"), null),
-    CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
-    SPONSOR(List.of("赞助", "订阅", "subscribe"), null),
-
+    /*
+    以下是游戏类的交互
+     */
     WT_QUERY_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("查询", "查找", "query")),
     WT_QUERY_HISTORY(List.of("战雷", "战争雷霆", "wt"), List.of("历史", "历史记录", "history")),
     WT_UPDATE_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("更新", "刷新", "update")),
@@ -25,15 +31,21 @@ public enum InteractiveCommand {
     WT_UNBIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("解绑", "快捷解绑", "unbind")),
     WT_REPORT_GAMER(List.of("战雷", "战争雷霆", "wt"), List.of("举办", "举报", "举报玩家", "report")),
 
-    GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
-    USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
-    GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
+    /*
+    以下是娱乐类的交互
+     */
+    LUCKY(List.of("气运", "运气", "luck"), null),
+    CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
 
+
+    /*
+    以下均为拦截式交互，不是对特定命令的响应，而是在特定情况下拦截原有的交互，返回一些信息
+     */
     CENSOR_FAILED(null, null),
-    ERROR(null, null),
-
-
-    GUILD_BANNED(null, null), USAGE_LIMIT(null, null), USER_BANNED(null, null);
+    USER_BANNED(null, null),
+    GUILD_BANNED(null, null),
+    USAGE_LIMIT(null, null),
+    ERROR(null, null);
 
     private final List<String> t1;
     private final List<String> t2;
