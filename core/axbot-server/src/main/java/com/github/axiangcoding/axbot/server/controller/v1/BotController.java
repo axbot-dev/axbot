@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.controller.v1;
 
-import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
+import com.github.axiangcoding.axbot.engine.SupportPlatform;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.CqhttpWebhookEvent;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
 import com.github.axiangcoding.axbot.server.service.BotService;

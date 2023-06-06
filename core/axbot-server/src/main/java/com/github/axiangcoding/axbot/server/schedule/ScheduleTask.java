@@ -2,10 +2,10 @@ package com.github.axiangcoding.axbot.server.schedule;
 
 import com.github.axiangcoding.axbot.crawler.wt.WtCrawlerClient;
 import com.github.axiangcoding.axbot.crawler.wt.entity.NewParseResult;
-import com.github.axiangcoding.axbot.engine.v1.NotificationEvent;
-import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationInput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
+import com.github.axiangcoding.axbot.engine.NotificationEvent;
+import com.github.axiangcoding.axbot.engine.SupportPlatform;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpNotificationInput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookNotificationInput;
 import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.BiliResponse;
 import com.github.axiangcoding.axbot.remote.bilibili.service.entity.resp.RoomInfoData;

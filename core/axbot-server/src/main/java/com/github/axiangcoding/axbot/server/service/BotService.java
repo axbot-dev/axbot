@@ -1,41 +1,45 @@
 package com.github.axiangcoding.axbot.server.service;
 
 
-import com.github.axiangcoding.axbot.engine.v1.InteractiveCommand;
-import com.github.axiangcoding.axbot.engine.v1.NotificationEvent;
-import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
-import com.github.axiangcoding.axbot.engine.v1.function.AbstractInteractiveFunction;
-import com.github.axiangcoding.axbot.engine.v1.function.AbstractNotificationFunction;
-import com.github.axiangcoding.axbot.engine.v1.io.InteractiveInput;
-import com.github.axiangcoding.axbot.engine.v1.io.NotificationInput;
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationInput;
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationOutput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveOutput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationOutput;
+import com.github.axiangcoding.axbot.engine.InteractiveCommand;
+import com.github.axiangcoding.axbot.engine.NotificationEvent;
+import com.github.axiangcoding.axbot.engine.SupportPlatform;
+import com.github.axiangcoding.axbot.engine.annot.AxbotInteractiveFunc;
+import com.github.axiangcoding.axbot.engine.annot.AxbotNotificationFunc;
+import com.github.axiangcoding.axbot.engine.function.AbstractInteractiveFunction;
+import com.github.axiangcoding.axbot.engine.function.AbstractNotificationFunction;
+import com.github.axiangcoding.axbot.engine.io.InteractiveInput;
+import com.github.axiangcoding.axbot.engine.io.NotificationInput;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveInput;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveOutput;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpNotificationInput;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpNotificationOutput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveInput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveOutput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookNotificationInput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookNotificationOutput;
+import com.github.axiangcoding.axbot.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
+import com.github.axiangcoding.axbot.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QGroupSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.basic.UserUsage;
-import com.github.axiangcoding.axbot.server.service.axbot.FunctionRegister;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Slf4j
 @Service
 public class BotService {
     @Resource
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
-    @Resource
-    FunctionRegister functionRegister;
     @Resource
     RemoteClientService remoteClientService;
     @Resource
@@ -54,6 +58,9 @@ public class BotService {
 
     @Resource
     BotConfProps botConfProps;
+
+    @Resource
+    ApplicationContext applicationContext;
 
     public boolean isPlatformEnabled(SupportPlatform platform) {
         if (platform == SupportPlatform.KOOK && botConfProps.getKook().getEnabled()) {
@@ -154,52 +161,29 @@ public class BotService {
             input.setInputId(inputId);
             // 检查是否被禁用
             if (guildSetting.getBanned()) {
-                return functionRegister.getFuncGuildBanned().execute(input);
+                return findInteractiveFunc(InteractiveCommand.GUILD_BANNED).execute(input);
             }
             if (userSetting.getBanned()) {
-                return functionRegister.getFuncUserBanned().execute(input);
+                return findInteractiveFunc(InteractiveCommand.USER_BANNED).execute(input);
             }
 
             // 检查使用次数是否超限
             UserUsage usage = userSetting.getUsage();
             int inputLimit = kookUserSettingService.getInputLimit(userId);
             if (usage.getInputToday() > inputLimit) {
-                return functionRegister.getFuncUsageLimit().execute(input);
+                return findInteractiveFunc(InteractiveCommand.USAGE_LIMIT).execute(input);
             }
             // 文本AI检查
             boolean textPassCheck = textCensorService.checkAndCacheText(message);
             if (!textPassCheck) {
                 userInputRecordService.updateSensitive(inputId, true);
-                return functionRegister.getFuncCensorFailed().execute(input);
+                return findInteractiveFunc(InteractiveCommand.CENSOR_FAILED).execute(input);
             }
-
             InteractiveCommand command = input.getCommand();
-            AbstractInteractiveFunction function;
-            switch (command) {
-                case DEFAULT -> function = functionRegister.getFuncDefault();
-                case HELP -> function = functionRegister.getFuncHelp();
-                case VERSION -> function = functionRegister.getFuncVersion();
-                case LUCKY -> function = functionRegister.getFuncLuckyToday();
-                case BUG_REPORT -> function = functionRegister.getFuncBugReport();
-
-                case WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
-                case WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
-                case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
-                case WT_BIND_PROFILE -> function = functionRegister.getFuncWtBind();
-                case WT_UNBIND_PROFILE -> function = functionRegister.getFuncWtUnbind();
-                case WT_REPORT_GAMER -> function = functionRegister.getFuncWtReportGamer();
-
-                case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
-                case USER_STATUS -> function = functionRegister.getFuncUserStatus();
-                case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
-                case CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
-                case SPONSOR -> function = functionRegister.getFuncSponsor();
-                default -> function = functionRegister.getFuncDefault();
-            }
-            return function.execute(input);
+            return findInteractiveFunc(command).execute(input);
         } catch (RuntimeException e) {
             log.error("process kook interactive function error", e);
-            return functionRegister.getFuncError().execute(input);
+            return findInteractiveFunc(InteractiveCommand.ERROR).execute(input);
         }
 
     }
@@ -219,87 +203,64 @@ public class BotService {
             input.setInputId(inputId);
             // 检查是否被禁用
             if (groupSetting.getBanned()) {
-                return functionRegister.getFuncGuildBanned().execute(input);
+                return findInteractiveFunc(InteractiveCommand.GUILD_BANNED).execute(input);
             }
             if (userSetting.getBanned()) {
-                return functionRegister.getFuncUserBanned().execute(input);
+                return findInteractiveFunc(InteractiveCommand.USER_BANNED).execute(input);
             }
 
             // 检查使用次数是否超限
             UserUsage usage = userSetting.getUsage();
             int inputLimit = qUserSettingService.getInputLimit(userId);
             if (usage.getInputToday() > inputLimit) {
-                return functionRegister.getFuncUsageLimit().execute(input);
+                return findInteractiveFunc(InteractiveCommand.USAGE_LIMIT).execute(input);
             }
             // 文本AI检查
             boolean textPassCheck = textCensorService.checkAndCacheText(message);
             if (!textPassCheck) {
                 userInputRecordService.updateSensitive(inputId, true);
-                return functionRegister.getFuncCensorFailed().execute(input);
+                return findInteractiveFunc(InteractiveCommand.CENSOR_FAILED).execute(input);
             }
             InteractiveCommand command = input.getCommand();
-            AbstractInteractiveFunction function;
-            switch (command) {
-                case DEFAULT -> function = functionRegister.getFuncDefault();
-                case HELP -> function = functionRegister.getFuncHelp();
-                case VERSION -> function = functionRegister.getFuncVersion();
-                case LUCKY -> function = functionRegister.getFuncLuckyToday();
-                case BUG_REPORT -> function = functionRegister.getFuncBugReport();
-
-                case WT_QUERY_PROFILE -> function = functionRegister.getFuncWtQueryProfile();
-                case WT_UPDATE_PROFILE -> function = functionRegister.getFuncWtUpdateProfile();
-                case WT_QUERY_HISTORY -> function = functionRegister.getFuncWtQueryHistory();
-                case WT_BIND_PROFILE -> function = functionRegister.getFuncWtBind();
-                case WT_UNBIND_PROFILE -> function = functionRegister.getFuncWtUnbind();
-                case WT_REPORT_GAMER -> function = functionRegister.getFuncWtReportGamer();
-
-                case GUILD_STATUS -> function = functionRegister.getFuncGuildStatus();
-                case USER_STATUS -> function = functionRegister.getFuncUserStatus();
-                case GUILD_MANAGE -> function = functionRegister.getFuncManageGuild();
-                case CHAT_WITH_AI -> function = functionRegister.getFuncChatWithAI();
-                case SPONSOR -> function = functionRegister.getFuncSponsor();
-                default -> function = functionRegister.getFuncDefault();
-            }
-            return function.execute(input);
+            return findInteractiveFunc(command).execute(input);
         } catch (RuntimeException e) {
             log.error("process cqhttp interactive function error", e);
-            return functionRegister.getFuncError().execute(input);
+            return findInteractiveFunc(InteractiveCommand.ERROR).execute(input);
         }
     }
 
 
     private KookNotificationOutput processKookNotificationFunction(KookNotificationInput input) {
         NotificationEvent event = input.getEvent();
-        AbstractNotificationFunction function;
-        switch (event) {
-            case JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
-            case EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
-            case BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
-            case WT_NEWS -> function = functionRegister.getFuncWTNews();
-            default -> {
-                log.warn("no such notification event: {}", event);
-                return null;
-            }
-        }
-        return function.execute(input);
+        return findNotificationFunc(event).execute(input);
     }
 
     private CqhttpNotificationOutput processCqhttpNotificationFunction(CqhttpNotificationInput input) {
         NotificationEvent event = input.getEvent();
-        AbstractNotificationFunction function;
-        switch (event) {
-            case JOIN_GUILD -> function = functionRegister.getFuncJoinGuild();
-            case EXIT_GUILD -> function = functionRegister.getFuncExitGuild();
-            case BILI_ROOM_REMIND -> function = functionRegister.getFuncBiliRoomRemind();
-            case WT_NEWS -> function = functionRegister.getFuncWTNews();
-            default -> {
-                log.warn("no such notification event: {}", event);
-                return null;
-            }
-
-        }
-        return function.execute(input);
+        return findNotificationFunc(event).execute(input);
     }
 
+    private AbstractInteractiveFunction findInteractiveFunc(InteractiveCommand command) {
+        Map<String, Object> beans = applicationContext.getBeansWithAnnotation(AxbotInteractiveFunc.class);
+        for (Map.Entry<String, Object> entry : beans.entrySet()) {
+            AbstractInteractiveFunction func = applicationContext.getBean(entry.getKey(), AbstractInteractiveFunction.class);
+            AxbotInteractiveFunc annotation = func.getClass().getAnnotation(AxbotInteractiveFunc.class);
+            if (annotation.command().equals(command)) {
+                return func;
+            }
+        }
+        throw new BusinessException(CommonError.ERROR, "no such interactive function: " + command.toCommand());
+    }
 
+    private AbstractNotificationFunction findNotificationFunc(NotificationEvent event) {
+        Map<String, Object> beans = applicationContext.getBeansWithAnnotation(AxbotNotificationFunc.class);
+        for (Map.Entry<String, Object> entry : beans.entrySet()) {
+            AbstractNotificationFunction func = applicationContext.getBean(entry.getKey(), AbstractNotificationFunction.class);
+            AxbotNotificationFunc annotation = func.getClass().getAnnotation(AxbotNotificationFunc.class);
+            if (annotation.event().equals(event)) {
+                return func;
+            }
+        }
+        throw new BusinessException(CommonError.ERROR, "no such notification function: " + event.name());
+    }
 }

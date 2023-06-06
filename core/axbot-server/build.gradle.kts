@@ -23,7 +23,6 @@ configurations {
 dependencies {
     implementation(project(":axbot-crawler"))
     implementation(project(":axbot-remote"))
-    implementation(project(":axbot-engine"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     implementation("org.springframework.boot:spring-boot-starter-amqp")

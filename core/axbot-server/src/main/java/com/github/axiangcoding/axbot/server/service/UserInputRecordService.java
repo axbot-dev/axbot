@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.engine.v1.InteractiveCommand;
-import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
+import com.github.axiangcoding.axbot.engine.InteractiveCommand;
+import com.github.axiangcoding.axbot.engine.SupportPlatform;
 import com.github.axiangcoding.axbot.server.data.entity.UserInputRecord;
 import com.github.axiangcoding.axbot.server.data.repository.UserInputRecordRepository;
 import jakarta.annotation.Resource;
