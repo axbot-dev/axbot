@@ -54,7 +54,7 @@ public class FuncLuckyToday extends AbstractInteractiveFunction {
         if (luck == 0) {
             return "我测，好一个0！";
         } else if (luck < 30) {
-            return "玩战雷玩的";
+            return "非洲来的";
         } else if (luck < 60) {
             return "哦我的上帝，战雷怎么你了";
         } else if (luck < 80) {
