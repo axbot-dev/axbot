@@ -42,6 +42,12 @@ public class KookQuickCard {
         modules.add(KookCardMessage.quickTextLinkSection(content, "进入AXBot研究所", "primary", "https://kook.top/eUTZK7"));
     }
 
+    public void addModuleInviteBot(String content) {
+        List<KookCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KookCardMessage.quickTextLinkSection(content, "邀请AXBot", "primary",
+                "https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=924672&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot"));
+    }
+
     public String display() {
         return JsonUtils.toJson(messages);
     }

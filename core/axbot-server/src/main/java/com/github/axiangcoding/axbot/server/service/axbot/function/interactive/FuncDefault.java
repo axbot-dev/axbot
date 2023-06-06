@@ -30,19 +30,20 @@ public class FuncDefault extends AbstractInteractiveFunction {
         String l1 = "现在是北京时间: "
                 + KookMDMessage.italic(
                 LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        String prefix = botConfProps.getTriggerMessagePrefix().get(0);
+        String prefix = botConfProps.getDefaultTriggerPrefix();
         String l2 = "需要我为你提供什么服务呢？如果你不知道怎么开始，聊天框输入 "
                 + KookMDMessage.code("%s 帮助".formatted(prefix)) + " 开始探索";
 
-        quickCard.addModule(KookCardMessage.quickMdSection(l1));
+        quickCard.addModuleMdSection(l1);
         String[] paramList = input.getParamList();
         if (paramList.length != 0) {
             quickCard.addModule(KookCardMessage.quickMdSection("你似乎输入了一个错误的命令：%s".formatted(
                     KookMDMessage.code(StringUtils.join(paramList, " "))
             )));
         }
-
-        quickCard.addModule(KookCardMessage.quickMdSection(l2));
+        quickCard.addModuleMdSection(l2);
+        quickCard.addModuleDivider();
+        quickCard.addModuleInviteBot("邀请机器人加入你的服务器！");
 
         return input.response(quickCard.displayWithFooter());
     }
