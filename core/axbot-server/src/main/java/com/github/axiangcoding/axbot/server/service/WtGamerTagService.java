@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
+import com.github.axiangcoding.axbot.engine.SupportPlatform;
 import com.github.axiangcoding.axbot.server.data.entity.WtGamerTag;
 import com.github.axiangcoding.axbot.server.data.repository.WtGamerTagRepository;
 import jakarta.annotation.Resource;

@@ -1,9 +1,9 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveOutput;
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpNotificationOutput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveOutput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationOutput;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveOutput;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpNotificationOutput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveOutput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookNotificationOutput;
 import com.github.axiangcoding.axbot.remote.cqhttp.CqHttpClient;
 import com.github.axiangcoding.axbot.remote.kook.KookClient;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;

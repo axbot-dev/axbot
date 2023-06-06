@@ -23,7 +23,6 @@ configurations {
 dependencies {
     implementation(project(":axbot-crawler"))
     implementation(project(":axbot-remote"))
-    implementation(project(":axbot-engine"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
@@ -48,7 +47,6 @@ dependencies {
     implementation("com.alibaba.fastjson2:fastjson2:2.0.33")
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.15")
-
     // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
     implementation("com.theokanning.openai-gpt3-java:service:0.12.0")
 

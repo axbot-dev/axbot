@@ -1,11 +1,11 @@
 package com.github.axiangcoding.axbot.server.service;
 
-import com.github.axiangcoding.axbot.engine.v1.InteractiveCommand;
-import com.github.axiangcoding.axbot.engine.v1.NotificationEvent;
-import com.github.axiangcoding.axbot.engine.v1.SupportPlatform;
-import com.github.axiangcoding.axbot.engine.v1.io.cqhttp.CqhttpInteractiveInput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookInteractiveInput;
-import com.github.axiangcoding.axbot.engine.v1.io.kook.KookNotificationInput;
+import com.github.axiangcoding.axbot.engine.InteractiveCommand;
+import com.github.axiangcoding.axbot.engine.NotificationEvent;
+import com.github.axiangcoding.axbot.engine.SupportPlatform;
+import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveInput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveInput;
+import com.github.axiangcoding.axbot.engine.io.kook.KookNotificationInput;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.CqhttpWebhookEvent;
