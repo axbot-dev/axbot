@@ -10,16 +10,20 @@
 
 AXBot，全称艾克斯机器人（以下简称 "AXBot"），是一个能够在Kook、QQ等社交平台上使用的机器人。她可以做到很多事情，具备一些有趣的交互功能，但她更专注于游戏类功能的实现。AXBot的终极目标是成为一个功能丰富的游戏类问答机器人，能够协助玩家获取游戏数据、分析游戏数据、智能化回答游戏攻略，连接社交平台和游戏。
 
-AXBot目前拥有以下有趣的小功能：
+AXBot目前拥有以下能力：
 
 - 接入KOOK平台，Cqhttp平台
-- 电子游戏 “战争雷霆” 的战绩查询
-- 电子游戏 “战争雷霆” 的新闻播报
+- 《战争雷霆》的战绩查询
+- 《战争雷霆》玩家信誉度查询和记录
+- 《战争雷霆》的官网新闻播报
 - B站直播间开播提醒
-- 和ChatGPT聊天
-- 每日电子算命
 
-AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](https://github.com/axiangcoding/antonstar-bot)，asbot因为种种原因达到了其生命周期，AXBot是对asbot的延续和扩展。
+同时还有以下一些有趣的小功能，比如：
+
+- 每日电子算命
+- 和ChatGPT聊天
+
+AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](https://github.com/axiangcoding/antonstar-bot)，是开发者在聊天机器人上的首次尝试。asbot因为种种原因达到了其生命周期，AXBot是对asbot的延续和扩展。目前已经完全迁移了
 
 走过路过，点个`star`吧
 
@@ -30,16 +34,14 @@ AXBot的设计思路来源于 [https://github.com/axiangcoding/antonstar-bot](ht
 
 如果您是一个普通用户，只对AXBot的使用方式和所具备的功能感到好奇，我们为您提供了使用手册，其中详尽列出了该机器人现已具备的全部功能及正在开发中的新功能。请随时点击以下文档链接查看。
 
-[使用手册](docs/user_guide.md)
-
-（除了这个跟随仓库更新的文档外，我们还提供了可以在中国大陆访问的 [使用手册](https://www.yuque.com/axiangcoding/ei27mo/omy4cgwvsikrwue1)，但不一定保证为最新）
+ [使用手册](https://www.yuque.com/axiangcoding/ei27mo/omy4cgwvsikrwue1)
 
 你可以通过以下方式将官方维护的AXBot机器人邀请到您的群组或者服务器中：
 
 - Kook: [点击邀请Kook机器人](https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=923648&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot)，需要邀请人的Kook账号具备邀请服务器的管理员身份
-- QQ: （由于Cqhttp部署不太稳定，故不再维护qq机器人，但代码上依然cqhttp进行支持）
+- QQ: （由于Cqhttp部署不太稳定，故不再维护qq机器人，但代码上依然会对接cqhttp，并进行支持）
 
-### 高级用户
+### 进阶用户
 
 AXBot的一个核心功能就是获取游戏数据，而这些数据会通过API接口对外提供。如果您希望能在其他的外部系统中使用这些游戏的数据，或者出于其他的目的想要对接AXBot，请联系开发者详谈。
 

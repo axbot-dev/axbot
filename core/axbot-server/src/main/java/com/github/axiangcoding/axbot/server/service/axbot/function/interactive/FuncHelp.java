@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class FuncHelp extends AbstractInteractiveFunction {
@@ -33,11 +34,13 @@ public class FuncHelp extends AbstractInteractiveFunction {
             String msg = KookMDMessage.code(k) + " - " + v;
             quickCard.addModule(KookCardMessage.newSection(KookCardMessage.newKMarkdown(msg)));
         });
-
-        quickCard.addModule(KookCardMessage.newDivider());
+        quickCard.addModuleDivider();
         quickCard.addModule(KookCardMessage.newHeader("完整命令"));
-        quickCard.addModule(KookCardMessage.quickTextLinkSection("上面列出的只是常用命令的常用调用形式，更多调用方式请点击按钮查看文档",
-                "跳转到文档", "info", DOC_URL));
+        quickCard.addModule(KookCardMessage.quickTextLinkSection("AXBot支持多级命令调用，上面列出的只是常用命令的常用形式，完整功能见使用手册",
+                "使用手册", "primary", DOC_URL));
+        quickCard.addModuleDivider();
+        quickCard.addModuleInviteBot("邀请机器人加入你的服务器！");
+
         return input.response(quickCard.displayWithFooter());
     }
 
@@ -59,17 +62,25 @@ public class FuncHelp extends AbstractInteractiveFunction {
     }
 
     private static LinkedHashMap<String, String> commandDescription(String prefix) {
-        LinkedHashMap<String, String> commandMap = new LinkedHashMap<>();
-        commandMap.put("%s 气运".formatted(prefix), "获取今天的气运值");
-        commandMap.put("%s 战雷 查询 <玩家昵称>".formatted(prefix), "查询战雷的玩家数据");
-        commandMap.put("%s 战雷 刷新 <玩家昵称>".formatted(prefix), "刷新战雷的玩家数据");
-        commandMap.put("%s 帮助".formatted(prefix), "获取帮助手册");
-        commandMap.put("%s 状态".formatted(prefix), "查看个人的信息");
-        commandMap.put("%s 群状态".formatted(prefix), "查看当前所处的Kook服务器的信息");
-        commandMap.put("%s 管理 <管理命令>".formatted(prefix), "管理本Kook服务器的配置，服务器管理员角色可用");
-        commandMap.put("%s 版本".formatted(prefix), "获取当前机器人的部署版本");
-        commandMap.put("%s 赞助".formatted(prefix), "赞助机器人");
+        LinkedHashMap<String, String> cmdMap = new LinkedHashMap<>();
+        cmdMap.put("气运", "获取今天的气运值");
+        cmdMap.put("战雷 查询 <玩家昵称>", "查询战雷的玩家数据");
+        cmdMap.put("战雷 刷新 <玩家昵称>", "刷新战雷的玩家数据");
+        cmdMap.put("战雷 绑定 <玩家昵称>", "绑定战雷玩家到你的当前账号上");
+        cmdMap.put("战雷 解绑", "解绑当前账号的战雷玩家");
+        cmdMap.put("战雷 举报 <举报类型> <玩家昵称>", "举报（非官方）某个战雷玩家");
+        cmdMap.put("帮助", "获取帮助手册");
+        cmdMap.put("状态", "查看个人的信息");
+        cmdMap.put("群状态", "查看当前所处的Kook服务器的信息");
+        cmdMap.put("管理 <管理命令>", "管理本Kook服务器的配置，服务器管理员角色可用");
+        cmdMap.put("版本", "获取当前机器人的部署版本");
+        cmdMap.put("赞助", "赞助机器人");
 
+        LinkedHashMap<String, String> commandMap = new LinkedHashMap<>();
+        for (Map.Entry<String, String> entry : cmdMap.entrySet()) {
+            String key = prefix + " " + entry.getKey();
+            commandMap.put(key, entry.getValue());
+        }
         return commandMap;
     }
 }
