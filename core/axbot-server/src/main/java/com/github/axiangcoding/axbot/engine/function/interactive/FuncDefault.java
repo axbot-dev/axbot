@@ -54,7 +54,7 @@ public class FuncDefault extends AbstractInteractiveFunction {
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
         CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("你好，我是AXBot");
-        String prefix = botConfProps.getTriggerMessagePrefix().get(0);
+        String prefix = botConfProps.getDefaultTriggerPrefix();
         quickMsg.addLine("现在是北京时间: %s".formatted(LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
         String[] paramList = input.getParamList();
         if (paramList.length != 0) {
