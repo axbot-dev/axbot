@@ -4,6 +4,7 @@ import com.github.axiangcoding.axbot.engine.InteractiveCommand;
 import com.github.axiangcoding.axbot.engine.SupportPlatform;
 import com.github.axiangcoding.axbot.engine.annot.AxbotInteractiveFunc;
 import com.github.axiangcoding.axbot.engine.function.AbstractInteractiveFunction;
+import com.github.axiangcoding.axbot.engine.function.common.CommonWtProfile;
 import com.github.axiangcoding.axbot.engine.io.InteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveOutput;
@@ -45,6 +46,9 @@ public class FuncWtQueryProfile extends AbstractInteractiveFunction {
     @Resource
     BotConfProps botConfProps;
 
+    @Resource
+    CommonWtProfile commonWtProfile;
+
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
         String nickname = getUserNickname(input, SupportPlatform.KOOK);
@@ -59,7 +63,7 @@ public class FuncWtQueryProfile extends AbstractInteractiveFunction {
             }
             return funcWtUpdateProfile.execute(input);
         } else {
-            return input.response(funcWtUpdateProfile.kookProfileFound(nickname, optGp.get()));
+            return input.response(commonWtProfile.kookProfileFound(nickname, optGp.get()));
         }
     }
 
@@ -77,7 +81,7 @@ public class FuncWtQueryProfile extends AbstractInteractiveFunction {
             }
             return funcWtUpdateProfile.execute(input);
         } else {
-            return input.response(funcWtUpdateProfile.cqhttpProfileFound(nickname, optGp.get()));
+            return input.response(commonWtProfile.cqhttpProfileFound(nickname, optGp.get()));
         }
     }
 

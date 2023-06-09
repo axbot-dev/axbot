@@ -50,7 +50,7 @@ public class FuncLuckyToday extends AbstractInteractiveFunction {
         String text = generateText(lucky);
 
         quickMsg.addLine("你今天的气运值是 %d, %s".formatted(lucky, text));
-        return input.response(quickMsg.displayWithFooter());
+        return input.response(quickMsg.display());
     }
 
     @Deprecated

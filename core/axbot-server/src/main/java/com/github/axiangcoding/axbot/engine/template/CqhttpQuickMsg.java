@@ -9,16 +9,18 @@ public class CqhttpQuickMsg {
     String title;
     List<String> lines;
     String footer = "Powered By AXBot.";
-
-    private static final String template = """
-            %s
-            -------------
-            %s
-            """;
+    Character divider = '-';
 
     public CqhttpQuickMsg(String title) {
         this.title = title;
         this.lines = new ArrayList<>();
+    }
+
+    public CqhttpQuickMsg(String title, char divider) {
+        this.title = title;
+        this.divider = divider;
+        this.lines = new ArrayList<>();
+
     }
 
     public void addLine(String line) {
@@ -26,17 +28,16 @@ public class CqhttpQuickMsg {
     }
 
     public void addDivider() {
-        this.lines.add("-------------");
+        this.lines.add(StringUtils.repeat(divider, 13));
     }
 
     public String display() {
-        return template.formatted(title, StringUtils.join(lines, "\n"));
+        String template = "%s\n%s\n%s";
+        return template.formatted(title, StringUtils.repeat(divider, 13), StringUtils.join(lines, "\n"));
     }
 
     public String displayWithFooter() {
-        return display();
-        // QQ受到字数限制，不再展示页脚
-        // return display() + "-------------\n" + footer;
+        return display() + "\n" + StringUtils.repeat(divider, 13) + "\n" + footer;
     }
 
     public static CqhttpQuickMsg notSupport() {
