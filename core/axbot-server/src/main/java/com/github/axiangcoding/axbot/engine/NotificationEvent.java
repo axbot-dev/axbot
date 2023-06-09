@@ -14,4 +14,5 @@ public enum NotificationEvent {
      */
     BILI_ROOM_REMIND(),
     WT_NEWS(),
+    SEND_WT_TEXT_PROFILE(),
 }

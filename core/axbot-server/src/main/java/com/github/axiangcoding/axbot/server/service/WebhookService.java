@@ -10,6 +10,7 @@ import com.github.axiangcoding.axbot.remote.kook.entity.KookEvent;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.CqhttpWebhookEvent;
 import com.github.axiangcoding.axbot.server.controller.entity.vo.req.KookWebhookEvent;
+import com.github.axiangcoding.axbot.server.service.entity.SendTextWtProfile;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
@@ -132,17 +133,22 @@ public class WebhookService {
             } else if (Objects.equals(channelType, KookEvent.CHANNEL_TYPE_PERSON)) {
                 String type = d.getExtra().getType();
                 String guildId = (String) d.getExtra().getBody().get("guild_id");
+                KookNotificationInput input = new KookNotificationInput();
                 if ("self_joined_guild".equals(type)) {
-                    KookNotificationInput input = new KookNotificationInput();
                     input.setEvent(NotificationEvent.JOIN_GUILD);
                     input.setGuildId(guildId);
-                    botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
                 } else if ("self_exited_guild".equals(type)) {
-                    KookNotificationInput input = new KookNotificationInput();
                     input.setEvent(NotificationEvent.EXIT_GUILD);
                     input.setGuildId(guildId);
-                    botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
+                } else if ("message_btn_click".equals(type)) {
+                    input.setEvent(NotificationEvent.SEND_WT_TEXT_PROFILE);
+                    SendTextWtProfile send = new SendTextWtProfile();
+                    Map<String, Object> body = d.getExtra().getBody();
+                    send.setUserId(((String) body.get("user_id")));
+                    send.setText(((String) body.get("value")));
+                    input.setData(send);
                 }
+                botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
             }
         }
         return map;

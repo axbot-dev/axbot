@@ -45,6 +45,14 @@ public class RemoteClientService {
         kookClient.createDirectMessage(req);
     }
 
+    public void sendKookPrivateTextMsg(String userId, String content) {
+        CreateDirectMsgReq req = new CreateDirectMsgReq();
+        req.setType(KookEvent.TYPE_TEXT);
+        req.setTargetId(userId);
+        req.setContent(content);
+        kookClient.createDirectMessage(req);
+    }
+
     public void sendCqhttpMsg(CqhttpInteractiveOutput output) {
         String response = output.getResponse();
         String msg = "[CQ:at,qq=%s]\n%s".formatted(output.getUserId(), response);

@@ -29,12 +29,20 @@ public class CqhttpQuickMsg {
         this.lines.add("-------------");
     }
 
+    public void addDivider(char override) {
+        this.lines.add(StringUtils.repeat(override, 13));
+    }
+
     public String display() {
         return template.formatted(title, StringUtils.join(lines, "\n"));
     }
 
     public String displayWithFooter() {
         return display() + "-------------\n" + footer;
+    }
+
+    public String displayWithFooter(char override) {
+        return display() + StringUtils.repeat(override, 13) + "\n" + footer;
     }
 
     public static CqhttpQuickMsg notSupport() {
