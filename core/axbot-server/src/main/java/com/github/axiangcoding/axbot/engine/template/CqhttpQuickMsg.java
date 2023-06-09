@@ -34,9 +34,7 @@ public class CqhttpQuickMsg {
     }
 
     public String displayWithFooter() {
-        return display();
-        // QQ受到字数限制，不再展示页脚
-        // return display() + "-------------\n" + footer;
+        return display() + "-------------\n" + footer;
     }
 
     public static CqhttpQuickMsg notSupport() {
