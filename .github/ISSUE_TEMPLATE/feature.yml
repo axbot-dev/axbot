@@ -1,21 +1,21 @@
-name: Bug Report 报告问题
-description: File a bug report 报告一个问题
-title: "[Bug]: "
-labels: ["bug"]
+name: Feature Request 功能请求
+description: File a feature request 报告一个功能请求
+title: "[Feature]: "
+labels: ["enhancement"]
 assignees:
   - axiangcoding
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report! 感谢您抽出时间填写此错误报告！
+        Thanks for taking the time to fill out this feature request! 感谢您抽出时间填写此功能请求！
   - type: textarea
-    id: what-happened
+    id: what-need
     attributes:
-      label: What happened? 发生了什么？
+      label: What feature or enhancement do you need? 你需要什么功能或增强？
       description: Also tell us, what did you expect to happen? 也告诉我们，你期望发生什么？
-      placeholder: Tell us what you see! 告诉我们你看到了什么
-      value:  
+      placeholder: Tell us what you need! 告诉我们你需要什么
+      value:
     validations:
       required: true
   - type: dropdown
@@ -31,7 +31,7 @@ body:
   - type: dropdown
     id: os
     attributes:
-      label:  Operating System 操作系统
+      label: Operating System 操作系统
       options:
         - Windows
         - Mac OS
