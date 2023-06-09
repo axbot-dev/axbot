@@ -147,6 +147,8 @@ public class WebhookService {
                     send.setUserId(((String) body.get("user_id")));
                     send.setText(((String) body.get("value")));
                     input.setData(send);
+                } else {
+                    return map;
                 }
                 botService.responseForNotificationAsync(SupportPlatform.KOOK, input);
             }

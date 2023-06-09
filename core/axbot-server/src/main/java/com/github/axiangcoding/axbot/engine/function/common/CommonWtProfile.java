@@ -141,7 +141,7 @@ public class CommonWtProfile {
     }
 
     public String cqhttpProfileFound(String nickname, WtGamerProfile profile) {
-        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("战雷玩家 %s 的数据".formatted(nickname));
+        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("战雷玩家 %s 的数据".formatted(nickname), '=');
         quickMsg.addLine("一切数据均来自战雷官网，AXBot只做计算不做修改");
         quickMsg.addLine("数据最后更新于 %s".formatted(
                 new PrettyTime(Locale.CHINA).format(profile.getUpdateTime())));
@@ -153,7 +153,7 @@ public class CommonWtProfile {
         if (profile.getBanned()) {
             quickMsg.addLine("当前状态: %s".formatted("封禁中"));
         }
-        quickMsg.addDivider('=');
+        quickMsg.addDivider();
 
         WtGamerProfile.UserStat ab = profile.getStatAb();
         WtGamerProfile.UserStat sb = profile.getStatSb();
@@ -172,7 +172,7 @@ public class CommonWtProfile {
         quickMsg.addLine("全真任务数: %s".formatted(sb.getTotalMission()));
         quickMsg.addLine("全真胜率: %s".formatted(NumberFormat.getPercentInstance().format(sb.getWinRate())));
         quickMsg.addLine("全真KD: %s".formatted(df.format(sbKd)));
-        quickMsg.addDivider('=');
+        quickMsg.addDivider();
         ArrayList<KookCardMessage> f3 = new ArrayList<>();
         WtGamerProfile.AviationRate aab = profile.getAviationRateAb();
         WtGamerProfile.AviationRate arb = profile.getAviationRateRb();
@@ -184,7 +184,7 @@ public class CommonWtProfile {
         quickMsg.addLine("空战街机KA: %s".formatted(df.format(aabKa)));
         quickMsg.addLine("空战史实KA: %s".formatted(df.format(arbKa)));
         quickMsg.addLine("空战全真KA: %s".formatted(df.format(asbKa)));
-        quickMsg.addDivider('=');
+        quickMsg.addDivider();
 
         WtGamerProfile.GroundRate gab = profile.getGroundRateAb();
         WtGamerProfile.GroundRate grb = profile.getGroundRateRb();
@@ -196,7 +196,7 @@ public class CommonWtProfile {
         quickMsg.addLine("陆战街机KA: %s".formatted(df.format(gabKa)));
         quickMsg.addLine("陆战史实KA: %s".formatted(df.format(grbKa)));
         quickMsg.addLine("陆战全真KA: %s".formatted(df.format(gsbKa)));
-        quickMsg.addDivider('=');
+        quickMsg.addDivider();
 
         WtGamerProfile.FleetRate fab = profile.getFleetRateAb();
         WtGamerProfile.FleetRate frb = profile.getFleetRateRb();
@@ -208,6 +208,6 @@ public class CommonWtProfile {
         quickMsg.addLine("海战街机KA: %s".formatted(df.format(fabKa)));
         quickMsg.addLine("海战史实KA: %s".formatted(df.format(frbKa)));
         quickMsg.addLine("海战全真KA: %s".formatted(df.format(fsbKa)));
-        return quickMsg.displayWithFooter('=');
+        return quickMsg.displayWithFooter();
     }
 }
