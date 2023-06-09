@@ -22,13 +22,13 @@ body:
     id: platform
     attributes:
       label: Bot Platform needs to be supported 哪些机器人平台需要支持
-      description: select all you need 选择你需要的所有
+      description: if not related, select none 如果没有相关，无需选择
       options:
         - Kook
         - Cqhttp
       multiple: true
     validations:
-      required: true
+      required: false
   - type: textarea
     id: addition
     attributes:
