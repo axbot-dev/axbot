@@ -84,15 +84,17 @@ public class FuncLuckyToday extends AbstractInteractiveFunction {
 
     private String generateText(int luck) {
         if (luck == 0) {
-            return "我测，好一个0！";
+            return "你是0，谁是1？";
+        } else if (luck < 2) {
+            return "我是1，谁是0？";
         } else if (luck < 30) {
-            return "非洲来的";
+            return "老实交代，酋长派你来这干嘛";
         } else if (luck < 60) {
             return "哦我的上帝，战雷怎么你了";
         } else if (luck < 80) {
             return "老白金人了，那叫一个地~道";
         } else if (luck < 100) {
-            return "狠狠奖励奖励奖励奖励奖励奖励自己";
+            return "狠狠奖励奖励奖励自己";
         } else if (luck == 100) {
             return "到达最高分，理塘";
         } else if (luck == 114514) {
