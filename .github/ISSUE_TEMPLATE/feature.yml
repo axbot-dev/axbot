@@ -21,29 +21,14 @@ body:
   - type: dropdown
     id: platform
     attributes:
-      label: Bot Platform 机器人平台
-      description: What platform are you using? 您使用的是哪个平台？
+      label: Bot Platform needs to be supported 哪些机器人平台需要支持
+      description: select all you need 选择你需要的所有
       options:
         - Kook
         - Cqhttp
+      multiple: true
     validations:
       required: true
-  - type: dropdown
-    id: os
-    attributes:
-      label: Operating System 操作系统
-      options:
-        - Windows
-        - Mac OS
-        - Linux
-    validations:
-      required: true
-  - type: textarea
-    id: logs
-    attributes:
-      label: Relevant log output 有关的运行日志
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks. 请复制并粘贴任何相关的日志输出。这将自动格式化为代码，因此不需要反引号。
-      render: shell
   - type: textarea
     id: addition
     attributes:
