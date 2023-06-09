@@ -23,7 +23,7 @@ AXBot目前具备以下功能和能力：
 - 每日电子算命，获取当天的气运值
 - 和ChatGPT聊天
 
-AXBot的设计思路源自于https://github.com/axiangcoding/antonstar-bot，这是开发者在聊天机器人领域的首次尝试。由于各种原因，asbot已经完成了其生命周期，而AXBot则是对asbot的延续和扩展。目前，AXBot已经完全迁移并运行。
+AXBot的设计思路源自于https://github.com/axiangcoding/antonstar-bot ，这是开发者在聊天机器人领域的首次尝试。由于各种原因，asbot已经完成了其生命周期，而AXBot则是对asbot的延续和扩展。目前，AXBot已经完全迁移并运行。
 
 走过路过，点个`star`吧
 
