@@ -67,7 +67,7 @@ public class FuncWtReportGamer extends AbstractInteractiveFunction {
 
         Optional<WtGamerProfile> opt = wtGamerProfileService.findByNickname(nickname);
         if (opt.isEmpty()) {
-            return input.response(kookUserNotFound(nickname));
+            return input.response(kookUserNotFound(nickname, tag));
         }
 
         threadPoolTaskExecutor.execute(() -> {
@@ -99,15 +99,20 @@ public class FuncWtReportGamer extends AbstractInteractiveFunction {
         List<String> tagListCode = supportTag.stream().map(KookMDMessage::code).toList();
         card.addModuleMdSection("支持的类型有：" + String.join("、", tagListCode));
         card.addModuleDivider();
-        card.addModuleMdSection("注意：请先确保玩家资料已在AXBot中，才能进行举报");
+        card.addModuleMdSection("注意：玩家资料不在数据库中也可以进行举报");
         return card.displayWithFooter();
     }
 
-    private String kookUserNotFound(String nickname) {
+    private String kookUserNotFound(String nickname, String tag) {
         KookQuickCard card = new KookQuickCard("举报成功，但该玩家数据不存在于AXBot数据库中", "success");
         String command = botConfProps.getDefaultTriggerPrefix() + " 战雷 查询 " + nickname;
         card.addModuleMdSection("AXBot已经接受了你的举报信息，但是该玩家并不存在于AXBot的数据库中");
         card.addModuleMdSection("为了确保举报到了正确的玩家，请使用如下命令查询玩家资料：%s".formatted(KookMDMessage.code(command)));
+        if (wtGamerTagService.isDangerTag(tag)) {
+            String url = "https://warthunder.com/en/tournament/replay/type/replays?Filter%5Bnick%5D=" + nickname;
+            card.addModuleDivider();
+            card.addModule(KookCardMessage.quickTextLinkSection("点击查看该玩家的近期服务器录像，在回放中举报才能引起官方重视", "服务器回放", "primary", url));
+        }
         return card.displayWithFooter();
     }
 
