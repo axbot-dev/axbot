@@ -116,8 +116,19 @@ public class WTGamerProfileService {
         }
         missionService.setRunning(missionId, 10.0);
         Optional<GlobalSetting> optKey = globalSettingRepository.findByKey(GlobalSetting.KEY.WT_PROFILE_CRAWLER_MODE.getLabel());
-        // 如果配置项为空或者为direct模式，直接获取数据即可
-        if (optKey.isEmpty() || optKey.get().getValue().equals(WtCrawlerClient.MODE.DIRECT.getName())) {
+        // 如果配置项为空或者为selenium模式，则提交任务到队列中
+        if (optKey.isEmpty() || optKey.get().getValue().equals(WtCrawlerClient.MODE.SELENIUM.getName())) {
+            CrawlerMissionMessage msg = new CrawlerMissionMessage();
+            msg.setMissionId(missionId);
+            msg.setUrl(WtCrawlerClient.formatGetProfileUrl(nickname));
+            msg.setXpathCondition(WtCrawlerClient.EXIST_PROFILE_XPATH_CONDITION);
+            String outQueueName = outQueue.getName();
+            rabbitTemplate.convertAndSend(outQueueName, JsonUtils.toJson(msg));
+            missionService.setRunning(missionId, 50.0);
+            log.info("send a message to {}, missionId is {}", outQueueName, missionId);
+        }
+        // 如果是direct模式，直接获取数据即可
+        else if (optKey.get().getValue().equals(WtCrawlerClient.MODE.DIRECT.getName())) {
             try {
                 missionService.setRunning(missionId, 20.0);
                 ProfileParseResult pr = wtCrawlerClient.getProfileFromUrl(nickname);
@@ -134,17 +145,6 @@ public class WTGamerProfileService {
                 log.info("get wt profile failed", e);
                 missionService.setFailed(missionId, e);
             }
-        }
-        // 如果是selenium模式，则提交任务到队列中
-        else if (optKey.get().getValue().equals(WtCrawlerClient.MODE.SELENIUM.getName())) {
-            CrawlerMissionMessage msg = new CrawlerMissionMessage();
-            msg.setMissionId(missionId);
-            msg.setUrl(WtCrawlerClient.formatGetProfileUrl(nickname));
-            msg.setXpathCondition(WtCrawlerClient.EXIST_PROFILE_XPATH_CONDITION);
-            String outQueueName = outQueue.getName();
-            rabbitTemplate.convertAndSend(outQueueName, JsonUtils.toJson(msg));
-            missionService.setRunning(missionId, 50.0);
-            log.info("send a message to {}, missionId is {}", outQueueName, missionId);
         }
     }
 
