@@ -27,14 +27,14 @@ public class FuncWTNews extends AbstractNotificationFunction {
         String dateStr = parseResult.getDateStr();
         String url = parseResult.getUrl();
 
-        KookQuickCard card = new KookQuickCard("AXBot带来战雷的最新新闻", "success");
+        KookQuickCard card = new KookQuickCard("AXBot带来战雷的最新新闻", "info");
 
         card.addModule(KookCardMessage.newHeader("%s".formatted(title)));
         card.addModule(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown(dateStr))));
         card.addModule(KookCardMessage.quickMdSection(comment));
         // modules.add(KookCardMessage.newSection(KookCardMessage.newKMarkdown(KookMDMessage.mention("here"))));
         card.addModule(KookCardMessage.newDivider());
-        card.addModule(KookCardMessage.quickTextLinkSection("点击按钮跳转到官网", "查看原文", "info", url));
+        card.addModule(KookCardMessage.quickTextLinkSection("点击跳转到官网查看新闻", "查看原文", "primary", url));
         return input.response(card.displayWithFooter());
     }
 

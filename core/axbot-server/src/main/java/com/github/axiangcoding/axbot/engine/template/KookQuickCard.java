@@ -2,7 +2,6 @@ package com.github.axiangcoding.axbot.engine.template;
 
 import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.server.util.JsonUtils;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 public class KookQuickCard {
     private final List<KookCardMessage> messages;
 
-    @Setter
     KookCardMessage footer = KookCardMessage.quickTextLinkSection("Powered By AXBot.", "GitHub", "info", "https://github.com/axiangcoding/AXBot");
 
     public KookQuickCard(String title, String theme) {
