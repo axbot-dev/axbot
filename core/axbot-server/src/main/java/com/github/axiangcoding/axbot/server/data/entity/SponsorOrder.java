@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.server.data.entity;
 
 import com.github.axiangcoding.axbot.server.data.entity.basic.BasicEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +35,8 @@ public class SponsorOrder extends BasicEntity {
     UUID orderId;
     String plan;
     String planTitle;
+    @Column(unique = true)
+    String tradeNo;
     Integer month;
     String fromUserId;
     /**

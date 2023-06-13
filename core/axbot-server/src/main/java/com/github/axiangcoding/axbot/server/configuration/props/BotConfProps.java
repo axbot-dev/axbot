@@ -14,6 +14,8 @@ public class BotConfProps {
     BotMarketConf botMarket;
     KookConf kook;
     OpenAI openai;
+    Afdian afdian;
+
     /**
      * 触发机器人命令的前缀
      */
@@ -105,6 +107,18 @@ public class BotConfProps {
             Integer port;
         }
 
+    }
+
+    @Data
+    public static class Afdian {
+        /**
+         * 爱发电的用户id
+         */
+        String userId;
+        /**
+         * 爱发电的token
+         */
+        String token;
     }
 
     public String getDefaultTriggerPrefix() {

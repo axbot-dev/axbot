@@ -1,6 +1,9 @@
 package com.github.axiangcoding.axbot.server.service;
 
 import com.github.axiangcoding.axbot.engine.SupportPlatform;
+import com.github.axiangcoding.axbot.remote.afdian.AfdianClient;
+import com.github.axiangcoding.axbot.remote.afdian.service.entity.AfdianResponse;
+import com.github.axiangcoding.axbot.remote.afdian.service.entity.resp.QueryOrderResp;
 import com.github.axiangcoding.axbot.server.data.entity.SponsorOrder;
 import com.github.axiangcoding.axbot.server.data.repository.SponsorOrderRepository;
 import jakarta.annotation.Resource;
@@ -18,6 +21,9 @@ public class SponsorOrderService {
 
     @Resource
     KookUserSettingService kookUserSettingService;
+
+    @Resource
+    AfdianClient afdianClient;
 
     public Optional<SponsorOrder> findByOrderId(String orderId) {
         return sponsorOrderRepository.findByOrderId(UUID.fromString(orderId));
@@ -37,7 +43,7 @@ public class SponsorOrderService {
         return orderId.toString();
     }
 
-    public void activeOrder(String orderId, String planName, int month) {
+    public void activeOrder(String tradeNo, String orderId, String planName, int month) {
         Optional<SponsorOrder> opt = findByOrderId(orderId);
         if (opt.isEmpty()) {
             log.warn("order [{}] is not exist", orderId);
@@ -50,6 +56,7 @@ public class SponsorOrderService {
         }
         entity.setMonth(month);
         entity.setPlanTitle(planName);
+        entity.setTradeNo(tradeNo);
         entity.setStatus(SponsorOrder.STATUS.SUCCESS.getName());
         sponsorOrderRepository.save(entity);
 
@@ -68,4 +75,16 @@ public class SponsorOrderService {
         entity.setStatus(SponsorOrder.STATUS.CLOSE.getName());
         sponsorOrderRepository.save(entity);
     }
+
+    public boolean checkOrderFromAfdian(String tradeNo) {
+        AfdianResponse<QueryOrderResp> resp = afdianClient.queryOrder(null, tradeNo);
+        QueryOrderResp data = resp.getData();
+        if (data.getList() == null || data.getList().isEmpty()) {
+            return false;
+        }
+        QueryOrderResp.OrderList order = data.getList().get(0);
+        String tn = order.getOutTradeNo();
+        return tradeNo.equals(tn);
+    }
+
 }
