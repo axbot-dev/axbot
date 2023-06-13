@@ -35,6 +35,7 @@ public enum InteractiveCommand {
     以下是娱乐类的交互
      */
     LUCKY(List.of("气运", "运气", "luck"), null),
+    DRAW_CARD(List.of("抽卡", "drawCard"), null),
     CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
 
 
