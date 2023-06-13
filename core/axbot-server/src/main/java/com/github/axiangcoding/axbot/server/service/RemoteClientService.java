@@ -24,6 +24,9 @@ public class RemoteClientService {
         CreateMsgReq req = new CreateMsgReq();
         req.setQuote(output.getMessageId());
         req.setType(KookEvent.TYPE_CARD);
+        if (output.getTemp()) {
+            req.setTempTargetId(output.getUserId());
+        }
         req.setTargetId(output.getChannelId());
         req.setContent(output.getResponse());
         kookClient.createMessage(req);

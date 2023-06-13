@@ -116,10 +116,8 @@ public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
                     log.error("async update wt profile error", e);
                 }
             });
-            return input.response(kookProfileInQuery(nickname));
+            return input.response(kookProfileInQuery(nickname), true);
         }
-
-
     }
 
     @Override
@@ -210,7 +208,8 @@ public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
     }
 
     private String kookProfileInQuery(String nickname) {
-        KookQuickCard card = new KookQuickCard("战雷玩家 %s 的数据".formatted(nickname), "success");
+        KookQuickCard card = new KookQuickCard("正在查询战雷玩家 %s 的数据".formatted(nickname), "success");
+        card.addModuleContentSection("本条消息仅你可见");
         card.addModule(KookCardMessage.quickMdSection("正在发起查询...请耐心等待"));
         LocalDateTime now = LocalDateTime.now();
         card.addModule(KookCardMessage.newCountDown("second", now, now.plusSeconds(60)));

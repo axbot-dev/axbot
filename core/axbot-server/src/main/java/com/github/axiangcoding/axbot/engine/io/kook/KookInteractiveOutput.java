@@ -11,4 +11,5 @@ import lombok.ToString;
 public class KookInteractiveOutput extends InteractiveOutput {
     String guildId;
     String channelId;
+    Boolean temp;
 }

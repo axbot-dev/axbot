@@ -17,6 +17,10 @@ public class KookInteractiveInput extends InteractiveInput {
 
     @Override
     public KookInteractiveOutput response(String response) {
+        return response(response, false);
+    }
+
+    public KookInteractiveOutput response(String response, boolean temp) {
         KookInteractiveOutput output = new KookInteractiveOutput();
         output.setUserId(getUserId());
         output.setMessageId(getMessageId());
@@ -24,6 +28,7 @@ public class KookInteractiveInput extends InteractiveInput {
         output.setTimeUsage(Duration.between(getStartTime(), LocalDateTime.now()));
         output.setGuildId(guildId);
         output.setChannelId(channelId);
+        output.setTemp(temp);
         return output;
     }
 }
