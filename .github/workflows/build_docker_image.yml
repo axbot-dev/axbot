@@ -4,7 +4,7 @@ on:
   push:
     branches: ["master"]
     tags:
-      - "v*"
+      - "v*.*.*"
 
 env:
   CORE_IMAGE_NAME: axiangcoding/axbot-core
