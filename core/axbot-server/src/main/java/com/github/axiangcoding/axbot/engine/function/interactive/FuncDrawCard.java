@@ -46,8 +46,14 @@ public class FuncDrawCard extends AbstractInteractiveFunction {
 
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
-        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("AXBot 气运");
-
+        JSONObject cardMessage = getRandomCardMessage();
+        if (cardMessage == null) {
+            CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("抽卡失败");
+            quickMsg.addLine("内部错误");
+            return input.response(quickMsg.display());
+        }
+        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg(cardMessage.getString("name"));
+        quickMsg.addLine(cardMessage.getString("description"));
         return input.response(quickMsg.display());
     }
 
