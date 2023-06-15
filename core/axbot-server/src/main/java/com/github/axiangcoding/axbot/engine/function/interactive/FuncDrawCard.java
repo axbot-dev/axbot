@@ -38,8 +38,9 @@ public class FuncDrawCard extends AbstractInteractiveFunction {
         }
         KookQuickCard quickCard = new KookQuickCard(cardMessage.getString("name"), "success");
 
-
-        quickCard.addModuleMdSection(cardMessage.getString("description"));
+        int i = new Random().nextInt(2);
+        String description = cardMessage.getString("description");
+        quickCard.addModuleMdSection(description.split("\n")[i]);
         return input.response(quickCard.displayWithFooter());
     }
 
@@ -53,7 +54,9 @@ public class FuncDrawCard extends AbstractInteractiveFunction {
             return input.response(quickMsg.display());
         }
         CqhttpQuickMsg quickMsg = new CqhttpQuickMsg(cardMessage.getString("name"));
-        quickMsg.addLine(cardMessage.getString("description"));
+        int i = new Random().nextInt(2);
+        String description = cardMessage.getString("description");
+        quickMsg.addLine(description.split("\n")[i]);
         return input.response(quickMsg.display());
     }
 
