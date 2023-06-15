@@ -16,10 +16,7 @@ import com.github.axiangcoding.axbot.server.data.entity.KookGuildSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QGroupSetting;
 import com.github.axiangcoding.axbot.server.data.entity.WtNews;
 import com.github.axiangcoding.axbot.server.data.repository.WtNewsRepository;
-import com.github.axiangcoding.axbot.server.service.BotService;
-import com.github.axiangcoding.axbot.server.service.KookGuildSettingService;
-import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
-import com.github.axiangcoding.axbot.server.service.QGroupSettingService;
+import com.github.axiangcoding.axbot.server.service.*;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,6 +53,9 @@ public class ScheduleTask {
 
     @Resource
     KookUserSettingService kookUserSettingService;
+
+    @Resource
+    QUserSettingService qUserSettingService;
 
     @Resource
     WtCrawlerClient wtCrawlerClient;
@@ -109,6 +109,7 @@ public class ScheduleTask {
             @Override
             public void run() {
                 kookUserSettingService.resetTodayUsage();
+                qUserSettingService.resetTodayUsage();
             }
         };
         redisLockRunner.execute(LOCK.RESET_USAGE);

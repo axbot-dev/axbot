@@ -115,4 +115,8 @@ public class QUserSettingService {
         }
         qUserSettingRepository.save(setting);
     }
+
+    public void resetTodayUsage() {
+        qUserSettingRepository.resetTodayUsage();
+    }
 }
