@@ -17,5 +17,8 @@ public interface QUserSettingRepository extends JpaRepository<QUserSetting, Long
     @Query("update QUserSetting q set q.banned = ?1, q.bannedReason = ?2, q.bannedTime = ?3 where q.userId = ?4")
     int updateBannedAndBannedReasonAndBannedTimeByUserId(Boolean banned, String bannedReason, LocalDateTime bannedTime, String userId);
 
-
+    @Transactional
+    @Modifying
+    @Query("update QUserSetting q set q.usage.inputToday = 0, q.usage.queryWtToday = 0")
+    int resetTodayUsage();
 }
