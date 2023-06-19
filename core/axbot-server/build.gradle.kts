@@ -44,7 +44,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
     implementation("org.ocpsoft.prettytime:prettytime:5.0.6.Final")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.33")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.34")
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.15")
     // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
