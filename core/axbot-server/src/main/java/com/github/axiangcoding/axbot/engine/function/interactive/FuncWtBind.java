@@ -57,10 +57,9 @@ public class FuncWtBind extends AbstractInteractiveFunction {
 
     private String kookBindSuccess() {
         KookQuickCard card = new KookQuickCard("快捷查询绑定成功", "success");
-        card.addModuleMdSection("您已成功绑定快捷查询功能");
-        card.addModuleMdSection("接下来如果你的查询不指定昵称，那么就将快捷查询绑定的战雷玩家哦");
-        card.addModuleMdSection("请注意，这个绑定没有特殊意义，只是为了方便你使用快捷查询功能");
-        card.addModuleMdSection("如果你想解除绑定，可以使用 %s 进行解绑".formatted(
+        card.addModuleMdSection("接下来的查询不指定昵称，那么将快捷查询绑定的战雷玩家");
+        card.addModuleMdSection("这个绑定只是为了方便你使用查询功能");
+        card.addModuleMdSection("如果想解除绑定，可以使用 %s 进行解绑".formatted(
                 KookMDMessage.code(botConfProps.getDefaultTriggerPrefix() + " 战雷 解绑")
         ));
         return card.displayWithFooter();
@@ -68,13 +67,12 @@ public class FuncWtBind extends AbstractInteractiveFunction {
 
     private String cqhttpBindSuccess() {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("快捷查询绑定成功");
-        msg.addLine("您已成功绑定快捷查询功能");
-        msg.addLine("接下来如果你的查询不指定昵称，那么就将快捷查询绑定的战雷玩家哦");
-        msg.addLine("请注意，这个绑定没有特殊意义，只是为了方便你使用快捷查询功能");
-        msg.addLine("如果你想解除绑定，可以使用 `%s` 进行解绑".formatted(
+        msg.addLine("接下来的查询不指定昵称，那么将快捷查询绑定的战雷玩家");
+        msg.addLine("这个绑定只是为了方便你使用查询功能");
+        msg.addLine("如果想解除绑定，可以使用 \"%s\" 进行解绑".formatted(
                 botConfProps.getDefaultTriggerPrefix() + " 战雷 解绑"
         ));
-        return msg.displayWithFooter();
+        return msg.display();
     }
 
     private String kookBindFailed(String info) {
@@ -86,6 +84,6 @@ public class FuncWtBind extends AbstractInteractiveFunction {
     private String cqhttpBindFailed(String info) {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("快捷查询绑定失败");
         msg.addLine(info);
-        return msg.displayWithFooter();
+        return msg.display();
     }
 }

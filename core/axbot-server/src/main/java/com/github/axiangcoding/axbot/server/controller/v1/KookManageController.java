@@ -43,7 +43,7 @@ public class KookManageController {
     @RequireApiKey(admin = true)
     @PostMapping("user/superAdmin")
     public CommonResult setSuperAdminUser(@Valid @RequestBody SetSuperAdminReq req) {
-        kookUserSettingService.setKookSuperAdminUser(req.getUserId());
+        kookUserSettingService.setSuperAdminUser(req.getUserId());
         return CommonResult.success();
     }
 }

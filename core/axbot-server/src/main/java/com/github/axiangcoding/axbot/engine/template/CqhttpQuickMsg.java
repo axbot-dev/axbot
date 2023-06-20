@@ -43,4 +43,10 @@ public class CqhttpQuickMsg {
     public static CqhttpQuickMsg notSupport() {
         return new CqhttpQuickMsg("暂不支持该功能");
     }
+
+    public static CqhttpQuickMsg notSupport(String content) {
+        CqhttpQuickMsg msg = notSupport();
+        msg.addLine(content);
+        return msg;
+    }
 }

@@ -81,15 +81,15 @@ public class FuncSponsor extends AbstractInteractiveFunction {
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("赞助AXBot");
         msg.addLine("如果你想了解赞助方案，请查看文档");
-        msg.addLine("如果您选择赞助AxBot，我们感激不尽。");
-        return input.response(msg.displayWithFooter());
+        msg.addLine("如果你选择赞助AxBot，我们感激不尽。");
+        return input.response(msg.display());
     }
 
     public String getPanel(String orderId) {
         KookQuickCard card = new KookQuickCard("赞助AXBot", "success");
-        card.addModule(KookCardMessage.quickMdSection("如果您选择赞助AxBot，我们感激不尽。"));
-        card.addModule(KookCardMessage.quickMdSection("点击以下链接将跳转到爱发电平台发起赞助，如果选择了带订阅的方案，会自动激活到当前账号或者当前社群中"));
-        card.addModule(KookCardMessage.newDivider());
+        card.addModuleMdSection("如果您选择赞助AxBot，我们感激不尽。");
+        card.addModuleMdSection("点击以下链接将跳转到爱发电平台发起赞助，如果选择了带订阅的方案，会自动激活到当前账号中");
+        card.addModuleDivider();
 
         String url = "https://afdian.net/order/create?plan_id=bf8dd888eed711eda90b52540025c377&custom_order_id=%s";
         card.addModule(KookCardMessage.quickTextLinkSection("赞助个人普通订阅", "个人普通订阅", "primary", url.formatted(orderId)));
@@ -97,19 +97,19 @@ public class FuncSponsor extends AbstractInteractiveFunction {
                 "https://afdian.net/order/create?user_id=966767508b5811eca47c52540025c377"));
 
 
-        card.addModule(KookCardMessage.newDivider());
-        card.addModule(KookCardMessage.quickMdSection("如果赞助过程中发生了任何问题，请联系开发者处理"));
-        card.addModule(KookCardMessage.quickTextLinkSection("进入Kook服务器，到#赞助相关频道进行反馈", "进入KOOK服务器", "primary", "https://kook.top/eUTZK7"));
-        card.addModule(KookCardMessage.quickTextLinkSection("私信开发者", "点击跳转", "info", "https://www.kookapp.cn/app/home/privatemessage/2936837460"));
+        card.addModuleDivider();
+        card.addModuleMdSection("如果赞助过程中发生了任何问题，请联系开发者处理");
+        card.addModuleGetHelp("到#赞助相关频道进行反馈");
+        card.addModule(KookCardMessage.quickTextLinkSection("私信开发者", "点击发起私信", "info", "https://www.kookapp.cn/app/home/privatemessage/2936837460"));
         return card.displayWithFooter();
     }
 
     public String sponsorSuccess(int month, String planName) {
         KookQuickCard card = new KookQuickCard("赞助成功", "success");
-        card.addModule(KookCardMessage.quickMdSection("感谢您赞助了 %s 个月的 %s".formatted(
-                KookMDMessage.code(String.valueOf(month)), KookMDMessage.code(planName))));
+        card.addModuleMdSection("感谢您赞助了 %s 个月的 %s".formatted(
+                KookMDMessage.code(String.valueOf(month)), KookMDMessage.code(planName)));
         String command = botConfProps.getTriggerMessagePrefix().get(0) + " 状态";
-        card.addModule(KookCardMessage.quickMdSection("如果你想了解自己的订阅状态，请使用命令 %s 查看".formatted(KookMDMessage.code(command))));
+        card.addModuleMdSection("如果你想了解自己的订阅状态，请使用命令 %s 查看".formatted(KookMDMessage.code(command)));
         return card.displayWithFooter();
     }
 }

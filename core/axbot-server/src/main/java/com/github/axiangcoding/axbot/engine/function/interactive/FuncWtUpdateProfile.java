@@ -158,7 +158,7 @@ public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
                             }
                             Optional<WtGamerProfile> opt = wtGamerProfileService.findByNickname(nickname);
                             if (opt.isPresent()) {
-                                content = commonWtProfile.cqhttpProfileFound(nickname, opt.get());
+                                content = commonWtProfile.cqhttpProfileFound(nickname, opt.get(), '-');
                                 break;
                             }
                         }
@@ -217,9 +217,9 @@ public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
     }
 
     private String cqhttpProfileInQuery(String nickname) {
-        CqhttpQuickMsg msg = new CqhttpQuickMsg("战雷玩家 %s 的数据".formatted(nickname));
+        CqhttpQuickMsg msg = new CqhttpQuickMsg("正在查询战雷玩家 %s 的数据".formatted(nickname));
         msg.addLine("正在发起查询...请耐心等待");
-        return msg.displayWithFooter();
+        return msg.display();
     }
 
     private String kookProfileQueryFailed(String nickname) {
@@ -233,8 +233,6 @@ public class FuncWtUpdateProfile extends AbstractInteractiveFunction {
         msg.addLine("查询失败！请稍后重试");
         return msg.displayWithFooter();
     }
-
-
 
 
 }

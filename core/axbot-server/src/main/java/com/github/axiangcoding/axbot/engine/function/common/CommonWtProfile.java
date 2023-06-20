@@ -140,9 +140,9 @@ public class CommonWtProfile {
         return quickCard.displayWithFooter();
     }
 
-    public String cqhttpProfileFound(String nickname, WtGamerProfile profile) {
-        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("战雷玩家 %s 的数据".formatted(nickname), '=');
-        quickMsg.addLine("一切数据均来自战雷官网，AXBot只做计算不做修改");
+    public String cqhttpProfileFound(String nickname, WtGamerProfile profile, char divider) {
+        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("战雷玩家 %s 的数据".formatted(nickname), divider);
+        quickMsg.addLine("一切数据均来自战雷官网");
         quickMsg.addLine("数据最后更新于 %s".formatted(
                 new PrettyTime(Locale.CHINA).format(profile.getUpdateTime())));
         quickMsg.addLine("联队: %s".formatted(profile.getClan()));
@@ -208,6 +208,6 @@ public class CommonWtProfile {
         quickMsg.addLine("海战街机KA: %s".formatted(df.format(fabKa)));
         quickMsg.addLine("海战史实KA: %s".formatted(df.format(frbKa)));
         quickMsg.addLine("海战全真KA: %s".formatted(df.format(fsbKa)));
-        return quickMsg.displayWithFooter();
+        return quickMsg.display();
     }
 }

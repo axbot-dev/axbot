@@ -41,7 +41,7 @@ public class FuncSendWtTextProfile extends AbstractNotificationFunction {
             remoteClientService.sendKookPrivateTextMsg(data.getUserId(), "对不起，该玩家的记录已经消失");
             return null;
         }
-        String text = commonWtProfile.cqhttpProfileFound(nickname, opt.get());
+        String text = commonWtProfile.cqhttpProfileFound(nickname, opt.get(), '=');
 
         remoteClientService.sendKookPrivateTextMsg(data.getUserId(), text);
         return null;

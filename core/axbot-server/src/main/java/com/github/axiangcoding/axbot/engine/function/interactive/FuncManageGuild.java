@@ -128,27 +128,25 @@ public class FuncManageGuild extends AbstractInteractiveFunction {
 
     private String kookNoPermission(String nickname) {
         KookQuickCard card = new KookQuickCard("你好，%s".formatted(nickname), "danger");
-        card.addModule(KookCardMessage.quickMdSection("您的账号未具备管理员权限，因此您无法管理AXBot！"));
-        card.addModule(KookCardMessage.quickMdSection("AXBot仅接受本服务器中具备管理员权限角色的用户的管理指令"));
-        card.addModule(KookCardMessage.newDivider());
-        card.addModule(KookCardMessage.newContext(List.of(
-                KookCardMessage.newKMarkdown("如果您是服务器所有者，请检查是否给自己分配了具备管理员权限的角色")
-        )));
+        card.addModuleMdSection("您的账号未具备管理员权限，因此您无法管理AXBot！");
+        card.addModuleMdSection("AXBot仅接受本服务器中具备管理员权限角色的用户的管理指令");
+        card.addModuleDivider();
+        card.addModuleContentSection("如果您是服务器所有者，请检查是否给自己分配了具备管理员权限的角色");
         return card.displayWithFooter();
     }
 
     private String kookBotHaveNoPermission(String nickname) {
         KookQuickCard card = new KookQuickCard("你好，%s".formatted(nickname), "danger");
         card.addModule(KookCardMessage.newHeader("配置失败！"));
-        card.addModule(KookCardMessage.quickMdSection("AXBot可能未具备具有`管理角色权限`权限的角色身份，请赋予后重试"));
-        card.addModule(KookCardMessage.quickMdSection("如果问题一直存在请通知开发者"));
+        card.addModuleMdSection("AXBot可能未具备具有`管理角色权限`权限的角色身份，请赋予后重试");
+        card.addModuleMdSection("如果问题一直存在请通知开发者");
         return card.displayWithFooter();
     }
 
     private String kookGetHelp(String nickname, String cmdPrefix) {
         KookQuickCard card = new KookQuickCard("你好，%s".formatted(nickname), "info");
         card.addModule(KookCardMessage.newHeader("可用的管理命令"));
-        card.addModule(KookCardMessage.newContext(List.of(KookCardMessage.newKMarkdown("请严格按照格式输入命令，否则命令不会被识别"))));
+        card.addModuleContentSection("请严格按照格式输入命令，否则命令不会被识别");
 
         commandDescription(cmdPrefix).forEach((k, v) -> {
             card.addModule(KookCardMessage.newSection(KookCardMessage.newKMarkdown(
@@ -160,10 +158,10 @@ public class FuncManageGuild extends AbstractInteractiveFunction {
 
     private String cqhttpGetHelp() {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("暂不支持配置");
-        msg.addLine("当前暂不支持配置，如有需要请联系管理员");
-        msg.addLine("该功能后续需要订阅才能使用");
-        msg.addLine("相关规则后续会发布，敬请期待");
-        return msg.displayWithFooter();
+        msg.addLine("当前暂不支持配置，如有需要请联系开发者");
+        msg.addLine("该功能后续需要授权才能使用");
+        msg.addLine("相关规则后续会公布，敬请期待");
+        return msg.display();
     }
 
     private String kookConfigSuccess(String nickname, Map<String, Object> items) {
@@ -182,8 +180,8 @@ public class FuncManageGuild extends AbstractInteractiveFunction {
         KookQuickCard card = new KookQuickCard("你好，%s".formatted(nickname), "danger");
         card.addModule(KookCardMessage.newHeader("配置修改失败"));
 
-        card.addModule(KookCardMessage.newSection(KookCardMessage.newKMarkdown("请检查配置字段是否正确！")));
-        card.addModule(KookCardMessage.newSection(KookCardMessage.newKMarkdown("如果你不知道要怎么开始，请查看帮助")));
+        card.addModuleMdSection("请检查配置字段是否正确！");
+        card.addModuleMdSection("如果你不知道要怎么开始，请查看帮助");
 
         return card.displayWithFooter();
     }

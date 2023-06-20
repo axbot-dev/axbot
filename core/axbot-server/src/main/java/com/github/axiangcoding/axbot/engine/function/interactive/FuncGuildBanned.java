@@ -26,8 +26,8 @@ public class FuncGuildBanned extends AbstractInteractiveFunction {
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("本群已被拉黑！");
-        msg.addLine("本群因为滥用或者违反规则，已被AXBot拉黑");
-        msg.addLine("如果你对本封禁有任何异议，请申诉");
-        return input.response(msg.displayWithFooter());
+        msg.addLine("本群因为违反规则，已被AXBot拉黑");
+        msg.addLine("如果你对本封禁有任何异议，请到KOOK频道申诉");
+        return input.response(msg.display());
     }
 }

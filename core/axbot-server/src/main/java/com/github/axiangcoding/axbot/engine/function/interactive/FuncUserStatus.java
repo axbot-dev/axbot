@@ -81,6 +81,6 @@ public class FuncUserStatus extends AbstractInteractiveFunction {
         msg.addLine("使用情况 - 当日命令请求: %d/%d".formatted(setting.getUsage().getInputToday(), qUserSettingService.getInputLimit(setting.getUserId())));
         msg.addLine("使用情况 - 总共命令请求: %d".formatted(setting.getUsage().getInputTotal()));
 
-        return msg.displayWithFooter();
+        return msg.display();
     }
 }

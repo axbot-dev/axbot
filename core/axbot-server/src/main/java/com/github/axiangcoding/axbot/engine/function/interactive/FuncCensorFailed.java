@@ -37,12 +37,12 @@ public class FuncCensorFailed extends AbstractInteractiveFunction {
         long counted = userInputRecordService.countLatestSensitiveInput(input.getUserId(), SupportPlatform.KOOK);
         long limit = 5;
         if (counted > limit) {
-            kookUserSettingService.blockUser(input.getUserId(), "输入5次以上不合时宜的命令");
+            kookUserSettingService.blockUser(input.getUserId(), "输入5次以上违规的命令");
             return funcUserBanned.execute(input);
         }
         KookQuickCard card = new KookQuickCard("AXBot不会响应这条消息", "danger");
-        card.addModuleMdSection("本条消息的输入被AI判定为违规，因此机器人不会做出任何正常响应");
-        card.addModuleMdSection("最近一个月内如果累计5条消息被判定为不合时宜，你将会被机器人拉黑");
+        card.addModuleMdSection("本条消息的输入被AI判定为违规，因此机器人不会做出任何正常回复");
+        card.addModuleMdSection("最近一个月内如果累计5条消息被判定为违规，你将会被AXBot拉黑");
         card.addModuleMdSection("当前你已达到 %s / %s".formatted(
                 KookMDMessage.code(String.valueOf(counted)), KookMDMessage.code(String.valueOf(limit))));
         card.addModuleMdSection("请注意：AXBot不对AI审核的结果负责");
@@ -61,12 +61,12 @@ public class FuncCensorFailed extends AbstractInteractiveFunction {
         }
 
         CqhttpQuickMsg msg = new CqhttpQuickMsg("AXBot不会响应这条消息");
-        msg.addLine("本条消息的输入被AI判定为违规，因此AXBot机器人不会做出任何响应");
-        msg.addLine("最近一个月内如果累计5条消息被判定为不合时宜，你将会被机器人拉黑");
-        msg.addLine("当前你已达到 %d / %d 条不合时宜的消息".formatted(counted, limit));
+        msg.addLine("本条消息的输入被AI判定为违规，因此机器人不会做出任何正常回复");
+        msg.addLine("最近一个月内如果累计5条消息被判定为违规，你将会被AXBot拉黑");
+        msg.addLine("当前你已达到 %d / %d".formatted(counted, limit));
         msg.addLine("请注意：AXBot不对AI审核的结果负责");
         msg.addDivider();
-        msg.addLine("如果你被误判拉黑，请找管理员申请解封");
-        return input.response(msg.displayWithFooter());
+        msg.addLine("如果你被误判拉黑，请到KOOK频道申请解封");
+        return input.response(msg.display());
     }
 }
