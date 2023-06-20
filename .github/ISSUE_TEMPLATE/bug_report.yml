@@ -26,6 +26,7 @@ body:
       options:
         - Kook
         - Cqhttp
+      multiple: true
     validations:
       required: true
   - type: dropdown
