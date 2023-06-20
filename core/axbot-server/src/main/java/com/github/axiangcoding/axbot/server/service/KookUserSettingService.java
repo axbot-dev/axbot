@@ -180,11 +180,11 @@ public class KookUserSettingService {
         return kookUserSettingRepository.findByBindProfileWtNickname(nickname);
     }
 
-    public List<KookUserSetting> getKookSuperAdminUser() {
+    public List<KookUserSetting> getSuperAdminUser() {
         return kookUserSettingRepository.findByRole(KookUserSetting.ROLE.SUPER_ADMIN.getLabel());
     }
 
-    public void setKookSuperAdminUser(String userId) {
+    public void setSuperAdminUser(String userId) {
         Optional<KookUserSetting> opt = findByUserId(userId);
         if (opt.isEmpty()) {
             return;

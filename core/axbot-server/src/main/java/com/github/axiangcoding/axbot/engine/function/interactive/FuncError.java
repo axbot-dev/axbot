@@ -36,7 +36,7 @@ public class FuncError extends AbstractInteractiveFunction {
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("服务器内部错误！");
         msg.addLine("服务器内部错误，请稍后重试");
-        msg.addLine("如果错误一直存在，请联系开发者");
-        return input.response(msg.displayWithFooter());
+        msg.addLine("如果错误一直存在，请到KOOK频道反馈BUG");
+        return input.response(msg.display());
     }
 }

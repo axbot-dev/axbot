@@ -58,7 +58,7 @@ public class RemoteClientService {
 
     public void sendCqhttpMsg(CqhttpInteractiveOutput output) {
         String response = output.getResponse();
-        String msg = "[CQ:at,qq=%s]\n%s".formatted(output.getUserId(), response);
+        String msg = "[CQ:reply,id=%s]%s".formatted(output.getMessageId(), response);
         cqHttpClient.sendGroupMsg(Long.valueOf(output.getGroupId()), msg, false);
     }
 

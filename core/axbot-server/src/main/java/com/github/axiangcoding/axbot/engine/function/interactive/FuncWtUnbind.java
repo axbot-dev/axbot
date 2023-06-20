@@ -43,6 +43,6 @@ public class FuncWtUnbind extends AbstractInteractiveFunction {
 
     private String cqhttpUnbindSuccess() {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("快捷查询解绑成功");
-        return msg.displayWithFooter();
+        return msg.display();
     }
 }

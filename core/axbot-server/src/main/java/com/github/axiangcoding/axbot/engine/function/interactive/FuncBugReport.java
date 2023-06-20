@@ -34,7 +34,7 @@ public class FuncBugReport extends AbstractInteractiveFunction {
             return input.response(noContent());
         }
 
-        List<KookUserSetting> list = kookUserSettingService.getKookSuperAdminUser();
+        List<KookUserSetting> list = kookUserSettingService.getSuperAdminUser();
         list.forEach(item -> {
             String content = userReportDetail(input.getUserId(), input.getGuildId(), detail);
             remoteClientService.sendKookPrivateCardMsg(item.getUserId(),
@@ -46,12 +46,12 @@ public class FuncBugReport extends AbstractInteractiveFunction {
 
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
-        return input.response(CqhttpQuickMsg.notSupport().displayWithFooter());
+        return input.response(CqhttpQuickMsg.notSupport("请到KOOK频道上反馈问题").display());
     }
 
     private String bugReportSuccess() {
         KookQuickCard card = new KookQuickCard("BUG报告成功", "success");
-        card.addModuleMdSection("感谢您的反馈，超管用户已经收到了bot的私信，将会酌情安排处理。");
+        card.addModuleMdSection("感谢您的反馈，超管用户已经收到了bot的私信，将会安排处理。");
         card.addModuleGetHelp("你也可以到“#问题反馈和意见建议”频道直接留言反馈问题");
         return card.displayWithFooter();
     }

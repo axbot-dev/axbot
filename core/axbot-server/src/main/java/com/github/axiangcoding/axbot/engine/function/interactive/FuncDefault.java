@@ -9,7 +9,6 @@ import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.template.CqhttpQuickMsg;
 import com.github.axiangcoding.axbot.engine.template.KookQuickCard;
-import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import jakarta.annotation.Resource;
@@ -34,14 +33,14 @@ public class FuncDefault extends AbstractInteractiveFunction {
                 + KookMDMessage.italic(
                 LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         String prefix = botConfProps.getDefaultTriggerPrefix();
-        String l2 = "需要我为你提供什么服务呢？如果你不知道怎么开始，聊天框输入 "
+        String l2 = "需要我做些什么呢？如果不知道怎么开始，可以输入 "
                 + KookMDMessage.code("%s 帮助".formatted(prefix)) + " 开始探索";
 
         quickCard.addModuleMdSection(l1);
         String[] paramList = input.getParamList();
         if (paramList.length != 0) {
-            quickCard.addModule(KookCardMessage.quickMdSection("你似乎输入了一个错误的命令：%s".formatted(
-                    KookMDMessage.code(StringUtils.join(paramList, " "))
+            quickCard.addModuleMdSection("你似乎输入了一个错误的命令：%s".formatted(
+                    KookMDMessage.code(StringUtils.join(paramList, " ")
             )));
         }
         quickCard.addModuleMdSection(l2);
@@ -55,13 +54,12 @@ public class FuncDefault extends AbstractInteractiveFunction {
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
         CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("你好，我是AXBot");
         String prefix = botConfProps.getDefaultTriggerPrefix();
-        quickMsg.addLine("现在是北京时间: %s".formatted(LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
         String[] paramList = input.getParamList();
         if (paramList.length != 0) {
-            quickMsg.addLine("你似乎输入了一个错误的命令：`%s`".formatted(StringUtils.join(paramList, " ")));
+            quickMsg.addLine("你似乎输入了一个错误的命令：\"%s\"".formatted(StringUtils.join(paramList, " ")));
         }
-        quickMsg.addLine("需要我为你提供什么服务呢？如果你不知道怎么开始，聊天框输入 `%s 帮助` 开始探索".formatted(prefix));
+        quickMsg.addLine("需要我做些什么呢？如果不知道怎么开始，可以输入 \"%s 帮助\" 开始探索".formatted(prefix));
 
-        return input.response(quickMsg.displayWithFooter());
+        return input.response(quickMsg.display());
     }
 }

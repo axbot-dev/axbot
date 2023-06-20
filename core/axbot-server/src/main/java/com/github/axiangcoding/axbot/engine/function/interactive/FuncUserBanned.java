@@ -9,7 +9,6 @@ import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.template.CqhttpQuickMsg;
 import com.github.axiangcoding.axbot.engine.template.KookQuickCard;
-import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.server.data.entity.KookUserSetting;
 import com.github.axiangcoding.axbot.server.data.entity.QUserSetting;
 import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
@@ -36,8 +35,8 @@ public class FuncUserBanned extends AbstractInteractiveFunction {
         if (opt.isPresent()) {
             reason = opt.get().getBannedReason();
         }
-        card.addModule(KookCardMessage.quickMdSection("你已被拉黑！原因：%s".formatted(reason)));
-        card.addModule(KookCardMessage.quickTextLinkSection("如果你对本封禁有任何异议，请申诉", "进入KOOK服务器申诉", "primary", "https://kook.top/eUTZK7"));
+        card.addModuleMdSection("你已被拉黑！原因：%s".formatted(reason));
+        card.addModuleGetHelp("如果你对本封禁有任何异议，请申诉");
         return input.response(card.displayWithFooter());
     }
 
@@ -50,7 +49,7 @@ public class FuncUserBanned extends AbstractInteractiveFunction {
             reason = opt.get().getBannedReason();
         }
         msg.addLine("你已被拉黑！原因：%s".formatted(reason));
-        msg.addLine("如果你对本封禁有任何异议，请申诉");
-        return input.response(msg.displayWithFooter());
+        msg.addLine("如果你对本封禁有任何异议，请到KOOK频道申诉");
+        return input.response(msg.display());
     }
 }

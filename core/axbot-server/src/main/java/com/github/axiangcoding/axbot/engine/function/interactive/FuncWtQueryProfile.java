@@ -81,7 +81,7 @@ public class FuncWtQueryProfile extends AbstractInteractiveFunction {
             }
             return funcWtUpdateProfile.execute(input);
         } else {
-            return input.response(commonWtProfile.cqhttpProfileFound(nickname, optGp.get()));
+            return input.response(commonWtProfile.cqhttpProfileFound(nickname, optGp.get(), '-'));
         }
     }
 
@@ -120,7 +120,7 @@ public class FuncWtQueryProfile extends AbstractInteractiveFunction {
     public static String cqhttpProfileNotFound(String nickname, String moreMsg) {
         CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("战雷玩家 %s 的数据".formatted(nickname));
         quickMsg.addLine(moreMsg);
-        return quickMsg.displayWithFooter();
+        return quickMsg.display();
     }
 
     public static String kookInvalidNickname(String prefix) {

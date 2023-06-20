@@ -8,20 +8,18 @@ import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveOutput;
-import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
-import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.engine.template.CqhttpQuickMsg;
 import com.github.axiangcoding.axbot.engine.template.KookQuickCard;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.cache.CacheKeyGenerator;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 @AxbotInteractiveFunc(command = InteractiveCommand.LUCKY)
@@ -33,7 +31,7 @@ public class FuncLuckyToday extends AbstractInteractiveFunction {
 
     @Override
     public KookInteractiveOutput execute(KookInteractiveInput input) {
-        KookQuickCard quickCard = new KookQuickCard("AXBot 气运", "success");
+        KookQuickCard quickCard = new KookQuickCard("每日气运", "success");
         int lucky = todayLucky(SupportPlatform.KOOK, input.getUserId());
         String text = generateText(lucky);
         quickCard.addModule(KookCardMessage.quickMdSection("你今天的气运值是  %s , %s".formatted(
@@ -42,21 +40,14 @@ public class FuncLuckyToday extends AbstractInteractiveFunction {
         return input.response(quickCard.displayWithFooter());
     }
 
-
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
-        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("AXBot 气运");
+        CqhttpQuickMsg quickMsg = new CqhttpQuickMsg("每日气运");
         int lucky = todayLucky(SupportPlatform.CQHTTP, input.getUserId());
         String text = generateText(lucky);
 
         quickMsg.addLine("你今天的气运值是 %d, %s".formatted(lucky, text));
         return input.response(quickMsg.display());
-    }
-
-    @Deprecated
-    public int todayLucky(String userId) {
-        String s = userId + LocalDate.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_DATE);
-        return new Random(s.hashCode()).nextInt(100);
     }
 
     public int todayLucky(SupportPlatform platform, String userId) {

@@ -48,11 +48,11 @@ public class FuncUsageLimit extends AbstractInteractiveFunction {
         }
 
         KookQuickCard card = new KookQuickCard("使用超限", "warning");
-        card.addModule(KookCardMessage.quickMdSection("你在本日可使用次数已经超限，第二天重置"));
-        card.addModule(KookCardMessage.quickMdSection("当日使用：%s / %s".formatted(
+        card.addModuleMdSection("你在本日可使用次数已经超限，第二天重置");
+        card.addModuleMdSection("当日使用：%s / %s".formatted(
                 KookMDMessage.code(String.valueOf(inputToday)), KookMDMessage.code(String.valueOf(inputLimit))
-        )));
-        card.addModule(KookCardMessage.quickMdSection("超限5次会被拉黑，请谨慎请求"));
+        ));
+        card.addModule(KookCardMessage.quickMdSection("超限5次会被拉黑，请谨慎使用命令"));
         return input.response(card.displayWithFooter());
 
     }
@@ -75,7 +75,7 @@ public class FuncUsageLimit extends AbstractInteractiveFunction {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("使用超限");
         msg.addLine("你在本日可使用次数已经超限，第二天重置");
         msg.addLine("当日使用：%s / %s".formatted(inputToday, inputLimit));
-        msg.addLine("超限5次会被拉黑，请谨慎请求");
-        return input.response(msg.displayWithFooter());
+        msg.addLine("超限5次会被拉黑，请谨慎使用命令");
+        return input.response(msg.display());
     }
 }

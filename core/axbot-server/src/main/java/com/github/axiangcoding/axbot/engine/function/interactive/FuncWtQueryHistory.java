@@ -8,13 +8,12 @@ import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.cqhttp.CqhttpInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveOutput;
-import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
+import com.github.axiangcoding.axbot.engine.template.CqhttpQuickMsg;
+import com.github.axiangcoding.axbot.engine.template.KookQuickCard;
 import com.github.axiangcoding.axbot.remote.kook.entity.KookMDMessage;
 import com.github.axiangcoding.axbot.server.configuration.props.BotConfProps;
 import com.github.axiangcoding.axbot.server.data.entity.UserInputRecord;
 import com.github.axiangcoding.axbot.server.service.UserInputRecordService;
-import com.github.axiangcoding.axbot.engine.template.CqhttpQuickMsg;
-import com.github.axiangcoding.axbot.engine.template.KookQuickCard;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +34,7 @@ public class FuncWtQueryHistory extends AbstractInteractiveFunction {
         KookQuickCard card = new KookQuickCard("战争雷霆查询的历史记录", "success");
         List<String> list = genList(input.getUserId(), SupportPlatform.KOOK);
         for (String item : list) {
-            card.addModule(KookCardMessage.quickMdSection(KookMDMessage.code(item)));
+            card.addModuleMdSection(KookMDMessage.code(item));
         }
         return input.response(card.displayWithFooter());
     }
@@ -47,7 +46,7 @@ public class FuncWtQueryHistory extends AbstractInteractiveFunction {
         for (String item : list) {
             msg.addLine(item);
         }
-        return input.response(msg.displayWithFooter());
+        return input.response(msg.display());
     }
 
 

@@ -70,7 +70,7 @@ public class FuncGuildStatus extends AbstractInteractiveFunction {
         CqhttpQuickMsg msg = new CqhttpQuickMsg("当前服务器状态");
         msg.addLine("群号: %s".formatted(qGroupSetting.getGroupId()));
         msg.addLine("群状态: %s".formatted(qGroupSetting.getBanned() ? "已拉黑" : "正常"));
-        return msg.displayWithFooter();
+        return msg.display();
     }
 
 }

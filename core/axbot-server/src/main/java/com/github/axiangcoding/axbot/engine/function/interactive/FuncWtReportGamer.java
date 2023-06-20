@@ -82,8 +82,7 @@ public class FuncWtReportGamer extends AbstractInteractiveFunction {
 
     @Override
     public CqhttpInteractiveOutput execute(CqhttpInteractiveInput input) {
-        CqhttpQuickMsg msg = new CqhttpQuickMsg("暂不支持在Q上举报玩家");
-        return input.response(msg.displayWithFooter());
+        return input.response(CqhttpQuickMsg.notSupport("请到KOOK上使用该功能").display());
     }
 
     private String getNickname(String[] paramList) {
@@ -106,8 +105,8 @@ public class FuncWtReportGamer extends AbstractInteractiveFunction {
     private String kookUserNotFound(String nickname, String tag) {
         KookQuickCard card = new KookQuickCard("举报成功，但该玩家数据不存在于AXBot数据库中", "success");
         String command = botConfProps.getDefaultTriggerPrefix() + " 战雷 查询 " + nickname;
-        card.addModuleMdSection("AXBot已经接受了你的举报信息，但是该玩家并不存在于AXBot的数据库中");
-        card.addModuleMdSection("为了确保举报到了正确的玩家，请使用如下命令查询玩家资料：%s".formatted(KookMDMessage.code(command)));
+        card.addModuleMdSection("AXBot已经接受了你的举报信息，但是该玩家资料并不存在于AXBot的数据库中");
+        card.addModuleMdSection("为了确保举报到了正确的玩家，请使用如下命令查询玩家：%s".formatted(KookMDMessage.code(command)));
         if (wtGamerTagService.isDangerTag(tag)) {
             String url = "https://warthunder.com/en/tournament/replay/type/replays?Filter%5Bnick%5D=" + nickname;
             card.addModuleDivider();
@@ -117,7 +116,7 @@ public class FuncWtReportGamer extends AbstractInteractiveFunction {
     }
 
     private String kookReportTooFrequent(String nickname) {
-        KookQuickCard card = new KookQuickCard("举报过于频繁", "warning");
+        KookQuickCard card = new KookQuickCard("举报 %s 过于频繁".formatted(nickname), "warning");
         card.addModuleMdSection("你在最近7天内已经举报过该玩家这个行为了");
         card.addModuleMdSection("请不要频繁举报同一个玩家同一个行为");
         return card.displayWithFooter();
