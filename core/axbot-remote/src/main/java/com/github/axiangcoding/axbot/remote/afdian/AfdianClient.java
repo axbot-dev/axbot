@@ -82,7 +82,7 @@ public class AfdianClient {
                 }
                 String errorBody = e.response().errorBody().string();
                 log.warn("execute error: {}", errorBody);
-                throw new RuntimeException(e);
+                throw e;
             } catch (IOException ex) {
                 // couldn't parse error
                 throw e;
