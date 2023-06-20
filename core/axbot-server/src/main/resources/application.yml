@@ -58,3 +58,6 @@ bot:
     enabled: true
     base-url: http://localhost:5700/
     secret:
+  afdian:
+    token:
+    user-id:

@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.server.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.axiangcoding.axbot.remote.afdian.AfdianClient;
 import com.github.axiangcoding.axbot.remote.bilibili.BiliClient;
 import com.github.axiangcoding.axbot.remote.botmarket.BotMarketClient;
 import com.github.axiangcoding.axbot.remote.cqhttp.CqHttpClient;
@@ -83,5 +84,11 @@ public class RemoteServerConfiguration {
     @Bean
     public BotMarketClient botMarketClient() {
         return new BotMarketClient();
+    }
+
+    @Bean
+    public AfdianClient afdianClient() {
+        BotConfProps.Afdian afdian = botConfProps.getAfdian();
+        return new AfdianClient(afdian.getUserId(), afdian.getToken());
     }
 }

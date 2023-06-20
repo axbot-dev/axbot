@@ -31,4 +31,5 @@ public class KookInteractiveInput extends InteractiveInput {
         output.setTemp(temp);
         return output;
     }
+
 }

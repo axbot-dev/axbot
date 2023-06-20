@@ -42,6 +42,7 @@ public class FuncChatWithAI extends AbstractInteractiveFunction {
         if (kookUserSettingService.canUseAI(userId)) {
             String chat = aiService.singleChat(getAsk(input));
             if (textCensorService.checkText(chat)) {
+                card.addModuleContentSection("AI生成的内容可能并不准确，同时不代表AXBot的观点，仅供参考！");
                 card.addModule(KookCardMessage.quickMdSection(chat));
             } else {
                 card.addModule(KookCardMessage.quickMdSection("对不起，AI的回答中带有不合时宜的内容，不予展示"));
