@@ -10,6 +10,7 @@ import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveInput;
 import com.github.axiangcoding.axbot.engine.io.kook.KookInteractiveOutput;
 import com.github.axiangcoding.axbot.engine.template.CqhttpQuickMsg;
 import com.github.axiangcoding.axbot.engine.template.KookQuickCard;
+import com.github.axiangcoding.axbot.remote.kook.entity.KookCardMessage;
 import com.github.axiangcoding.axbot.server.service.AIService;
 import com.github.axiangcoding.axbot.server.service.KookUserSettingService;
 import com.github.axiangcoding.axbot.server.service.QUserSettingService;
@@ -37,11 +38,11 @@ public class FuncChatWithAI extends AbstractInteractiveFunction {
     public KookInteractiveOutput execute(KookInteractiveInput input) {
         String userId = input.getUserId();
         KookQuickCard card = new KookQuickCard("ChatGPT为您服务", "success");
-        card.addModuleContentSection("ChatGPT生成的内容不一定是准确的，请自行判断");
         if (kookUserSettingService.canUseAI(userId)) {
             String chat = aiService.singleChat(getAsk(input));
             if (textCensorService.checkText(chat)) {
-                card.addModuleMdSection(chat);
+                card.addModuleContentSection("AI生成的内容可能并不准确，同时不代表AXBot的观点，仅供参考！");
+                card.addModule(KookCardMessage.quickMdSection(chat));
             } else {
                 card.addModuleMdSection("对不起，AI的回答中带有违规内容，不予展示");
             }

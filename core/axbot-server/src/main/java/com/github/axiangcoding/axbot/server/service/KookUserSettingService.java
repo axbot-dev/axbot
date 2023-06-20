@@ -69,6 +69,11 @@ public class KookUserSettingService {
             return false;
         }
         KookUserSetting entity = opt.get();
+        UserSubscribe subscribe = entity.getSubscribe();
+        if (subscribe != null && subscribe.getExpireAt().isAfter(LocalDateTime.now())) {
+            return true;
+        }
+
         UserPermit permit = entity.getPermit();
         if (permit == null) {
             return false;

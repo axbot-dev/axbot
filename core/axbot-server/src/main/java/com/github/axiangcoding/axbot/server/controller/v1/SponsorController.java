@@ -21,7 +21,6 @@ public class SponsorController {
     SponsorOrderService sponsorOrderService;
 
 
-
     @PostMapping("/afdian/webhook")
     public Map<String, Object> afdianWebhook(@RequestBody String body) {
         AFDianWebhook afDianWebhook = JsonUtils.fromLowCaseUnderscoresJson(body, AFDianWebhook.class);
@@ -29,8 +28,16 @@ public class SponsorController {
             return null;
         }
         AFDianWebhook.IData.Order order = afDianWebhook.getData().getOrder();
-        // FIXME 请求爱发电重复对比订单信息
-        sponsorOrderService.activeOrder(order.getCustomOrderId(), order.getPlanTitle(), order.getMonth());
+
+        String customOrderId = order.getCustomOrderId();
+        String tradeNo = order.getOutTradeNo();
+        Integer month = order.getMonth();
+        String planTitle = order.getPlanTitle();
+        if (sponsorOrderService.checkOrderFromAfdian(tradeNo)) {
+            sponsorOrderService.activeOrder(tradeNo, customOrderId, planTitle, month);
+        } else {
+            log.warn("not a valid order! customOrderId: {}, planTitle: {}, month: {}", customOrderId, planTitle, month);
+        }
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("ec", 200);
