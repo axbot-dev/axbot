@@ -3,14 +3,20 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    labels:
+      - "github-actions"
 
   - package-ecosystem: "gradle"
     directory: "/core"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    labels:
+      - "core"
 
   - package-ecosystem: "pip"
     directory: "/crawler"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    labels:
+      - "crawler"
