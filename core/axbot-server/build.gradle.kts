@@ -46,7 +46,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
     implementation("com.alibaba.fastjson2:fastjson2:2.0.34")
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    implementation("commons-codec:commons-codec:1.15")
+    implementation("commons-codec:commons-codec:1.16.0")
     // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
     implementation("com.theokanning.openai-gpt3-java:service:0.13.0")
 
