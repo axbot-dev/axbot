@@ -1,4 +1,4 @@
-package com.github.axiangcoding.app.bot.listener;
+package com.github.axiangcoding.app.server.bot.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import love.forte.simboot.annotation.Filter;

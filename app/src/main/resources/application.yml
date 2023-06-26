@@ -8,8 +8,8 @@ server:
 spring:
   jpa:
     open-in-view: false
-#    hibernate:
-#      ddl-auto: update
+    hibernate:
+      ddl-auto: update
 #      naming:
 #        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
   datasource:
