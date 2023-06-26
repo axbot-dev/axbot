@@ -10,17 +10,17 @@ import java.util.Map;
 @AllArgsConstructor
 public class CommonResult {
     int code;
-    String message;
+    String msg;
     Map<String, Object> data;
 
-    public CommonResult(int code, String message) {
+    public CommonResult(int code, String msg) {
         this.code = code;
-        this.message = message;
+        this.msg = msg;
     }
 
     public CommonResult(CommonError commonError) {
         this.code = commonError.getCode();
-        this.message = commonError.getMessage();
+        this.msg = commonError.getMessage();
     }
 
     public static CommonResult success() {
@@ -65,7 +65,7 @@ public class CommonResult {
 
     public static CommonResult error(Throwable e) {
         CommonResult commonResult = new CommonResult(CommonError.ERROR);
-        commonResult.setMessage(e.getMessage());
+        commonResult.setMsg(e.getMessage());
         return commonResult;
     }
 

@@ -2,7 +2,10 @@ package com.github.axiangcoding.app.server.data.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
@@ -10,9 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Accessors(chain = true)
 public class AppUser extends BasicEntity {
     @Column(unique = true)
     String userId;

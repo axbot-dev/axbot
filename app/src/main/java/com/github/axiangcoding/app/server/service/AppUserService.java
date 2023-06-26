@@ -22,12 +22,11 @@ public class AppUserService {
                         "For security reasons, " +
                         "you should always update the administrator password after the initial project",
                 username, password);
-        AppUser entity = AppUser.builder()
-                .userId(UUID.randomUUID().toString())
-                .username(username)
-                .password(new BCryptPasswordEncoder().encode(password))
-                .isSuperAdmin(true)
-                .build();
+        AppUser entity = new AppUser()
+                .setUserId(UUID.randomUUID().toString())
+                .setUsername(username)
+                .setPassword(new BCryptPasswordEncoder().encode(password))
+                .setIsSuperAdmin(true);
         repository.save(entity);
     }
 

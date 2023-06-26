@@ -16,8 +16,7 @@ public enum CommonError {
     API_KEY_INVALID(10005,"api key not exist or expired"),
     LOGIN_FAILED(20000, "login failed"),
     REGISTER_FAILED(20001, "register failed"),
-    UPDATE_PASSWORD_FAILED(20002, "update password failed"),
-    WT_GAMER_PROFILE_REFRESH_TOO_OFTEN(30000, "WT gamer profile refresh too often");
+    UPDATE_PASSWORD_FAILED(20002, "update password failed"),;
 
 
     private final int code;
