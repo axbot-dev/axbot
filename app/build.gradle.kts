@@ -43,7 +43,11 @@ dependencies {
     implementation("com.alibaba.fastjson2:fastjson2:2.0.34")
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.16.0")
-    
+    // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-spring
+    implementation("net.javacrumbs.shedlock:shedlock-spring:5.5.0")
+    // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-provider-redis-spring
+    implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:5.5.0")
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
