@@ -33,6 +33,9 @@ logging:
     name: ./logs/axbot.log
     path: ./logs/
 
+simbot:
+  auto-start-bots: true
+
 #bot:
 #  censor:
 #    enabled: true

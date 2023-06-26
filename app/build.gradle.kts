@@ -22,7 +22,7 @@ configurations {
 }
 
 repositories {
-    maven(url = "https://maven.aliyun.com/repository/public/")
+    // maven(url = "https://maven.aliyun.com/repository/public/")
     mavenLocal()
     maven(url = "https://repo1.maven.org/maven2/")
     mavenCentral()
@@ -47,6 +47,13 @@ dependencies {
     implementation("net.javacrumbs.shedlock:shedlock-spring:5.5.0")
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-provider-redis-spring
     implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:5.5.0")
+    // https://mvnrepository.com/artifact/love.forte.simbot.boot/simboot-core-spring-boot-starter
+    implementation("love.forte.simbot.boot:simboot-core-spring-boot-starter:3.1.0")
+    // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-kook-core
+    implementation("love.forte.simbot.component:simbot-component-kook-core:3.0.0.0-alpha.6")
+    // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
+    implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.0.0.0-alpha.8")
+
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

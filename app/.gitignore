@@ -37,3 +37,6 @@ out/
 .vscode/
 
 logs/
+
+local.kook.bot.json
+local.qqchannel.bot.json
