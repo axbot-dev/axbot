@@ -35,6 +35,8 @@ logging:
 
 simbot:
   auto-start-bots: true
+  bot-configuration-resources:
+    - 'classpath:simbot-bots/*.bot*'
 
 #bot:
 #  censor:
