@@ -53,7 +53,8 @@ dependencies {
     implementation("love.forte.simbot.component:simbot-component-kook-core:3.0.0.0-alpha.6")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
     implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.0.0.0-alpha.8")
-
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    implementation("org.jsoup:jsoup:1.16.1")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

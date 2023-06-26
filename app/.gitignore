@@ -37,6 +37,7 @@ out/
 .vscode/
 
 logs/
+.jpb/
 
 local.kook.bot.json
 local.qqchannel.bot.json
