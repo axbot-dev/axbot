@@ -51,6 +51,7 @@ jobs:
       - name: Build java application
         if: matrix.language == 'java'
         run: |
+          echo "build java application"
           cd app
           gradlew bootJar
 
