@@ -14,6 +14,7 @@ public enum CommonError {
     NOT_PERMIT(10003, "not permit"),
     NOT_SUPPORT(10004, "not support yet."),
     API_KEY_INVALID(10005,"api key not exist or expired"),
+
     LOGIN_FAILED(20000, "login failed"),
     REGISTER_FAILED(20001, "register failed"),
     UPDATE_PASSWORD_FAILED(20002, "update password failed"),;

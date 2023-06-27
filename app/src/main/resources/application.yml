@@ -5,6 +5,7 @@ server:
     context-path: /api
   shutdown: graceful
   forward-headers-strategy: framework
+
 spring:
   jackson:
     property-naming-strategy: SNAKE_CASE

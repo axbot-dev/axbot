@@ -22,8 +22,7 @@ public class AppSetting extends BasicEntity {
         private final String label;
     }
 
-
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     String name;
     String val;
     String description;

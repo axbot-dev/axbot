@@ -63,4 +63,23 @@ public class AppUserService {
     public Optional<AppUser> findByUsername(String username) {
         return repository.findByUsername(username);
     }
+
+    public boolean updatePassword(String userId, String oldPassword, String newPassword) {
+        Optional<AppUser> opt = repository.findByUserId(userId);
+        if (opt.isEmpty()) {
+            return false;
+        }
+        AppUser user = opt.get();
+        boolean checkPwd = checkPassword(user.getUsername(), oldPassword);
+        if (!checkPwd) {
+            return false;
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        repository.save(user);
+        return true;
+    }
+
+    public Optional<AppUser> findByUserId(String userId) {
+        return repository.findByUserId(userId);
+    }
 }

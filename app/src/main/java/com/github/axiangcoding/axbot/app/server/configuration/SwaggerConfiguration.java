@@ -1,6 +1,8 @@
 package com.github.axiangcoding.axbot.app.server.configuration;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -32,5 +34,10 @@ public class SwaggerConfiguration {
                         .version(version)
                         .license(license)
                         .contact(contact));
+    }
+
+    @Bean
+    public ModelResolver modelResolver(ObjectMapper objectMapper) {
+        return new ModelResolver(objectMapper);
     }
 }

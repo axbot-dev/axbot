@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.app.server.controller.v1;
+package com.github.axiangcoding.axbot.app.server.controller.v2;
 
 
 import com.github.axiangcoding.axbot.app.server.controller.entity.CommonResult;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-@RequestMapping("v1/system")
+@RequestMapping("v2/system")
 public class SystemController {
 
     @Operation(summary = "获取当前版本")

@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.app.server.controller.v1.entity.req;
+package com.github.axiangcoding.axbot.app.server.controller.v2.entity.req;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
