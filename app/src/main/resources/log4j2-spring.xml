@@ -4,7 +4,7 @@
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd'T'HH:mm:ss.SSSXXX</Property>
-        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${sys:LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${sys:LOG_LEVEL_PATTERN}} %clr{%pid}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${sys:LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${sys:LOG_LEVEL_PATTERN}} %clr{%pid}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} [%mdc{trace_id}: %mdc{span_id}] %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
@@ -12,7 +12,10 @@
         </Console>
         <RollingFile name="File" fileName="${sys:LOG_FILE}"
                      filePattern="${sys:LOG_PATH}/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
-            <JsonLayout compact="true" eventEol="true" includeTimeMillis="true" stacktraceAsString="true"/>
+            <JsonLayout compact="true" eventEol="true" includeTimeMillis="true" stacktraceAsString="true">
+                <KeyValuePair key="trace_id" value="$${ctx:trace_id:-}"/>
+                <KeyValuePair key="span_id" value="$${ctx:span_id:-}"/>
+            </JsonLayout>
             <Policies>
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
