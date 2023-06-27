@@ -37,11 +37,6 @@ public class WtCrawlerClient {
         return GAMER_PROFILE_URL_TEMPLATE.formatted(nickname);
     }
 
-
-    public WtCrawlerClient() {
-
-    }
-
     public ProfileParseResult getProfileFromUrl(String nickname) throws IOException {
         String url = formatGetProfileUrl(nickname);
         return WtGamerProfileParser.parseUrl(url);

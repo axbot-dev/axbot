@@ -24,6 +24,9 @@ spring:
       url: redis://localhost:6379
       repositories:
         enabled: false
+      jedis:
+        pool:
+          enabled: true
   rabbitmq:
     host: localhost
     port: 5672
