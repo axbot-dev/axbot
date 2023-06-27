@@ -2,7 +2,6 @@ plugins {
     java
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.graalvm.buildtools.native") version "0.9.23"
 }
 
 group = "com.github.axiangcoding"
@@ -22,8 +21,8 @@ configurations {
 }
 
 repositories {
-    // maven(url = "https://maven.aliyun.com/repository/public/")
     mavenLocal()
+    // maven(url = "https://maven.aliyun.com/repository/public/")
     maven(url = "https://repo1.maven.org/maven2/")
     mavenCentral()
 }
