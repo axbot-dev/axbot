@@ -114,7 +114,7 @@ public class AppUserController {
 
     @RequireLogin
     @Operation(summary = "获取当前用户的API Key列表")
-    @GetMapping("api-keys")
+    @GetMapping("api-key")
     public CommonResult apiKeys(HttpServletRequest request) {
         String userId = getUserIdFromSession(request);
         List<ApiKey> apiKeys = apiKeyService.findByUserId(userId);

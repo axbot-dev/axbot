@@ -9,5 +9,5 @@ import java.lang.annotation.*;
 @Documented
 @SecurityRequirement(name = "api-key")
 public @interface RequireApiKey {
-    boolean admin() default false;
+    boolean superAdmin() default false;
 }

@@ -1,24 +1,36 @@
 package com.github.axiangcoding.axbot.app.server.configuration.interceptor;
 
+import com.github.axiangcoding.axbot.app.server.configuration.annotation.RequireApiKey;
 import com.github.axiangcoding.axbot.app.server.configuration.annotation.RequireLogin;
 import com.github.axiangcoding.axbot.app.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.app.server.controller.entity.CommonError;
+import com.github.axiangcoding.axbot.app.server.data.entity.ApiKey;
+import com.github.axiangcoding.axbot.app.server.data.entity.AppUser;
+import com.github.axiangcoding.axbot.app.server.service.ApiKeyService;
+import com.github.axiangcoding.axbot.app.server.service.AppUserService;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Optional;
+
 
 @Slf4j
 @Configuration
 public class AuthInterceptor implements HandlerInterceptor {
-    // @Resource
-    // ApiKeyService apiKeyService;
+    @Resource
+    ApiKeyService apiKeyService;
+
+    @Resource
+    AppUserService appUserService;
 
 
     @Override
@@ -43,7 +55,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private void checkRequireLogin(HttpServletRequest request, HandlerMethod handler) {
         RequireLogin annotation = handler.getMethodAnnotation(RequireLogin.class);
         if (annotation == null) {
-            return ;
+            return;
         }
 
         HttpSession session = request.getSession(false);
@@ -53,26 +65,30 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private void checkApiKey(HttpServletRequest request, HandlerMethod handler) {
-        // RequireApiKey annotation = handler.getMethodAnnotation(RequireApiKey.class);
-        // if (annotation == null) {
-        //     return;
-        // }
-        // String key = request.getHeader("api-key");
-        // if (StringUtils.isBlank(key) || !apiKeyService.isApiKeyValid(key)) {
-        //     throw new BusinessException(CommonError.API_KEY_INVALID, "api-key not exist");
-        // }
-        //
-        // if (annotation.admin()) {
-        //     Optional<GlobalUser> opt = apiKeyService.findUserByKey(key);
-        //     if (opt.isEmpty()) {
-        //         throw new BusinessException(CommonError.NOT_PERMIT, "api-key owner is not admin");
-        //     } else {
-        //         GlobalUser user = opt.get();
-        //         if (!Boolean.TRUE.equals(user.getIsAdmin())) {
-        //             throw new BusinessException(CommonError.NOT_PERMIT, "api-key owner is not admin");
-        //         }
-        //     }
-        // }
+        RequireApiKey annotation = handler.getMethodAnnotation(RequireApiKey.class);
+        if (annotation == null) {
+            return;
+        }
+        String key = request.getHeader("api-key");
+        Optional<ApiKey> opt = apiKeyService.findByVal(key);
+
+        if (opt.isEmpty()) {
+            throw new BusinessException(CommonError.NOT_PERMIT, "api-key not exist");
+        }
+        if (StringUtils.isBlank(key) || !apiKeyService.keyValid(key)) {
+            throw new BusinessException(CommonError.API_KEY_INVALID, "api-key expired");
+        }
+        if (annotation.superAdmin()) {
+            ApiKey apiKey = opt.get();
+            Optional<AppUser> optU = appUserService.findByUserId(apiKey.getUserId());
+            if (optU.isEmpty()) {
+                throw new BusinessException(CommonError.NOT_PERMIT, "user not exist");
+            }
+            AppUser user = optU.get();
+            if (!Boolean.TRUE.equals(user.getIsSuperAdmin())) {
+                throw new BusinessException(CommonError.NOT_PERMIT, "api-key owner is not super admin");
+            }
+        }
     }
 
 }
