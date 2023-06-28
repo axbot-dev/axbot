@@ -1,0 +1,14 @@
+{
+  "component": "simbot.qqguild",
+  "ticket": {
+    "appId": "102048843",
+    "token": "L78fpShynqdmCEEBSwGaLqcRReyqQRXP",
+    "secret": "UntlP0OYVDhww3xd"
+  },
+  "config": {
+    "serverUrl": "SANDBOX",
+    "shard": {
+      "type": "full"
+    }
+  }
+}

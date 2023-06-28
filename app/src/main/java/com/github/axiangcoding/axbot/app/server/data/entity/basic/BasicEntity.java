@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.app.server.data.entity;
+package com.github.axiangcoding.axbot.app.server.data.entity.basic;
 
 
 import jakarta.persistence.GeneratedValue;

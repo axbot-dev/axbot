@@ -25,6 +25,12 @@ repositories {
     // maven(url = "https://maven.aliyun.com/repository/public/")
     maven(url = "https://repo1.maven.org/maven2/")
     mavenCentral()
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
 }
 
 dependencies {
@@ -49,11 +55,14 @@ dependencies {
     // https://mvnrepository.com/artifact/love.forte.simbot.boot/simboot-core-spring-boot-starter
     implementation("love.forte.simbot.boot:simboot-core-spring-boot-starter:3.1.0")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-kook-core
-    implementation("love.forte.simbot.component:simbot-component-kook-core:3.0.0.0-alpha.6")
+    implementation("love.forte.simbot.component:simbot-component-kook-core:3.0.0.0-alpha.7-SNAPSHOT")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
     implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.0.0.0-alpha.8")
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation("org.jsoup:jsoup:1.16.1")
+    // https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-instrumentation-annotations
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.27.0")
+
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
