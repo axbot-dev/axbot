@@ -33,7 +33,7 @@ public class FuncDefault extends AbstractPassiveFunction {
         }
         mt.addModuleMdSection(l2);
         mt.addModuleDivider();
-        mt.addModuleInviteBot("邀请机器人加入你的服务器！");
+        mt.addInviteBot("邀请机器人加入你的服务器！");
         event.replyAsync(toCardMessage(mt.displayWithFooter()));
     }
 

@@ -13,6 +13,7 @@ import com.github.axiangcoding.axbot.app.server.service.EndUserService;
 import com.github.axiangcoding.axbot.app.server.service.EndGuildService;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import love.forte.simbot.application.Application;
 import love.forte.simbot.bot.BotManager;
 import love.forte.simbot.component.kook.KookBotManager;
@@ -22,8 +23,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Random;
 
 @Component
+@Slf4j
 public class FunctionHandler {
     @Resource
     ApplicationContext applicationContext;
@@ -58,28 +61,46 @@ public class FunctionHandler {
 
     @WithSpan
     public void processPassiveFunction(ChannelMessageEvent event, BotPlatform platform) {
-        String eventId = event.getId().toString();
-        String guildId = event.getChannel().getGuildId().toString();
-        String channelId = event.getChannel().getId().toString();
-        String authorId = event.getAuthor().getId().toString();
-        String plainText = event.getMessageContent().getPlainText();
-        UserCmd command = UserCmd.judgeCommand(plainText);
-        // 创建或者获取终端用户表和频道表
-        EndGuild endGuild = endGuildService.getOrCreate(guildId, platform);
-        EndUser endUser = endUserService.getOrCreate(authorId, platform);
+        try {
+            String eventId = event.getId().toString();
+            String guildId = event.getChannel().getGuildId().toString();
+            String channelId = event.getChannel().getId().toString();
+            String authorId = event.getAuthor().getId().toString();
+            String plainText = event.getMessageContent().getPlainText();
+            UserCmd command = UserCmd.judgeCommand(plainText);
+            // 创建或者获取终端用户表和频道表
+            EndGuild endGuild = endGuildService.getOrCreate(guildId, platform);
+            EndUser endUser = endUserService.getOrCreate(authorId, platform);
+            // FIXME 检查封禁状态
 
-        // 记录用户输入记录
-        long recordId = endUserService.recordInput(platform, guildId, channelId, authorId, plainText, command);
 
+            // FIXME 检查频道封禁状态
 
-        // 正常的命令处理逻辑
-        AbstractPassiveFunction func = findInteractiveFunc(command);
-        if (platform == BotPlatform.KOOK) {
-            processPassiveFunctionForKook(func, event);
-        } else if (platform == BotPlatform.QQ_GUILD) {
-            processPassiveFunctionForQGuild(func, event);
+            // FIXME 检查是否超出限制
+
+            // FIXME 检查输入的敏感词
+
+            // 记录用户输入记录
+            long recordId = endUserService.recordInput(platform, guildId, channelId, authorId, plainText, command);
+            if (new Random().nextInt(2) == 0) {
+                throw new BusinessException(CommonError.ERROR, "挂了");
+            }
+
+            // 正常的命令处理逻辑
+            AbstractPassiveFunction func = findInteractiveFunc(command);
+            if (platform == BotPlatform.KOOK) {
+                processPassiveFunctionForKook(func, event);
+            } else if (platform == BotPlatform.QQ_GUILD) {
+                processPassiveFunctionForQGuild(func, event);
+            }
+        } catch (Exception e) {
+            log.error("process passive function error", e);
+            if (platform == BotPlatform.KOOK) {
+                findInteractiveFunc(UserCmd.ERROR).processForKOOK(event);
+            } else if (platform == BotPlatform.QQ_GUILD) {
+                findInteractiveFunc(UserCmd.ERROR).processForQG(event);
+            }
         }
-
     }
 
     private AbstractPassiveFunction findInteractiveFunc(UserCmd command) {
@@ -96,6 +117,7 @@ public class FunctionHandler {
 
     private void processPassiveFunctionForKook(AbstractPassiveFunction func, ChannelMessageEvent event) {
         func.processForKOOK(event);
+
     }
 
     private void processPassiveFunctionForQGuild(AbstractPassiveFunction func, ChannelMessageEvent event) {

@@ -12,7 +12,6 @@ public enum UserCmd {
     /*
     以下是系统类的交互
      */
-    DEFAULT(null, null),
     HELP(List.of("帮助", "文档", "help"), null),
     VERSION(List.of("版本", "version"), null),
     GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
@@ -42,6 +41,7 @@ public enum UserCmd {
     /*
     以下均为拦截式交互，不是对特定命令的响应，而是在特定情况下拦截原有的交互，返回一些信息
      */
+    DEFAULT(null, null),
     CENSOR_FAILED(null, null),
     USER_BANNED(null, null),
     GUILD_BANNED(null, null),

@@ -63,4 +63,8 @@ public class KOOKMDMessage {
     public static String mention(String text) {
         return "(met)%s(met)".formatted(text);
     }
+
+    public static String chn(String text) {
+        return "(chn)%s(chn)".formatted(text);
+    }
 }

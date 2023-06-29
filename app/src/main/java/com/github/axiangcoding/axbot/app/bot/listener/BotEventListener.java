@@ -42,5 +42,11 @@ public class BotEventListener {
         }
     }
 
+    // FIXME 暂时无法处理卡片按钮回调事件
+    // @Listener
+    // @WithSpan
+    // public void onKookEvent(MessageBtnClickEvent event) {
+    //     System.out.println(event.toString());
+    // }
 
 }

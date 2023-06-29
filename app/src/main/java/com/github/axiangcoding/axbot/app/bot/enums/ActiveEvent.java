@@ -7,18 +7,18 @@ public enum ActiveEvent {
     /*
     以下是系统类通知
      */
-    JOIN_GUILD(),
+    JOIN_GUILD,
 
-    EXIT_GUILD(),
+    EXIT_GUILD,
 
     /*
      * 以下是游戏类通知
      */
-    BILI_ROOM_REMIND(),
+    BILI_ROOM_REMIND,
 
-    WT_NEWS(),
+    WT_NEWS,
 
-    SEND_WT_TEXT_PROFILE(),
+    SEND_WT_TEXT_PROFILE,
     // FIXME
-    TEST(),
+    TEST,
 }

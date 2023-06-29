@@ -2,7 +2,6 @@ package com.github.axiangcoding.axbot.app.bot.message.template;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKCardMessage;
-import io.opentelemetry.api.trace.Span;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +35,12 @@ public class KOOKCardTemplate {
         modules.add(KOOKCardMessage.quickContent(content));
     }
 
-    public void addModuleGetHelp(String content) {
+    public void addGetHelp(String content) {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KOOKCardMessage.quickTextLinkSection(content, "进入AXBot研究所", "primary", "https://kook.top/eUTZK7"));
     }
 
-    public void addModuleInviteBot(String content) {
+    public void addInviteBot(String content) {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KOOKCardMessage.quickTextLinkSection(content, "邀请AXBot", "primary",
                 "https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=924672&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot"));
@@ -52,18 +51,11 @@ public class KOOKCardTemplate {
     }
 
     public String displayWithFooter() {
-        return displayWithFooter(false);
-    }
-
-    public String displayWithFooter(boolean debug) {
         ArrayList<KOOKCardMessage> tempList = new ArrayList<>(this.messages);
         List<KOOKCardMessage> modules = tempList.get(0).getModules();
         if (this.footer != null) {
             modules.add(KOOKCardMessage.newDivider());
-            String traceId = Span.current().getSpanContext().getTraceId();
-            if (debug) {
-                modules.add(KOOKCardMessage.quickContent("Trace: %s".formatted(traceId)));
-            }
+
             modules.add(this.footer);
         }
         return JSONObject.toJSONString(tempList);
