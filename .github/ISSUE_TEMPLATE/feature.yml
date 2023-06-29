@@ -1,7 +1,7 @@
 name: Feature Request 功能请求
 description: File a feature request 报告一个功能请求
 title: "[Feature]: "
-labels: ["enhancement"]
+labels: ["feature"]
 assignees:
   - axiangcoding
 body:
