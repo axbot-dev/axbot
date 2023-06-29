@@ -6,6 +6,8 @@
 
 [![GitHub](https://img.shields.io/github/license/axiangcoding/AXBot)](LICENSE) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=axbot-core&sort=semver)](https://hub.docker.com/r/axiangcoding/axbot-core) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=axbot-crawler&sort=semver)](https://hub.docker.com/r/axiangcoding/axbot-crawler) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/build_docker_image.yml?label=build_docker_image)](https://github.com/axiangcoding/AXBot/actions/workflows/build_docker_image.yml) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/codeql.yml?label=codeql)](https://github.com/axiangcoding/AXBot/actions/workflows/codeql.yml) [![Codacy grade](https://img.shields.io/codacy/grade/501ee223d049451d9de502036fab1ce1)](https://app.codacy.com/gh/axiangcoding/AXBot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
+> **当前V2版本正在开发中，v1版本除了安全更新外，将不再接收任何更新**
+
 ## 简介
 
 AXBot，全称艾克斯机器人（以下简称 "AXBot"），是一个在Kook、QQ等社交平台上可用的机器人。她不仅具备丰富的交互功能，还专注于为游戏爱好者提供各种游戏相关的服务。作为一款功能强大的游戏类问答机器人，AXBot的终极目标是协助玩家获取游戏数据、分析游戏数据，智能回答游戏攻略，并实现社交平台与游戏的无缝连接。
