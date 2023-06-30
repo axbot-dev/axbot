@@ -39,5 +39,4 @@ out/
 logs/
 .jpb/
 
-local.kook.bot.json
-local.qqguild.bot.json
+local.*.bot.json
