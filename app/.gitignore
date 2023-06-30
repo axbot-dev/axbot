@@ -40,4 +40,4 @@ logs/
 .jpb/
 
 local.kook.bot.json
-local.qqchannel.bot.json
+local.qqguild.bot.json
