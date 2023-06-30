@@ -9,6 +9,8 @@ import com.github.axiangcoding.axbot.app.server.data.repo.EndUserRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EndUserService {
     @Resource
@@ -39,4 +41,14 @@ public class EndUserService {
         return entity.getId();
     }
 
+    public void setSuperAdmin(BotPlatform platform, String userId, Boolean isSuperAdmin) {
+        repository.findByUserIdAndPlatform(userId, platform.name()).ifPresent(entity -> {
+            entity.setIsSuperAdmin(isSuperAdmin);
+            repository.save(entity);
+        });
+    }
+
+    public List<EndUser> getSuperAdmins(BotPlatform platform) {
+        return repository.findByPlatformAndIsSuperAdmin(platform.name(), true);
+    }
 }

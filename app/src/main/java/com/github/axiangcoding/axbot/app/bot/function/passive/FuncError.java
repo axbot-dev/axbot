@@ -25,7 +25,7 @@ public class FuncError extends AbstractPassiveFunction {
         Map<String, String> map = new HashMap<>();
         map.put("type", ClickBtnEvent.BUG_REPORT.name());
         map.put("trace_id", traceId);
-        mt.addModule(KOOKCardMessage.quickBtnEventSection("点击按钮快速反馈给开发者", "一键反馈", "primary", JSONObject.toJSONString(map)));
+        mt.addModule(KOOKCardMessage.quickBtnEventSection("快速反馈给开发者", "一键反馈", "info", JSONObject.toJSONString(map)));
         mt.addModuleMdSection("或者，你可以输入 %s 来更加详细地反馈错误".formatted(
                 KOOKMDMessage.code("反馈 <详细内容>")
         ));

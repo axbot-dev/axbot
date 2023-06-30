@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 public class ScheduleTask {
 
     @Resource
-    FunctionHandler handler;
+    private FunctionHandler handler;
 
     // TODO 更换为真实任务
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     @SchedulerLock(name = "test")
     public void test() {
         // handler.triggerEvent(ActiveEvent.TEST, BotPlatform.KOOK, new HashMap<>());

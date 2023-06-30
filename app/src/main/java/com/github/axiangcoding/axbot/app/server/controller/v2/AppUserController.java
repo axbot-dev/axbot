@@ -36,10 +36,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AppUserController {
     @Resource
-    AppUserService appUserService;
+    private AppUserService appUserService;
 
     @Resource
-    ApiKeyService apiKeyService;
+    private ApiKeyService apiKeyService;
 
     @Operation(summary = "登录")
     @PostMapping("login")

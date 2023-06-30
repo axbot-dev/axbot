@@ -3,6 +3,7 @@ package com.github.axiangcoding.axbot.app.server.controller.v2;
 import com.github.axiangcoding.axbot.app.server.configuration.annotation.RequireApiKey;
 import com.github.axiangcoding.axbot.app.server.controller.entity.CommonResult;
 import com.github.axiangcoding.axbot.app.server.controller.v2.entity.resp.BotInfoResp;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import love.forte.simbot.application.Application;
@@ -20,8 +21,9 @@ import java.util.List;
 @Slf4j
 public class ManageBotController {
     @Resource
-    Application application;
+    private Application application;
 
+    @Operation(summary = "获取所有机器人信息")
     @RequireApiKey(superAdmin = true)
     @GetMapping()
     public CommonResult getBots() {

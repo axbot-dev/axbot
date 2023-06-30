@@ -63,7 +63,6 @@ dependencies {
     // https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-instrumentation-annotations
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.27.0")
 
-
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")

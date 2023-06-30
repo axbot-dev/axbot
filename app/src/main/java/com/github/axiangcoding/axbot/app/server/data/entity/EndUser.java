@@ -18,7 +18,8 @@ import lombok.experimental.Accessors;
 @ToString
 @Entity
 @Table(indexes = {
-        @Index(columnList = "userId, platform", unique = true)
+        @Index(columnList = "userId, platform", unique = true),
+        @Index(columnList = "isSuperAdmin"),
 })
 @Accessors(chain = true)
 public class EndUser extends BasicEntity {

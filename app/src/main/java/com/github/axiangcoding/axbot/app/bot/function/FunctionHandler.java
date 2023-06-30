@@ -1,16 +1,16 @@
 package com.github.axiangcoding.axbot.app.bot.function;
 
+import com.github.axiangcoding.axbot.app.bot.annotation.AxActiveFunc;
+import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.ActiveEvent;
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
 import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
-import com.github.axiangcoding.axbot.app.bot.annotation.AxActiveFunc;
-import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.app.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.app.server.data.entity.EndGuild;
 import com.github.axiangcoding.axbot.app.server.data.entity.EndUser;
-import com.github.axiangcoding.axbot.app.server.service.EndUserService;
 import com.github.axiangcoding.axbot.app.server.service.EndGuildService;
+import com.github.axiangcoding.axbot.app.server.service.EndUserService;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.Random;
 
 @Component
 @Slf4j
@@ -82,9 +81,6 @@ public class FunctionHandler {
 
             // 记录用户输入记录
             long recordId = endUserService.recordInput(platform, guildId, channelId, authorId, plainText, command);
-            if (new Random().nextInt(2) == 0) {
-                throw new BusinessException(CommonError.ERROR, "挂了");
-            }
 
             // 正常的命令处理逻辑
             AbstractPassiveFunction func = findInteractiveFunc(command);
@@ -123,5 +119,6 @@ public class FunctionHandler {
     private void processPassiveFunctionForQGuild(AbstractPassiveFunction func, ChannelMessageEvent event) {
         func.processForQG(event);
     }
+
 
 }

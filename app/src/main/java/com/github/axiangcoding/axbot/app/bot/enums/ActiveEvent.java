@@ -10,6 +10,7 @@ public enum ActiveEvent {
     JOIN_GUILD,
 
     EXIT_GUILD,
+    REPORT_TRACE,
 
     /*
      * 以下是游戏类通知
@@ -19,6 +20,4 @@ public enum ActiveEvent {
     WT_NEWS,
 
     SEND_WT_TEXT_PROFILE,
-    // FIXME
-    TEST,
 }
