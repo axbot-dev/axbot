@@ -45,8 +45,10 @@ public enum UserCmd {
     CENSOR_FAILED(null, null),
     USER_BANNED(null, null),
     GUILD_BANNED(null, null),
-    USAGE_LIMIT(null, null),
-    ERROR(null, null);
+    GUILD_USAGE_LIMIT(null, null),
+    USER_USAGE_LIMIT(null, null),
+    ERROR(null, null),
+    ;
 
     private final List<String> t1;
     private final List<String> t2;

@@ -45,31 +45,20 @@ simbot:
   bot-configuration-resources:
     - 'classpath:simbot-bots/*.bot*'
 
-#bot:
-#  censor:
-#    enabled: true
-#    qiniu:
-#      access-token:
-#      secret-token:
-#  trigger-message-prefix:
-#    - axbot
-#    - .axbot
-#  kook:
-#    enabled: true
-#    bot-token:
-#    verify-token:
-#  bot-market:
-#    uuid:
-#  openai:
-#    api-key:
-#    proxy:
-#      type: direct
-#      host:
-#      port:
-#  cqhttp:
-#    enabled: true
-#    base-url: http://localhost:5700/
-#    secret:
-#  afdian:
-#    token:
-#    user-id:
+bot:
+  censor:
+    enabled: true
+    qiniu:
+      access-token:
+      secret-token:
+  bot-market:
+    uuid:
+  openai:
+    api-key:
+    proxy:
+      type: direct
+      host:
+      port:
+  afdian:
+    token:
+    user-id:

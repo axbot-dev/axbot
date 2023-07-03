@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.app.bot.function.passive;
 
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
+import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
@@ -41,8 +41,7 @@ public class FuncDefault extends AbstractPassiveFunction {
     public void processForQG(ChannelMessageEvent event) {
         QGContentTemplate ct = new QGContentTemplate("你好，我是AXBot");
         String l1 = "现在是北京时间: "
-                + KOOKMDMessage.italic(
-                LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                + LocalDateTime.now(ZoneId.of("UTC+8")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         String l2 = "需要我做些什么呢？如果不知道怎么开始，可以@我，并输入 \"帮助\" 开始探索";
         ct.addLine(l1);
         String input = getInput(event);

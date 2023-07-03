@@ -1,6 +1,7 @@
 package com.github.axiangcoding.axbot.app.server.schedule;
 
-import com.github.axiangcoding.axbot.app.bot.function.FunctionHandler;
+import com.github.axiangcoding.axbot.app.server.service.EndGuildService;
+import com.github.axiangcoding.axbot.app.server.service.EndUserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
@@ -12,13 +13,17 @@ import org.springframework.stereotype.Component;
 public class ScheduleTask {
 
     @Resource
-    private FunctionHandler handler;
+    EndUserService endUserService;
 
-    // TODO 更换为真实任务
-    @Scheduled(cron = "0 0/5 * * * ?")
-    @SchedulerLock(name = "test")
-    public void test() {
-        // handler.triggerEvent(ActiveEvent.TEST, BotPlatform.KOOK, new HashMap<>());
-        log.info("do test task");
+    @Resource
+    EndGuildService endGuildService;
+
+
+    @Scheduled(cron = "@daily")
+    @SchedulerLock(name = "cleanUsage")
+    public void cleanUsage() {
+        log.info("reset usage");
+        endGuildService.resetTodayUsage();
+        endUserService.resetTodayUsage();
     }
 }

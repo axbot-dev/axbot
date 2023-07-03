@@ -63,6 +63,17 @@ dependencies {
     // https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-instrumentation-annotations
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.27.0")
 
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/adapter-rxjava2
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    // https://mvnrepository.com/artifact/com.qiniu/qiniu-java-sdk
+    implementation("com.qiniu:qiniu-java-sdk:7.13.1")
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
