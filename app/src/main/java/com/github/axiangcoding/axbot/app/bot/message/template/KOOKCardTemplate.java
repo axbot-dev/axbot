@@ -9,7 +9,7 @@ import java.util.List;
 public class KOOKCardTemplate {
     private final List<KOOKCardMessage> messages;
 
-    KOOKCardMessage footer = KOOKCardMessage.quickTextLinkSection("Powered By AXBot.", "GitHub", "info", "https://github.com/axiangcoding/AXBot");
+    KOOKCardMessage footer = KOOKCardMessage.quickTextLinkSection("Powered By AXBot.", "GitHub", "info", "https://github.com/axbot-dev/axbot");
 
     public KOOKCardTemplate(String title, String theme) {
         this.messages = KOOKCardMessage.defaultMsg(title, theme);
@@ -33,6 +33,11 @@ public class KOOKCardTemplate {
     public void addModuleContentSection(String content) {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KOOKCardMessage.quickContent(content));
+    }
+
+    public void addModuleTextLink(String text, String btnName, String theme, String url) {
+        List<KOOKCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KOOKCardMessage.quickTextLinkSection(text, btnName, theme, url));
     }
 
     public void addGetHelp(String content) {
