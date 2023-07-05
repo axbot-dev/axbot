@@ -46,7 +46,7 @@ public class FuncReportTrace extends AbstractActiveFunction {
                 String userId = superAdmin.getUserId();
                 Contact contact = bot.getContact(Identifies.ID(userId));
                 if (contact != null) {
-                    contact.sendAsync(toCardMessage(ct.displayWithFooter()));
+                    contact.sendBlocking(toCardMessage(ct.displayWithFooter()));
                 }
 
             }

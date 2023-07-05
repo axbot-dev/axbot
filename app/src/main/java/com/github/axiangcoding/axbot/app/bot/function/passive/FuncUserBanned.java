@@ -37,7 +37,7 @@ public class FuncUserBanned extends AbstractPassiveFunction {
         ));
         mt.addModuleMdSection("如果你对拉黑有任何异议，请申诉");
         mt.addGetHelp("到“#拉黑申述”频道进行申诉");
-        event.replyAsync(toCardMessage(mt.displayWithFooter()));
+        event.replyBlocking(toCardMessage(mt.displayWithFooter()));
     }
 
     @Override
@@ -55,6 +55,6 @@ public class FuncUserBanned extends AbstractPassiveFunction {
                 endUser.getStatus().getBannedUntil().toString()
         ));
         ct.addLine("如果你对拉黑有任何异议，请申诉");
-        event.replyAsync(toTextMessage(ct.displayWithFooter()));
+        event.replyBlocking(toTextMessage(ct.displayWithFooter()));
     }
 }

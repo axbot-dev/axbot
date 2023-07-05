@@ -32,7 +32,7 @@ public class FuncError extends AbstractPassiveFunction {
         mt.addModuleMdSection("请务必在 <详细内容> 中带上错误追踪ID：%s".formatted(
                 KOOKMDMessage.code(traceId)
         ));
-        event.replyAsync(toCardMessage(mt.displayWithFooter()));
+        event.replyBlocking(toCardMessage(mt.displayWithFooter()));
     }
 
     @Override
@@ -40,6 +40,6 @@ public class FuncError extends AbstractPassiveFunction {
         QGContentTemplate msg = new QGContentTemplate("服务器内部错误！");
         msg.addLine("服务器内部错误，请稍后重试");
         msg.addLine("如果错误一直存在，请到KOOK频道反馈BUG");
-        event.replyAsync(toTextMessage(msg.displayWithFooter()));
+        event.replyBlocking(toTextMessage(msg.displayWithFooter()));
     }
 }

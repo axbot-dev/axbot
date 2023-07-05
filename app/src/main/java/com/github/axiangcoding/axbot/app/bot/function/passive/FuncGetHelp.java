@@ -18,7 +18,7 @@ public class FuncGetHelp extends AbstractPassiveFunction {
         ct.addModuleContentSection("需要用@来调用v2的AXBot哦");
         ct.addModuleTextLink("查看项目主页", "项目主页", "primary", WEBSITE_URL);
         ct.addModuleTextLink("快速用户手册", "用户手册", "primary", DOC_URL);
-        event.replyAsync(toCardMessage(ct.displayWithFooter()));
+        event.replyBlocking(toCardMessage(ct.displayWithFooter()));
     }
 
     @Override
@@ -26,6 +26,6 @@ public class FuncGetHelp extends AbstractPassiveFunction {
         QGContentTemplate ct = new QGContentTemplate("获取帮助");
         ct.addLine("需要用@来调用v2的AXBot哦");
         ct.addLine("请到官方频道查看完整文档的链接");
-        event.replyAsync(toTextMessage(ct.displayWithFooter()));
+        event.replyBlocking(toTextMessage(ct.displayWithFooter()));
     }
 }

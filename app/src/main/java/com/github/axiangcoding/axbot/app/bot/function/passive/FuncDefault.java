@@ -34,7 +34,7 @@ public class FuncDefault extends AbstractPassiveFunction {
         mt.addModuleMdSection(l2);
         mt.addModuleDivider();
         mt.addInviteBot("邀请机器人加入你的服务器！");
-        event.replyAsync(toCardMessage(mt.displayWithFooter()));
+        event.replyBlocking(toCardMessage(mt.displayWithFooter()));
     }
 
     @Override
@@ -49,6 +49,6 @@ public class FuncDefault extends AbstractPassiveFunction {
             ct.addLine("你似乎输入了一个错误的指令：\"%s\"".formatted(input));
         }
         ct.addLine(l2);
-        event.replyAsync(toTextMessage(ct.displayWithFooter()));
+        event.replyBlocking(toTextMessage(ct.displayWithFooter()));
     }
 }

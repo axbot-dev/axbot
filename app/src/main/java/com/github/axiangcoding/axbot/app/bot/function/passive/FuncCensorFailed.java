@@ -38,7 +38,7 @@ public class FuncCensorFailed extends AbstractPassiveFunction {
         ct.addModuleDivider();
         ct.addGetHelp("如果你被误判拉黑，可以到服务器中的“#拉黑申述”频道申请解封");
 
-        event.replyAsync(toCardMessage(ct.displayWithFooter()));
+        event.replyBlocking(toCardMessage(ct.displayWithFooter()));
     }
 
     @Override
@@ -60,6 +60,6 @@ public class FuncCensorFailed extends AbstractPassiveFunction {
         ct.addDivider();
         ct.addLine("如果你被误判拉黑，请到KOOK频道申请解封");
 
-        event.replyAsync(toTextMessage(ct.displayWithFooter()));
+        event.replyBlocking(toTextMessage(ct.displayWithFooter()));
     }
 }

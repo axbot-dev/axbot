@@ -37,7 +37,7 @@ public class FuncUserUsageLimit extends AbstractPassiveFunction {
         ct.addModuleMdSection("当日使用：%s / %s".formatted(
                 KOOKMDMessage.code(String.valueOf(inputToday)), KOOKMDMessage.code(String.valueOf(inputLimit))));
         ct.addModuleMdSection("超限5次会被拉黑，请谨慎使用命令");
-        event.replyAsync(toCardMessage(ct.displayWithFooter()));
+        event.replyBlocking(toCardMessage(ct.displayWithFooter()));
     }
 
     @Override
@@ -56,6 +56,6 @@ public class FuncUserUsageLimit extends AbstractPassiveFunction {
         ct.addLine("当日使用：%s / %s".formatted(
                 String.valueOf(inputToday), String.valueOf(inputLimit)));
         ct.addLine("超限5次会被拉黑，请谨慎使用命令");
-        event.replyAsync(toTextMessage(ct.displayWithFooter()));
+        event.replyBlocking(toTextMessage(ct.displayWithFooter()));
     }
 }

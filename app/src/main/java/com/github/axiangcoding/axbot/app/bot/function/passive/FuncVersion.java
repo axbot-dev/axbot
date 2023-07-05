@@ -14,14 +14,14 @@ public class FuncVersion extends AbstractPassiveFunction {
     public void processForKOOK(ChannelMessageEvent event) {
         KOOKCardTemplate ct = new KOOKCardTemplate("当前版本", "success");
         ct.addModuleMdSection("当前版本为 " + KOOKMDMessage.code(getVersion()));
-        event.replyAsync(toCardMessage(ct.displayWithFooter()));
+        event.replyBlocking(toCardMessage(ct.displayWithFooter()));
     }
 
     @Override
     public void processForQG(ChannelMessageEvent event) {
         QGContentTemplate ct = new QGContentTemplate("当前版本");
         ct.addLine("当前版本为 " + getVersion());
-        event.replyAsync(toTextMessage(ct.displayWithFooter()));
+        event.replyBlocking(toTextMessage(ct.displayWithFooter()));
     }
 
     private static String getVersion() {

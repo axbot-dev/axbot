@@ -16,7 +16,7 @@ public class FuncGuildBanned extends AbstractPassiveFunction {
         mt.addModuleMdSection("本服务器因为滥用或者违反规则，已被AXBot拉黑");
         mt.addModuleMdSection("如果你对本封禁有任何异议，请申诉");
         mt.addGetHelp("到“#拉黑申述”频道进行申诉");
-        event.replyAsync(toCardMessage(mt.displayWithFooter()));
+        event.replyBlocking(toCardMessage(mt.displayWithFooter()));
     }
 
     @Override
@@ -24,6 +24,6 @@ public class FuncGuildBanned extends AbstractPassiveFunction {
         QGContentTemplate ct = new QGContentTemplate("本服务器已被拉黑！");
         ct.addLine("本服务器因为滥用或者违反规则，已被AXBot拉黑");
         ct.addLine("如果你对本封禁有任何异议，请申诉");
-        event.replyAsync(toTextMessage(ct.displayWithFooter()));
+        event.replyBlocking(toTextMessage(ct.displayWithFooter()));
     }
 }
