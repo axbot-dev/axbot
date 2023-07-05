@@ -2,9 +2,12 @@ package com.github.axiangcoding.axbot.app.bot.message.template;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKCardMessage;
+import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class KOOKCardTemplate {
     private final List<KOOKCardMessage> messages;
@@ -49,6 +52,17 @@ public class KOOKCardTemplate {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KOOKCardMessage.quickTextLinkSection(content, "邀请AXBot", "primary",
                 "https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=924672&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot"));
+    }
+
+    public void addKVParagraph(LinkedHashMap<String, Object> map, Integer size) {
+        List<KOOKCardMessage> modules = this.messages.get(0).getModules();
+        String template = "%s:\n%s".formatted(KOOKMDMessage.bold("%s"), KOOKMDMessage.code("%s"));
+        ArrayList<KOOKCardMessage> fields = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            fields.add(KOOKCardMessage.newKMarkdown(template.formatted(
+                    entry.getKey(), entry.getValue())));
+        }
+        modules.add(KOOKCardMessage.newSection(KOOKCardMessage.newParagraph(size, fields)));
     }
 
     public String display() {
