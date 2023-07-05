@@ -7,8 +7,10 @@ on:
       - "v*.*.*"
 
 env:
-  APP_IMAGE_NAME: axbot-dev/axbot-app
-  CRAWLER_IMAGE_NAME: axbot-dev/axbot-crawler
+  GHCR_APP_IMAGE_NAME: axbot-dev/axbot-app
+  GHCR_CRAWLER_IMAGE_NAME: axbot-dev/axbot-crawler
+  DH_APP_IMAGE_NAME: axiangcoding/axbot-app
+  DH_CRAWLER_IMAGE_NAME: axiangcoding/axbot-crawler
 
 jobs:
   build-app:
@@ -42,8 +44,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ env.APP_IMAGE_NAME }}
-            ghcr.io/${{ env.APP_IMAGE_NAME }}
+            ${{ env.DH_APP_IMAGE_NAME }}
+            ghcr.io/${{ env.GHCR_APP_IMAGE_NAME }}
           tags: |
             type=schedule,pattern=nightly
             type=edge
@@ -96,8 +98,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ env.CRAWLER_IMAGE_NAME }}
-            ghcr.io/${{ env.CRAWLER_IMAGE_NAME }}
+            ${{ env.DH_CRAWLER_IMAGE_NAME }}
+            ghcr.io/${{ env.GHCR_CRAWLER_IMAGE_NAME }}
           tags: |
             type=schedule,pattern=nightly
             type=edge
