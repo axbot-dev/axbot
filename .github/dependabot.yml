@@ -14,6 +14,13 @@ updates:
     labels:
       - "core"
 
+  - package-ecosystem: "gradle"
+    directory: "/app"
+    schedule:
+      interval: "daily"
+    labels:
+      - "app"
+
   - package-ecosystem: "pip"
     directory: "/crawler"
     schedule:

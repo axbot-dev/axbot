@@ -1,0 +1,64 @@
+# 请不要上传敏感配置到公开仓库
+server:
+  port: 9999
+  servlet:
+    context-path: /api
+  shutdown: graceful
+  forward-headers-strategy: framework
+
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/axbot
+    username: root
+    password: example
+  data:
+    redis:
+      url: redis://localhost:6379
+      repositories:
+        enabled: false
+      jedis:
+        pool:
+          enabled: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+
+
+logging:
+  file:
+    name: ./logs/axbot.log
+    path: ./logs/
+
+simbot:
+  auto-start-bots: true
+  bot-configuration-resources:
+    - 'classpath:simbot-bots/*.bot*'
+
+bot:
+  censor:
+    enabled: true
+    qiniu:
+      access-token:
+      secret-token:
+  bot-market:
+    uuid:
+  openai:
+    api-key:
+    proxy:
+      type: direct
+      host:
+      port:
+  afdian:
+    token:
+    user-id:

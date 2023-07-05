@@ -10,19 +10,21 @@ services:
       POSTGRES_DB: axbot
     volumes:
       - ./volume/postgres:/var/lib/postgresql/data
+  mysql:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: axbot
+      MYSQL_PASSWORD: AxbotP@ssword.
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: axbot
+    volumes:
+      - ./volume/mysql:/var/lib/mysql
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
-  cqhttp:
-    image: ghcr.io/mrs4s/go-cqhttp:1.0.1
-    ports:
-      - "5700:5700"
-    volumes:
-      - "./volume/cqhttp/:/data/"
-    environment:
-      - FORCE_TTY=true
-    # entrypoint: [ "tail", "-f", "/dev/null" ]
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
