@@ -73,6 +73,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     // https://mvnrepository.com/artifact/com.qiniu/qiniu-java-sdk
     implementation("com.qiniu:qiniu-java-sdk:7.13.1")
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-pool2
+    implementation("org.apache.commons:commons-pool2:2.11.1")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

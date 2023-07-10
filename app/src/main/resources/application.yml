@@ -25,7 +25,7 @@ spring:
       url: redis://localhost:6379
       repositories:
         enabled: false
-      jedis:
+      lettuce:
         pool:
           enabled: true
   rabbitmq:
