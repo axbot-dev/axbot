@@ -14,7 +14,7 @@ public enum UserCmd {
      */
     GET_HELP(List.of("帮助", "文档", "help"), null),
     VERSION(List.of("版本", "version"), null),
-    GUILD_STATUS(List.of("群状态", "服务器状态", "群组状态", "serverStatus"), null),
+    GUILD_STATUS(List.of("服务器状态", "群组状态", "guildStatus"), null),
     USER_STATUS(List.of("状态", "我的状态", "个人状态", "status"), null),
     SPONSOR(List.of("赞助", "订阅", "subscribe"), null),
     GUILD_MANAGE(List.of("管理", "社群管理", "群组管理", "manage"), null),
@@ -33,7 +33,7 @@ public enum UserCmd {
     /*
     以下是娱乐类的交互
      */
-    LUCKY(List.of("气运", "运气", "luck"), null),
+    LUCKY_TODAY(List.of("气运", "运气", "luck"), null),
     DRAW_CARD(List.of("抽卡", "drawCard"), null),
     CHAT_WITH_AI(List.of("聊天", "对话", "chat"), null),
 
