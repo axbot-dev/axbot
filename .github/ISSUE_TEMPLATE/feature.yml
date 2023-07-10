@@ -1,5 +1,5 @@
-name: Feature Request 功能请求
-description: File a feature request 报告一个功能请求
+name: 功能请求
+description: 提交一个功能请求。
 title: "[Feature]: "
 labels: ["feature"]
 assignees:
@@ -8,21 +8,26 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this feature request! 感谢您抽出时间填写此功能请求！
+        感谢您抽出时间填写此功能请求！不过，在提交功能请求前，请您重新确认：
+        1. 这个功能是对AXBot有益的
+        2. 这个功能是和AXBot的主题相关的
+        3. 这不是个无理的要求
+        如果以上的条件均满足，请填写
+
   - type: textarea
     id: what-need
     attributes:
-      label: What feature or enhancement do you need? 你需要什么功能或增强？
-      description: Also tell us, what did you expect to happen? 也告诉我们，你期望发生什么？
-      placeholder: Tell us what you need! 告诉我们你需要什么
+      label: 你需要什么功能或增强？
+      description: 也告诉我们，你期望发生什么？
+      placeholder: 例如：我想要机器人能在KOOK平台上支持气运值功能
       value:
     validations:
       required: true
   - type: dropdown
     id: platform
     attributes:
-      label: Bot Platform needs to be supported 哪些机器人平台需要支持
-      description: if not related, select none 如果没有相关，无需选择
+      label: 哪些机器人平台需要支持
+      description: 如果和平台无关，无需选择
       options:
         - Kook
         - Cqhttp
@@ -32,5 +37,5 @@ body:
   - type: textarea
     id: addition
     attributes:
-      label: Addition info 额外的信息
-      description: Anything else you want to add? 其他你想补充的吗？
+      label: 额外的信息
+      description: 其他你想补充的吗？

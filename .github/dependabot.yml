@@ -8,13 +8,6 @@ updates:
       - "github-actions"
 
   - package-ecosystem: "gradle"
-    directory: "/core"
-    schedule:
-      interval: "daily"
-    labels:
-      - "core"
-
-  - package-ecosystem: "gradle"
     directory: "/app"
     schedule:
       interval: "daily"
