@@ -1,5 +1,5 @@
 name: 功能请求
-description: 提交一个功能请求
+description: 提交一个功能请求。
 title: "[Feature]: "
 labels: ["feature"]
 assignees:
