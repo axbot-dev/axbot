@@ -1,5 +1,5 @@
 name: 报告问题
-description: 向开发者报告一个问题。认真填写下面内容有助于开发者排查问题。
+description: 向开发者报告一个问题。
 title: "[Bug]: "
 labels: ["bug"]
 assignees:
