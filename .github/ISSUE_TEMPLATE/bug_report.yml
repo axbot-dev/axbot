@@ -1,5 +1,5 @@
-name: Bug Report 报告问题
-description: File a bug report 报告一个问题
+name: 报告问题
+description: 向开发者报告一个问题。认真填写下面内容有助于开发者排查问题。
 title: "[Bug]: "
 labels: ["bug"]
 assignees:
@@ -8,45 +8,48 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report! 感谢您抽出时间填写此错误报告！
+        感谢您抽出时间向开发者提交错误报告！不过，在提交错误报告前，请您重新确认：
+        1. 文档中没有相关的资料或者描述不准确
+        2. 经过多次实践均复现问题
+        如果以上的条件均满足，请填写本错误报告
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened? 发生了什么？
-      description: Also tell us, what did you expect to happen? 也告诉我们，你期望发生什么？
-      placeholder: Tell us what you see! 告诉我们你看到了什么
-      value:  
-    validations:
-      required: true
-  - type: dropdown
-    id: platform
-    attributes:
-      label: Bot Platform 机器人平台
-      description: What platform are you using? 您使用的是哪个平台？
-      options:
-        - Kook
-        - Cqhttp
-      multiple: true
-    validations:
-      required: true
-  - type: dropdown
-    id: os
-    attributes:
-      label:  Operating System 操作系统
-      options:
-        - Windows
-        - Mac OS
-        - Linux
+      label: 发生了什么？
+      description: 也告诉我们，你期望发生什么？
+      placeholder: 例如：机器人的XX功能不能用了
     validations:
       required: true
   - type: textarea
+    id: how-to-do
+    attributes:
+      label: 问题重现的步骤
+      description: 请尽可能描述清楚能重现问题的步骤
+      placeholder: | 
+        例如：
+        这样做可以复现问题：
+        1. xxx
+        2. xxx
+        3. xxx
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 问题相关的机器人平台
+      description: 问题发送在哪些机器人平台上？如果和平台不相关，可以为空
+      options:
+        - KOOK
+        - QQ频道
+      multiple: true
+    validations:
+      required: false
+  - type: textarea
     id: logs
     attributes:
-      label: Relevant log output 有关的运行日志
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks. 请复制并粘贴任何相关的日志输出。这将自动格式化为代码，因此不需要反引号。
+      label: 有关的运行日志
+      description: 如果问题发生和项目运行相关，请复制并粘贴任何相关的日志输出。这个输入栏目会自动格式化为代码，因此不需要反引号。
       render: shell
   - type: textarea
     id: addition
     attributes:
-      label: Addition info 额外的信息
-      description: Anything else you want to add? 其他你想补充的吗？
+      label: 额外的信息
+      description: 你可以在这里贴上截图，或者更详细的描述
