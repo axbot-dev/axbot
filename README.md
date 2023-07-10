@@ -6,7 +6,7 @@
 
 [![GitHub](https://img.shields.io/github/license/axiangcoding/AXBot)](LICENSE) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=axbot-core&sort=semver)](https://hub.docker.com/r/axiangcoding/axbot-core) [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/axiangcoding/axbot-core?label=axbot-crawler&sort=semver)](https://hub.docker.com/r/axiangcoding/axbot-crawler) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/build_docker_image.yml?label=build_docker_image)](https://github.com/axiangcoding/AXBot/actions/workflows/build_docker_image.yml) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/axiangcoding/AXBot/codeql.yml?label=codeql)](https://github.com/axiangcoding/AXBot/actions/workflows/codeql.yml) [![Codacy grade](https://img.shields.io/codacy/grade/501ee223d049451d9de502036fab1ce1)](https://app.codacy.com/gh/axiangcoding/AXBot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
-> **当前V2版本正在开发中，v1版本除了安全更新外，将不再接收任何更新**
+> **开发者正在开发v2的功能，v1和v2版本将是类似但不兼容的版本。项目不再对v1版本进行支持**
 
 ## 简介
 
@@ -27,7 +27,7 @@ AXBot目前具备以下功能和能力：
 
 AXBot的设计思路源自于https://github.com/axiangcoding/antonstar-bot ，这是开发者在聊天机器人领域的首次尝试。由于各种原因，asbot已经完成了其生命周期，而AXBot则是对asbot的延续和扩展。目前，AXBot已经完全迁移并运行。
 
-走过路过，点个`star`吧
+走过路过，点个`⭐`吧
 
 > 艾克斯机器人的中文名是基于音译而来的，而 "AX" 则是作者平时使用的昵称，并没有特殊的含义。
 
