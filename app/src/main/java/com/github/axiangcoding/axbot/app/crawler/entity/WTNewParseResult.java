@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.app.crawler.entity;
 import lombok.Data;
 
 @Data
-public class NewParseResult {
+public class WTNewParseResult {
     String title;
     String comment;
     String url;

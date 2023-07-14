@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EndGuildService {
@@ -81,5 +82,9 @@ public class EndGuildService {
 
     public void resetTodayUsage() {
         repository.resetTodayUsage();
+    }
+
+    public List<EndGuild> findByEnabledWtNewsReminder() {
+        return repository.findBySettingEnableWtNewsReminder(true);
     }
 }

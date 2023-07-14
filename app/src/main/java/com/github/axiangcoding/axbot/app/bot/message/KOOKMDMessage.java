@@ -67,4 +67,8 @@ public class KOOKMDMessage {
     public static String chn(String text) {
         return "(chn)%s(chn)".formatted(text);
     }
+
+    public static String role(String text) {
+        return "(rol)%s(rol)".formatted(text);
+    }
 }

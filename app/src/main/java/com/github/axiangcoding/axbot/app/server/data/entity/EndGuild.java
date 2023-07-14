@@ -1,9 +1,6 @@
 package com.github.axiangcoding.axbot.app.server.data.entity;
 
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.BasicEntity;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndGuildStatus;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndGuildUsage;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.SponsorPlan;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.*;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
@@ -34,6 +31,9 @@ public class EndGuild extends BasicEntity {
 
     @Embedded
     SponsorPlan sponsor;
+
+    @Embedded
+    EndGuildSetting setting;
 
     public static EndGuild init(String userId, String platform) {
         return new EndGuild()

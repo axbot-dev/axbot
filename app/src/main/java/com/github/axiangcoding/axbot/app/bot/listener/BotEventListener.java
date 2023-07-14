@@ -75,6 +75,11 @@ public class BotEventListener {
                 map.put("trace_id", json.getString("trace_id"));
                 map.put("user_id", userId);
                 handler.triggerEvent(ActiveEvent.REPORT_TRACE, BotPlatform.KOOK, map);
+            } else if (clickBtnEvent == ClickBtnEvent.GET_ROLE) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("role_id", json.getString("role_id"));
+                map.put("user_id", userId);
+                handler.triggerEvent(ActiveEvent.GET_ROLE, BotPlatform.KOOK, map);
             }
         } catch (IllegalArgumentException e) {
             log.error("not supported kook click btn event: {}", type);
