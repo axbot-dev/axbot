@@ -11,13 +11,14 @@ public enum ActiveEvent {
 
     EXIT_GUILD,
     REPORT_TRACE,
+    GET_ROLE,
 
     /*
      * 以下是游戏类通知
      */
     BILI_ROOM_REMIND,
 
-    WT_NEWS,
+    REMIND_WT_NEWS,
 
     SEND_WT_TEXT_PROFILE,
 }

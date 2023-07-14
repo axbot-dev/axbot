@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EndGuildRepository extends JpaRepository<EndGuild, Long> {
@@ -15,4 +16,6 @@ public interface EndGuildRepository extends JpaRepository<EndGuild, Long> {
     @Modifying
     @Query("update EndGuild u set u.usage.inputToday = 0, u.usage.queryWtToday = 0")
     int resetTodayUsage();
+
+    List<EndGuild> findBySettingEnableWtNewsReminder(Boolean enableWtNewsReminder);
 }

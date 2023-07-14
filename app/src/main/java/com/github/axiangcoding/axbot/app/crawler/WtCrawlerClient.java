@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.app.crawler;
 
-import com.github.axiangcoding.axbot.app.crawler.entity.NewParseResult;
 import com.github.axiangcoding.axbot.app.crawler.entity.ProfileParseResult;
+import com.github.axiangcoding.axbot.app.crawler.entity.WTNewParseResult;
 import com.github.axiangcoding.axbot.app.crawler.parser.WtGamerProfileParser;
 import com.github.axiangcoding.axbot.app.crawler.parser.WtNewsParser;
 import lombok.AllArgsConstructor;
@@ -46,7 +46,7 @@ public class WtCrawlerClient {
         return WtGamerProfileParser.parseHtml(html);
     }
 
-    public List<NewParseResult> getNewsFromUrl(REGION region) throws IOException {
+    public List<WTNewParseResult> getNewsFromUrl(REGION region) throws IOException {
         return WtNewsParser.parseUrl(NEWS_FIRST_PAGE_URL_TEMPLATE.formatted(region.getName()));
     }
 }

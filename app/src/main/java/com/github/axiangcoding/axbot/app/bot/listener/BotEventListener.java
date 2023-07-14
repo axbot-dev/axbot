@@ -41,7 +41,7 @@ public class BotEventListener {
         String botId = event.getBot().getId().toString();
         String botComponentId = event.getBot().getComponent().getId();
         String plainText = event.getMessageContent().getPlainText();
-        log.info("收到频道消息: eventId={}, guildId={}, channelId={}, messageId={}, authorId={}, botId={}, botComponentId={}, plainText={}",
+        log.info("received channel message: eventId={}, guildId={}, channelId={}, messageId={}, authorId={}, botId={}, botComponentId={}, plainText={}",
                 eventId, guildId, channelId, messageId, authorId, botId, botComponentId, plainText);
         if ("simbot.kook".equals(botComponentId)) {
             handler.processPassiveFunction(event, BotPlatform.KOOK);
@@ -75,6 +75,11 @@ public class BotEventListener {
                 map.put("trace_id", json.getString("trace_id"));
                 map.put("user_id", userId);
                 handler.triggerEvent(ActiveEvent.REPORT_TRACE, BotPlatform.KOOK, map);
+            } else if (clickBtnEvent == ClickBtnEvent.GET_ROLE) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("role_id", json.getString("role_id"));
+                map.put("user_id", userId);
+                handler.triggerEvent(ActiveEvent.GET_ROLE, BotPlatform.KOOK, map);
             }
         } catch (IllegalArgumentException e) {
             log.error("not supported kook click btn event: {}", type);

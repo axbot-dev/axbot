@@ -43,6 +43,11 @@ public class KOOKCardTemplate {
         modules.add(KOOKCardMessage.quickTextLinkSection(text, btnName, theme, url));
     }
 
+    public void addModuleBtnEvent(String text, String btnName, String theme, String event) {
+        List<KOOKCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KOOKCardMessage.quickBtnEventSection(text, btnName, theme, event));
+    }
+
     public void addGetHelp(String content) {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KOOKCardMessage.quickTextLinkSection(content, "进入AXBot研究所", "primary", "https://kook.top/eUTZK7"));

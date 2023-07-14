@@ -5,7 +5,6 @@ import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.ClickBtnEvent;
 import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
-import com.github.axiangcoding.axbot.app.bot.message.KOOKCardMessage;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.bot.message.template.QGContentTemplate;
@@ -25,7 +24,7 @@ public class FuncError extends AbstractPassiveFunction {
         Map<String, String> map = new HashMap<>();
         map.put("type", ClickBtnEvent.BUG_REPORT.name());
         map.put("trace_id", traceId);
-        mt.addModule(KOOKCardMessage.quickBtnEventSection("快速反馈给开发者", "一键反馈", "info", JSONObject.toJSONString(map)));
+        mt.addModuleBtnEvent("快速反馈给开发者", "一键反馈", "info", JSONObject.toJSONString(map));
         mt.addModuleMdSection("或者，你可以输入 %s 来更加详细地反馈错误".formatted(
                 KOOKMDMessage.code("反馈 <详细内容>")
         ));
