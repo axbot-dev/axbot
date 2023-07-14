@@ -55,7 +55,7 @@ public class FunctionHandler {
                         func.processByKOOK(kookBotManager.all().get(0).getBot(), params);
                     }
                     if (platform == BotPlatform.QQ_GUILD && botManager instanceof QQGuildBotManager qqGuildBotManager) {
-                        func.processByKOOK(qqGuildBotManager.all().get(0).getBot(), params);
+                        func.processByQG(qqGuildBotManager.all().get(0).getBot(), params);
                     }
                 }
             }

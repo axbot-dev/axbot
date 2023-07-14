@@ -49,7 +49,6 @@ public class ScheduleTask {
     @Resource
     FunctionHandler functionHandler;
 
-
     @Scheduled(cron = "@daily")
     @SchedulerLock(name = "cleanUsage")
     public void cleanUsage() {
@@ -64,15 +63,17 @@ public class ScheduleTask {
     @Scheduled(cron = "0 0/30 * * * ?")
     @SchedulerLock(name = "botMarketOnline")
     public void botMarketOnline() {
+        log.info("set bot market online");
         String uuid = botConfProps.getBotMarket().getUuid();
         if (StringUtils.isNotBlank(uuid)) {
             botMarketClient.setOnline(uuid);
         }
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/2 * * * ?")
     @SchedulerLock(name = "checkWTLatestNews")
     public void checkWTLatestNews() {
+        log.info("check warthunder latest news");
         try {
             List<WTNewParseResult> zhNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.ZH);
             List<WTNewParseResult> enNews = wtCrawlerClient.getNewsFromUrl(WtCrawlerClient.REGION.EN);
