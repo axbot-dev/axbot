@@ -70,7 +70,7 @@ public class ScheduleTask {
         }
     }
 
-    @Scheduled(cron = "0 0/2 * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     @SchedulerLock(name = "checkWTLatestNews")
     public void checkWTLatestNews() {
         try {

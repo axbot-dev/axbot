@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import love.forte.simbot.Identifies;
 import love.forte.simbot.bot.Bot;
 import love.forte.simbot.component.qguild.QGBot;
-import love.forte.simbot.component.qguild.QGChannel;
 import love.forte.simbot.definition.Channel;
 import love.forte.simbot.definition.Guild;
 
@@ -75,15 +74,11 @@ public class FuncRemindWtNews extends AbstractActiveFunction {
         String comment = parseResult.getComment();
         String dateStr = parseResult.getDateStr();
         String url = parseResult.getUrl();
-
-        QGContentTemplate ct = new QGContentTemplate("AXBot带来战雷的最新新闻");
+        QGContentTemplate ct = new QGContentTemplate("AXBot为各位带来战雷的最新资讯");
         ct.addLine(title);
         ct.addLine(dateStr);
         ct.addLine(comment);
         ct.addDivider();
-        QGChannel channel = ((QGBot) bot).getChannel(Identifies.ID(channelId));
-        if (channel != null) {
-            channel.sendBlocking(toTextMessage(ct.displayWithFooter()));
-        }
+        ((QGBot) bot).sendToBlocking(Identifies.ID(channelId), toTextMessage(ct.displayWithFooter()));
     }
 }

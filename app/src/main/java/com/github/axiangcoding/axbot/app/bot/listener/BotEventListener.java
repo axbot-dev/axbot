@@ -41,7 +41,7 @@ public class BotEventListener {
         String botId = event.getBot().getId().toString();
         String botComponentId = event.getBot().getComponent().getId();
         String plainText = event.getMessageContent().getPlainText();
-        log.info("收到频道消息: eventId={}, guildId={}, channelId={}, messageId={}, authorId={}, botId={}, botComponentId={}, plainText={}",
+        log.info("received channel message: eventId={}, guildId={}, channelId={}, messageId={}, authorId={}, botId={}, botComponentId={}, plainText={}",
                 eventId, guildId, channelId, messageId, authorId, botId, botComponentId, plainText);
         if ("simbot.kook".equals(botComponentId)) {
             handler.processPassiveFunction(event, BotPlatform.KOOK);
