@@ -37,7 +37,8 @@ def main():
         start_time = time.time()
         options = uc.ChromeOptions()
         options.add_argument("--disable-gpu")
-        options.add_argument('--no-sandbox')
+        options.add_argument("--no-sandbox")
+        options.add_argument("--auto-open-devtools-for-tabs")
         execute_path = os.getenv("DRIVER_EXECUTABLE_PATH")
         if execute_path is None:
             driver = uc.Chrome(version_main=113, options=options, headless=True)
@@ -52,7 +53,7 @@ def main():
         logger.info(f"missionId is {mission_id}, url is {url}, xpath condition is {xpath_condition}")
         driver.get(url)
 
-        wait = WebDriverWait(driver, 25, 2)
+        wait = WebDriverWait(driver, 60, 2)
         try:
             wait.until(EC.presence_of_element_located((By.XPATH, xpath_condition)))
         except TimeoutException:
