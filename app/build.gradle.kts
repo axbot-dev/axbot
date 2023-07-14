@@ -1,7 +1,7 @@
 plugins {
     java
     id("org.springframework.boot") version "3.1.1"
-    id("io.spring.dependency-management") version "1.1.0"
+    id("io.spring.dependency-management") version "1.1.1"
 }
 
 group = "com.github.axiangcoding"
@@ -45,7 +45,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.34")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.35")
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.16.0")
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-spring
@@ -57,11 +57,11 @@ dependencies {
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-kook-core
     implementation("love.forte.simbot.component:simbot-component-kook-core:3.0.0.0-alpha.7-SNAPSHOT")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
-    implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.1.0.0-alpha.9-SNAPSHOT")
+    implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.1.0.0-alpha.9")
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation("org.jsoup:jsoup:1.16.1")
     // https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-instrumentation-annotations
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.27.0")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.28.0")
 
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -73,6 +73,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     // https://mvnrepository.com/artifact/com.qiniu/qiniu-java-sdk
     implementation("com.qiniu:qiniu-java-sdk:7.13.1")
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-pool2
+    implementation("org.apache.commons:commons-pool2:2.11.1")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

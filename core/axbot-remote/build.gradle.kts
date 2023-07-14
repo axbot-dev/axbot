@@ -35,7 +35,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation("org.apache.commons:commons-lang3:3.12.0")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.34")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.35")
 }
 
 tasks.getByName<Test>("test") {
