@@ -5,7 +5,7 @@ import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
 import com.github.axiangcoding.axbot.app.bot.function.FunctionHandler;
 import com.github.axiangcoding.axbot.app.crawler.WtCrawlerClient;
 import com.github.axiangcoding.axbot.app.crawler.entity.WTNewParseResult;
-import com.github.axiangcoding.axbot.app.server.configuration.props.BotConfProps;
+import com.github.axiangcoding.axbot.app.server.configuration.props.AppConfProps;
 import com.github.axiangcoding.axbot.app.server.data.entity.EndGuild;
 import com.github.axiangcoding.axbot.app.server.data.entity.WtNews;
 import com.github.axiangcoding.axbot.app.server.service.EndGuildService;
@@ -35,7 +35,7 @@ public class ScheduleTask {
     EndGuildService endGuildService;
 
     @Resource
-    BotConfProps botConfProps;
+    AppConfProps appConfProps;
 
     @Resource
     BotMarketClient botMarketClient;
@@ -64,7 +64,7 @@ public class ScheduleTask {
     @SchedulerLock(name = "botMarketOnline")
     public void botMarketOnline() {
         log.info("set bot market online");
-        String uuid = botConfProps.getBotMarket().getUuid();
+        String uuid = appConfProps.getBotMarket().getUuid();
         if (StringUtils.isNotBlank(uuid)) {
             botMarketClient.setOnline(uuid);
         }

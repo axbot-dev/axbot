@@ -45,7 +45,7 @@ simbot:
   bot-configuration-resources:
     - 'classpath:simbot-bots/*.bot*'
 
-bot:
+app:
   censor:
     enabled: true
     qiniu:
