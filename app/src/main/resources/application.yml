@@ -46,6 +46,8 @@ simbot:
     - 'classpath:simbot-bots/*.bot*'
 
 app:
+  scheduling:
+    enabled: true
   censor:
     enabled: true
     qiniu:
