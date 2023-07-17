@@ -17,7 +17,7 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/axbot
+    url: jdbc:mysql://localhost:3306/axbot?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: example
   data:
