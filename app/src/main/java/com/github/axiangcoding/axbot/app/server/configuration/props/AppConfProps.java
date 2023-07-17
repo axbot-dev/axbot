@@ -5,14 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Data
-@ConfigurationProperties(prefix = "bot")
+@ConfigurationProperties(prefix = "app")
 @Configuration
-public class BotConfProps {
+public class AppConfProps {
     BotMarketConf botMarket;
+    SchedulingConf scheduling;
     OpenAI openai;
     Afdian afdian;
-
-
     Censor censor;
 
     @Data
@@ -21,6 +20,11 @@ public class BotConfProps {
          * 设置bot market在线的uuid
          */
         String uuid;
+    }
+
+    @Data
+    public static class SchedulingConf {
+        Boolean enabled;
     }
 
     @Data

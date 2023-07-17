@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.app.server.service;
 
-import com.github.axiangcoding.axbot.app.server.configuration.props.BotConfProps;
+import com.github.axiangcoding.axbot.app.server.configuration.props.AppConfProps;
 import com.github.axiangcoding.axbot.app.server.data.entity.TextCensor;
 import com.github.axiangcoding.axbot.app.server.data.repo.TextCensorRepository;
 import com.github.axiangcoding.axbot.app.third.qiniu.QiniuClient;
@@ -22,11 +22,11 @@ public class TextCensorService {
     QiniuClient qiniuClient;
 
     @Resource
-    BotConfProps botConfProps;
+    AppConfProps appConfProps;
 
 
     public boolean checkAndCacheText(String text) {
-        if (!botConfProps.getCensor().getEnabled()) {
+        if (!appConfProps.getCensor().getEnabled()) {
             return true;
         }
 

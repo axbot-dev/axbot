@@ -2,7 +2,7 @@ package com.github.axiangcoding.axbot.app.server.configuration;
 
 
 import com.github.axiangcoding.axbot.app.crawler.WtCrawlerClient;
-import com.github.axiangcoding.axbot.app.server.configuration.props.BotConfProps;
+import com.github.axiangcoding.axbot.app.server.configuration.props.AppConfProps;
 import com.github.axiangcoding.axbot.app.third.botmarket.BotMarketClient;
 import com.github.axiangcoding.axbot.app.third.qiniu.QiniuClient;
 import jakarta.annotation.Resource;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ThirdClientConfiguration {
     @Resource
-    BotConfProps botConfProps;
+    AppConfProps appConfProps;
 
     @Bean
     public WtCrawlerClient wtCrawlerClient() {
@@ -21,7 +21,7 @@ public class ThirdClientConfiguration {
 
     @Bean
     public QiniuClient qiniuClient() {
-        BotConfProps.Censor censor = botConfProps.getCensor();
+        AppConfProps.Censor censor = appConfProps.getCensor();
         return new QiniuClient(censor.getQiniu().getAccessToken(), censor.getQiniu().getSecretToken());
     }
 
