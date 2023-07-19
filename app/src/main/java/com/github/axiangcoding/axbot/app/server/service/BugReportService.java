@@ -19,6 +19,14 @@ public class BugReportService {
         );
     }
 
+    public void reportBug(BotPlatform platform, String userId, String detail) {
+        repository.save(new BugReport()
+                .setUserId(userId)
+                .setPlatform(platform.name())
+                .setContent(detail)
+        );
+    }
+
     public boolean traceBugExist(String traceId) {
         return repository.findByTraceId(traceId).isPresent();
     }
