@@ -8,6 +8,9 @@ FROM eclipse-temurin:17-jre-alpine
 ARG VERSION
 ENV APP_VERSION=${VERSION}
 ENV JAVA_TOOL_OPTIONS="-javaagent:/app/tools/opentelemetry-javaagent.jar"
+ENV OTEL_TRACES_EXPORTER="none"
+ENV OTEL_METRICS_EXPORTER="none"
+ENV OTEL_LOGS_EXPORTER="NONE"
 ENV OTEL_SERVICE_NAME="axbot-app"
 EXPOSE 9999
 WORKDIR /data
