@@ -1,3 +1,4 @@
 deps/volume
+deploy/volume
 .idea/
 deps/opentelemetry-javaagent.jar

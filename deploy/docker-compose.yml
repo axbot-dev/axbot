@@ -1,0 +1,81 @@
+version: "3"
+services:
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: axbot
+    volumes:
+      - ./volume/mysql:/var/lib/mysql
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "./volume/rabbitmq/:/var/lib/rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${MQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${MQ_PASSWORD}
+  app:
+    image: axiangcoding/axbot-app:${AXBOT_TAG}
+    ports:
+      - "9999:9999"
+    volumes:
+      - "./volume/app/data:/data"
+      - "./volume/app/config:/app/config"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/axbot?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATA_REDIS_URL=redis://redis:6379
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=${MQ_USER}
+      - SPRING_RABBITMQ_PASSWORD=${MQ_PASSWORD}
+      - SIMBOT_BOT_CONFIGURATION_RESOURCES=${SIMBOT_RESOURCES}
+      - APP_CENSOR_ENABLED=${CENSOR_ENABLED}
+      - APP_CENSOR_QINIU_ACCESS_TOKEN=${QINIU_ACCESS_TOKEN}
+      - APP_CENSOR_QINIU_SECRET_TOKEN=${QINIU_SECRET_TOKEN}
+      - APP_BOT_MARKET_UUID=${BOT_MARKET_UUID}
+      - APP_OPENAI_API_KEY=${OPENAI_API_KEY}
+      - APP_OPENAI_PROXY_TYPE=${OPENAI_PROXY_TYPE}
+      - APP_OPENAI_PROXY_HOST=${OPENAI_PROXY_HOST}
+      - APP_OPENAI_PROXY_PORT=${OPENAI_PROXY_PORT}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:9999/api/v1/system/health"
+        ]
+      interval: 5s
+      timeout: 60s
+      retries: 20
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+  crawler:
+    image: axiangcoding/axbot-crawler:${AXBOT_TAG}
+    deploy:
+      replicas: 3
+    volumes:
+      - ./volume/crawler/shm/:/dev/shm
+    environment:
+      - PIKA_HOST=rabbitmq
+      - PIKA_PORT=5672
+      - PIKA_USER=${MQ_USER}
+      - PIKA_PASS=${MQ_PASSWORD}
+      - DRIVER_EXECUTABLE_PATH=/usr/bin/chromedriver
+    depends_on:
+      - rabbitmq
