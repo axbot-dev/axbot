@@ -4,6 +4,7 @@ services:
     image: mysql:8
     ports:
       - "3306:3306"
+    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_bin"
     environment:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
