@@ -16,6 +16,37 @@ queue_in = "crawler_mission"
 queue_out = "crawler_result"
 
 
+def get_page_source(url, xpath_condition) -> str:
+    logger.info("starting chromedriver")
+    start_time = time.time()
+    options = uc.ChromeOptions()
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--auto-open-devtools-for-tabs")
+    execute_path = os.getenv("DRIVER_EXECUTABLE_PATH")
+    if execute_path is None:
+        driver = uc.Chrome(version_main=113, options=options, headless=True)
+    else:
+        driver = uc.Chrome(version_main=113, options=options, headless=True,
+                           driver_executable_path=execute_path)
+
+    driver.get(url)
+
+    wait = WebDriverWait(driver, 60, 2)
+    try:
+        wait.until(EC.presence_of_element_located((By.XPATH, xpath_condition)))
+    except TimeoutException:
+        logger.error("timeout when wait element")
+        driver.close()
+        return ""
+
+    page_source = driver.page_source
+    time_usage = time.time() - start_time
+    logger.info(f"get page_source success, use {time_usage} sec", )
+    driver.close()
+    return page_source
+
+
 def main():
     pika_host = os.getenv("PIKA_HOST")
     pika_port = int(os.getenv("PIKA_PORT"))
@@ -32,36 +63,13 @@ def main():
 
     def callback(ch, method, properties, body):
         logger.info(f"received a message from queue {queue_in}")
-        logger.info("starting chromedriver")
-
         start_time = time.time()
-        options = uc.ChromeOptions()
-        options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--auto-open-devtools-for-tabs")
-        execute_path = os.getenv("DRIVER_EXECUTABLE_PATH")
-        if execute_path is None:
-            driver = uc.Chrome(version_main=113, options=options, headless=True)
-        else:
-            driver = uc.Chrome(version_main=113, options=options, headless=True,
-                               driver_executable_path=execute_path)
-
         json_obj = json.loads(body)
         url = json_obj["url"]
         mission_id = json_obj["missionId"]
         xpath_condition = json_obj["xpathCondition"]
-        logger.info(f"missionId is {mission_id}, url is {url}, xpath condition is {xpath_condition}")
-        driver.get(url)
 
-        wait = WebDriverWait(driver, 60, 2)
-        try:
-            wait.until(EC.presence_of_element_located((By.XPATH, xpath_condition)))
-        except TimeoutException:
-            logger.error("timeout when wait element")
-            driver.close()
-            return
-
-        page_source = driver.page_source
+        page_source = get_page_source(url, xpath_condition)
         time_usage = time.time() - start_time
         logger.info(f"get page_source success, use {time_usage} sec", )
         out_obj = {
@@ -72,8 +80,6 @@ def main():
         body = json.dumps(out_obj, ensure_ascii=False)
         channel.basic_publish(exchange='', routing_key=queue_out, body=body.encode('utf-8'))
         logger.info(f"send a message to queue {queue_out}")
-
-        driver.close()
 
     logger.info(f"start consuming at queue {queue_in}")
     channel.basic_consume(queue=queue_in, on_message_callback=callback, auto_ack=True)
