@@ -56,7 +56,7 @@ public class BotEventListener {
     public void onKookEvent(KookBotSelfJoinedGuildEvent event) {
         log.info("received kook bot self joined guild event");
         Map<String, Object> map = new HashMap<>();
-        map.put("guildId", event.getSource().getId().toString());
+        map.put("guild_id", event.getSource().getId().toString());
         handler.triggerEvent(ActiveEvent.JOIN_GUILD, BotPlatform.KOOK, map);
     }
 
@@ -65,7 +65,7 @@ public class BotEventListener {
     public void onKookEvent(KookBotSelfExitedGuildEvent event) {
         log.info("received kook bot self exited guild event");
         Map<String, Object> map = new HashMap<>();
-        map.put("guildId", event.getSource().getId().toString());
+        map.put("guild_id", event.getSource().getId().toString());
         handler.triggerEvent(ActiveEvent.EXIT_GUILD, BotPlatform.KOOK, map);
     }
 

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class EndGuildStatus {
     public enum STATUS {
         NORMAL,
+        DISABLED,
         LOCKED,
     }
 
