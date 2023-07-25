@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.1.1"
+    id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.2"
 }
 
@@ -45,17 +45,17 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.36")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.37")
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.16.0")
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-spring
-    implementation("net.javacrumbs.shedlock:shedlock-spring:5.5.0")
+    implementation("net.javacrumbs.shedlock:shedlock-spring:5.6.0")
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-provider-redis-spring
-    implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:5.5.0")
+    implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:5.6.0")
     // https://mvnrepository.com/artifact/love.forte.simbot.boot/simboot-core-spring-boot-starter
     implementation("love.forte.simbot.boot:simboot-core-spring-boot-starter:3.2.0")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-kook-core
-    implementation("love.forte.simbot.component:simbot-component-kook-core:3.0.0.0-alpha.7-SNAPSHOT")
+    implementation("love.forte.simbot.component:simbot-component-kook-core:3.0.0.0-alpha.7")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
     implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.2.0.0-alpha.10")
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
