@@ -78,7 +78,6 @@ public class FuncRemindWtNews extends AbstractActiveFunction {
         ct.addLine(title);
         ct.addLine(dateStr);
         ct.addLine(comment);
-        ct.addDivider();
         ((QGBot) bot).sendToBlocking(Identifies.ID(channelId), toTextMessage(ct.displayWithFooter()));
     }
 }

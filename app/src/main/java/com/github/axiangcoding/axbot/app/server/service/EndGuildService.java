@@ -87,4 +87,11 @@ public class EndGuildService {
     public List<EndGuild> findByEnabledWtNewsReminder() {
         return repository.findBySettingEnableWtNewsReminder(true);
     }
+
+    public void updateStatus(BotPlatform platform, String guildId, EndGuildStatus.STATUS status) {
+        repository.findByGuildIdAndPlatform(guildId, platform.name()).ifPresent(entity -> {
+            entity.getStatus().setStatus(EndGuildStatus.STATUS.DISABLED.name());
+            repository.save(entity);
+        });
+    }
 }

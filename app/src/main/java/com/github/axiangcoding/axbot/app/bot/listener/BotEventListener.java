@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import love.forte.simboot.annotation.Filter;
 import love.forte.simboot.annotation.Listener;
+import love.forte.simbot.component.kook.event.KookBotSelfExitedGuildEvent;
 import love.forte.simbot.component.kook.event.KookBotSelfJoinedGuildEvent;
 import love.forte.simbot.component.kook.event.KookMessageBtnClickEvent;
 import love.forte.simbot.event.ChannelMessageEvent;
@@ -52,9 +53,22 @@ public class BotEventListener {
 
     @Listener
     @WithSpan
-    public void onEvent(KookBotSelfJoinedGuildEvent event) {
-
+    public void onKookEvent(KookBotSelfJoinedGuildEvent event) {
+        log.info("received kook bot self joined guild event");
+        Map<String, Object> map = new HashMap<>();
+        map.put("guild_id", event.getSource().getId().toString());
+        handler.triggerEvent(ActiveEvent.JOIN_GUILD, BotPlatform.KOOK, map);
     }
+
+    @Listener
+    @WithSpan
+    public void onKookEvent(KookBotSelfExitedGuildEvent event) {
+        log.info("received kook bot self exited guild event");
+        Map<String, Object> map = new HashMap<>();
+        map.put("guild_id", event.getSource().getId().toString());
+        handler.triggerEvent(ActiveEvent.EXIT_GUILD, BotPlatform.KOOK, map);
+    }
+
 
     /**
      * 监听kook的卡片按钮点击事件
