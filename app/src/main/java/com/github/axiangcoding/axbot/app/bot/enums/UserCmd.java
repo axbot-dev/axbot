@@ -12,6 +12,7 @@ public enum UserCmd {
     /*
     以下是系统类的交互
      */
+    DEBUG(List.of("调试", "debug"), null),
     GET_HELP(List.of("帮助", "文档", "help"), null),
     VERSION(List.of("版本", "version"), null),
     GUILD_STATUS(List.of("服务器状态", "群组状态", "guildStatus"), null),
