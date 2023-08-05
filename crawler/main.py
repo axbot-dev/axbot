@@ -38,7 +38,6 @@ def get_page_source(url, xpath_condition) -> str:
     except TimeoutException:
         logger.error("timeout when wait element")
         driver.close()
-        return ""
 
     page_source = driver.page_source
     time_usage = time.time() - start_time
