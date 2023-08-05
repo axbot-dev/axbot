@@ -30,8 +30,8 @@ body:
       label: 哪些机器人平台需要支持
       description: 如果和平台无关，无需选择
       options:
-        - Kook
-        - Cqhttp
+        - KOOK
+        - QQ频道
       multiple: true
     validations:
       required: false
