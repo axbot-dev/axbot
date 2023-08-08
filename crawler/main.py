@@ -38,6 +38,7 @@ def get_page_source(url, xpath_condition) -> str:
     except TimeoutException:
         logger.error("timeout when wait element")
         driver.close()
+        return ""
 
     page_source = driver.page_source
     time_usage = time.time() - start_time
@@ -69,6 +70,9 @@ def main():
         xpath_condition = json_obj["xpathCondition"]
 
         page_source = get_page_source(url, xpath_condition)
+        if page_source == "":
+            logger.error("get page_source failed")
+            return
         time_usage = time.time() - start_time
         logger.info(f"get page_source success, use {time_usage} sec", )
         out_obj = {
