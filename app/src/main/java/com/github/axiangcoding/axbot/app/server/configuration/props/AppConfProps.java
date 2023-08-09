@@ -13,6 +13,7 @@ public class AppConfProps {
     OpenAI openai;
     Afdian afdian;
     Censor censor;
+    PubgApi pubgApi;
 
     @Data
     public static class BotMarketConf {
@@ -84,6 +85,14 @@ public class AppConfProps {
          * 爱发电的token
          */
         String token;
+    }
+
+    @Data
+    public static class PubgApi {
+        /**
+         * pubg api的key
+         */
+        String apiKey;
     }
 
 }
