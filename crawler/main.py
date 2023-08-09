@@ -9,7 +9,7 @@ import undetected_chromedriver as uc
 from pika import PlainCredentials
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
 queue_in = "crawler_mission"
@@ -25,16 +25,17 @@ def get_page_source(url, xpath_condition) -> str:
     options.add_argument("--auto-open-devtools-for-tabs")
     execute_path = os.getenv("DRIVER_EXECUTABLE_PATH")
     if execute_path is None:
-        driver = uc.Chrome(version_main=115, options=options, headless=True, use_subprocess=False)
+        driver = uc.Chrome(options=options, headless=True, use_subprocess=False)
     else:
-        driver = uc.Chrome(version_main=115, options=options, headless=True, use_subprocess=False,
+        driver = uc.Chrome(options=options, headless=True, use_subprocess=False,
                            driver_executable_path=execute_path)
-
+    logger.info("chromedriver started")
     driver.get(url)
 
     wait = WebDriverWait(driver, 60, 2)
     try:
-        wait.until(EC.presence_of_element_located((By.XPATH, xpath_condition)))
+        logger.info(f"wait element {xpath_condition}")
+        wait.until(ec.presence_of_element_located((By.XPATH, xpath_condition)))
     except TimeoutException:
         logger.error("timeout when wait element")
         driver.close()
