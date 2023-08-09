@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
-public enum UserCmd {
+public enum FunctionType {
     /*
     以下是系统类的交互
      */
@@ -30,6 +30,8 @@ public enum UserCmd {
     WT_BIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("绑定", "快捷绑定", "bind")),
     WT_UNBIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("解绑", "快捷解绑", "unbind")),
     WT_REPORT_GAMER(List.of("战雷", "战争雷霆", "wt"), List.of("举办", "举报", "举报玩家", "report")),
+
+    PUBG_QUERY_PLAYER(List.of("绝地求生", "pubg"), List.of("查询", "查找", "query")),
 
     /*
     以下是娱乐类的交互
@@ -66,12 +68,12 @@ public enum UserCmd {
         return sb.toString();
     }
 
-    public static UserCmd judgeCommand(String command) {
+    public static FunctionType judgeCommand(String command) {
         if (StringUtils.isBlank(command)) {
             return DEFAULT;
         }
         String[] c = StringUtils.split(StringUtils.trim(command));
-        for (UserCmd value : UserCmd.values()) {
+        for (FunctionType value : FunctionType.values()) {
             if (value.t1 != null) {
                 if (value.t1.contains(c[0])) {
                     if (value.t2 != null) {
@@ -90,7 +92,7 @@ public enum UserCmd {
     public static String[] getParamList(String command) {
         String[] split = StringUtils.split(command);
         ArrayList<String> list = new ArrayList<>(Arrays.asList(split));
-        UserCmd judgeCommand = judgeCommand(command);
+        FunctionType judgeCommand = judgeCommand(command);
         if (judgeCommand.t1 != null) {
             list.remove(0);
         }

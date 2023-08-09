@@ -1,13 +1,13 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.inject;
 
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.bot.message.template.QGContentTemplate;
 import love.forte.simbot.event.ChannelMessageEvent;
 
-@AxPassiveFunc(command = UserCmd.GUILD_BANNED)
+@AxPassiveFunc(command = FunctionType.GUILD_BANNED)
 public class FuncGuildBanned extends AbstractPassiveFunction {
 
     @Override

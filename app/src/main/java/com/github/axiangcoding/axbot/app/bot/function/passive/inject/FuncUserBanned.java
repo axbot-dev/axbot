@@ -1,8 +1,8 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.inject;
 
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
@@ -12,7 +12,7 @@ import com.github.axiangcoding.axbot.app.server.service.EndUserService;
 import jakarta.annotation.Resource;
 import love.forte.simbot.event.ChannelMessageEvent;
 
-@AxPassiveFunc(command = UserCmd.USER_BANNED)
+@AxPassiveFunc(command = FunctionType.USER_BANNED)
 public class FuncUserBanned extends AbstractPassiveFunction {
     @Resource
     EndUserService endUserService;

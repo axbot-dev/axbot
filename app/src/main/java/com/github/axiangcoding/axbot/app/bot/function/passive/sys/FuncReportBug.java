@@ -1,8 +1,8 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.sys;
 
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.bot.message.template.QGContentTemplate;
@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-@AxPassiveFunc(command = UserCmd.BUG_REPORT)
+@AxPassiveFunc(command = FunctionType.BUG_REPORT)
 public class FuncReportBug extends AbstractPassiveFunction {
     @Resource
     EndUserService endUserService;

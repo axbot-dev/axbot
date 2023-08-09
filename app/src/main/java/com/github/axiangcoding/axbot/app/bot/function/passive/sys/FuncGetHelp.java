@@ -1,13 +1,13 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.sys;
 
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.bot.message.template.QGContentTemplate;
 import love.forte.simbot.event.ChannelMessageEvent;
 
-@AxPassiveFunc(command = UserCmd.GET_HELP)
+@AxPassiveFunc(command = FunctionType.GET_HELP)
 public class FuncGetHelp extends AbstractPassiveFunction {
     private static final String DOC_URL = "https://www.yuque.com/axiangcoding/ei27mo/omy4cgwvsikrwue1";
     private static final String WEBSITE_URL = "https://axbot-dev.github.io/axbot-doc/";

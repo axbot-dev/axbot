@@ -1,6 +1,6 @@
 package com.github.axiangcoding.axbot.app.bot.annotation;
 
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Documented
 @Component
 public @interface AxPassiveFunc {
-    UserCmd command();
+    FunctionType command();
 }
