@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.app.third.pubg;
 
 import com.github.axiangcoding.axbot.app.third.pubg.service.PlayerService;
 import com.github.axiangcoding.axbot.app.third.pubg.service.entity.PubgResponse;
-import com.google.gson.FieldNamingPolicy;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.resp.Player;
 import com.google.gson.GsonBuilder;
 import io.reactivex.Single;
 import lombok.AllArgsConstructor;
@@ -12,12 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.io.IOException;
 
 @Slf4j
 public class PubgClient {
@@ -64,7 +61,6 @@ public class PubgClient {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(
                         new GsonBuilder()
-                                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                                 .create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(httpClient.build());
@@ -73,23 +69,10 @@ public class PubgClient {
     }
 
     private <T> PubgResponse<T> execute(Single<PubgResponse<T>> apiCall) {
-        try {
-            return apiCall.blockingGet();
-        } catch (HttpException e) {
-            try {
-                if (e.response() == null || e.response().errorBody() == null) {
-                    throw e;
-                }
-                String errorBody = e.response().errorBody().string();
-                log.warn("execute error: {}", errorBody);
-                throw new RuntimeException(e);
-            } catch (IOException ex) {
-                throw e;
-            }
-        }
+        return apiCall.blockingGet();
     }
 
-    public PubgResponse<Object> getPlayers(String platform, String playerNames, String playerIds) {
+    public PubgResponse<Player> getPlayers(String platform, String playerNames, String playerIds) {
         return execute(playerService.getPlayers(platform, playerNames, playerIds));
     }
 }

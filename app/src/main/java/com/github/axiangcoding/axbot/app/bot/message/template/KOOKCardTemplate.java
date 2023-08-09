@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKCardMessage;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,6 +60,17 @@ public class KOOKCardTemplate {
                 "https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=924672&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot"));
     }
 
+    public void addCountDown(String mode, LocalDateTime start, LocalDateTime end) {
+        List<KOOKCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KOOKCardMessage.newCountDown(mode, start, end));
+    }
+
+    public void addKVLine(String key, String value) {
+        List<KOOKCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KOOKCardMessage.quickMdSection("%s: %s".formatted(KOOKMDMessage.bold(key), value)));
+    }
+
+    @Deprecated
     public void addKVParagraph(LinkedHashMap<String, Object> map, Integer size) {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         String template = "%s:\n%s".formatted(KOOKMDMessage.bold("%s"), KOOKMDMessage.code("%s"));
