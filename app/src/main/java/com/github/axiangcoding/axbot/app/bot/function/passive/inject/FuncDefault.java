@@ -1,7 +1,7 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.inject;
 
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-@AxPassiveFunc(command = UserCmd.DEFAULT)
+@AxPassiveFunc(command = FunctionType.DEFAULT)
 public class FuncDefault extends AbstractPassiveFunction {
 
     @Override

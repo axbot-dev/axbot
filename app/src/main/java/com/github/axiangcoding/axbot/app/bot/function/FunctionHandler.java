@@ -4,7 +4,7 @@ import com.github.axiangcoding.axbot.app.bot.annotation.AxActiveFunc;
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.ActiveEvent;
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.server.configuration.exception.BusinessException;
 import com.github.axiangcoding.axbot.app.server.controller.entity.CommonError;
 import com.github.axiangcoding.axbot.app.server.data.entity.EndGuild;
@@ -70,7 +70,7 @@ public class FunctionHandler {
             String channelId = event.getChannel().getId().toString();
             String authorId = event.getAuthor().getId().toString();
             String plainText = event.getMessageContent().getPlainText();
-            UserCmd command = UserCmd.judgeCommand(plainText);
+            FunctionType command = FunctionType.judgeCommand(plainText);
             // 创建或者获取终端用户表和频道表
             EndGuild endGuild = endGuildService.getOrCreate(guildId, platform);
             EndUser endUser = endUserService.getOrCreate(authorId, platform);
@@ -82,13 +82,13 @@ public class FunctionHandler {
             AbstractPassiveFunction func;
             // 检查频道封禁状态
             if (endGuildService.isBlocked(endGuild)) {
-                func = findInteractiveFunc(UserCmd.GUILD_BANNED);
+                func = findInteractiveFunc(FunctionType.GUILD_BANNED);
                 executePassiveFunction(platform, func, event);
                 return;
             }
             // 检查用户封禁状态
             if (endUserService.isBlocked(endUser)) {
-                func = findInteractiveFunc(UserCmd.USER_BANNED);
+                func = findInteractiveFunc(FunctionType.USER_BANNED);
                 executePassiveFunction(platform, func, event);
                 return;
             }
@@ -96,7 +96,7 @@ public class FunctionHandler {
             // 检查频道使用是否超出限制
             int guildInputLimit = endGuildService.getInputLimit(guildId, platform);
             if (endGuild.getUsage().getInputToday() > guildInputLimit) {
-                func = findInteractiveFunc(UserCmd.GUILD_USAGE_LIMIT);
+                func = findInteractiveFunc(FunctionType.GUILD_USAGE_LIMIT);
                 executePassiveFunction(platform, func, event);
                 return;
             }
@@ -104,7 +104,7 @@ public class FunctionHandler {
             // 检查用户使用是否超出限制
             int userInputLimit = endUserService.getInputLimit(authorId, platform);
             if (endUser.getUsage().getInputToday() > userInputLimit) {
-                func = findInteractiveFunc(UserCmd.USER_USAGE_LIMIT);
+                func = findInteractiveFunc(FunctionType.USER_USAGE_LIMIT);
                 executePassiveFunction(platform, func, event);
                 return;
             }
@@ -113,7 +113,7 @@ public class FunctionHandler {
             boolean textPassCheck = textCensorService.checkAndCacheText(plainText);
             if (!textPassCheck) {
                 endUserService.markInputSensitive(recordId);
-                func = findInteractiveFunc(UserCmd.CENSOR_FAILED);
+                func = findInteractiveFunc(FunctionType.CENSOR_FAILED);
                 executePassiveFunction(platform, func, event);
                 return;
             }
@@ -124,14 +124,14 @@ public class FunctionHandler {
         } catch (Exception e) {
             log.error("process passive function error", e);
             if (platform == BotPlatform.KOOK) {
-                findInteractiveFunc(UserCmd.ERROR).processForKOOK(event);
+                findInteractiveFunc(FunctionType.ERROR).processForKOOK(event);
             } else if (platform == BotPlatform.QQ_GUILD) {
-                findInteractiveFunc(UserCmd.ERROR).processForQG(event);
+                findInteractiveFunc(FunctionType.ERROR).processForQG(event);
             }
         }
     }
 
-    private AbstractPassiveFunction findInteractiveFunc(UserCmd command) {
+    private AbstractPassiveFunction findInteractiveFunc(FunctionType command) {
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(AxPassiveFunc.class);
         for (Map.Entry<String, Object> entry : beans.entrySet()) {
             AbstractPassiveFunction func = applicationContext.getBean(entry.getKey(), AbstractPassiveFunction.class);

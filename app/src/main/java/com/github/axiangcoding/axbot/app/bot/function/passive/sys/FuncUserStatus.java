@@ -1,8 +1,8 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.sys;
 
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
@@ -17,7 +17,7 @@ import love.forte.simbot.event.ChannelMessageEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@AxPassiveFunc(command = UserCmd.USER_STATUS)
+@AxPassiveFunc(command = FunctionType.USER_STATUS)
 public class FuncUserStatus extends AbstractPassiveFunction {
     @Resource
     private EndUserService endUserService;

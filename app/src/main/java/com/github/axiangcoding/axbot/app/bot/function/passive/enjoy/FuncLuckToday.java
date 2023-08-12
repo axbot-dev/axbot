@@ -1,8 +1,8 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.enjoy;
 
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.bot.message.template.QGContentTemplate;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Random;
 
-@AxPassiveFunc(command = UserCmd.LUCKY_TODAY)
+@AxPassiveFunc(command = FunctionType.LUCKY_TODAY)
 public class FuncLuckToday extends AbstractPassiveFunction {
     @Resource
     StringRedisTemplate stringRedisTemplate;

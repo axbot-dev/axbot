@@ -1,7 +1,7 @@
 package com.github.axiangcoding.axbot.app.server.service;
 
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.server.data.entity.EndUser;
 import com.github.axiangcoding.axbot.app.server.data.entity.EndUserInputRecord;
 import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndUserStatus;
@@ -31,7 +31,7 @@ public class EndUserService {
     }
 
     public long recordInput(BotPlatform platform, String guildId, String channelId,
-                            String authorId, String input, UserCmd cmd) {
+                            String authorId, String input, FunctionType cmd) {
         EndUserInputRecord entity = new EndUserInputRecord()
                 .setUserId(authorId)
                 .setPlatform(platform.name())

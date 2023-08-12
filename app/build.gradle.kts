@@ -75,6 +75,8 @@ dependencies {
     implementation("com.qiniu:qiniu-java-sdk:7.14.0")
     // https://mvnrepository.com/artifact/org.apache.commons/commons-pool2
     implementation("org.apache.commons:commons-pool2:2.11.1")
+    // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
+    implementation("org.ocpsoft.prettytime:prettytime:5.0.7.Final")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

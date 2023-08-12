@@ -4,6 +4,7 @@ package com.github.axiangcoding.axbot.app.server.configuration;
 import com.github.axiangcoding.axbot.app.crawler.WtCrawlerClient;
 import com.github.axiangcoding.axbot.app.server.configuration.props.AppConfProps;
 import com.github.axiangcoding.axbot.app.third.botmarket.BotMarketClient;
+import com.github.axiangcoding.axbot.app.third.pubg.PubgClient;
 import com.github.axiangcoding.axbot.app.third.qiniu.QiniuClient;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
@@ -28,5 +29,10 @@ public class ThirdClientConfiguration {
     @Bean
     public BotMarketClient botMarketClient() {
         return new BotMarketClient();
+    }
+
+    @Bean
+    public PubgClient pubgClient() {
+        return new PubgClient(appConfProps.getPubgApi().getApiKey());
     }
 }

@@ -1,9 +1,9 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.inject;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.ClickBtnEvent;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
@@ -14,7 +14,7 @@ import love.forte.simbot.event.ChannelMessageEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-@AxPassiveFunc(command = UserCmd.ERROR)
+@AxPassiveFunc(command = FunctionType.ERROR)
 public class FuncError extends AbstractPassiveFunction {
     @Override
     public void processForKOOK(ChannelMessageEvent event) {

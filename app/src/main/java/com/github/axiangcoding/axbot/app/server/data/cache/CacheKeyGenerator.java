@@ -5,14 +5,17 @@ import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
 public class CacheKeyGenerator {
 
     private enum CACHE_PREFIX {
-        GAMER_PROFILE_UPDATE,
+        /**
+         * PUBG玩家同步冻结
+         */
+        PUBG_PLAYER_SYNC_FROZEN,
         BILI_ROOM_REMIND,
-        USER_LUCK,
+        /**
+         * 用户今日气运
+         */
+        USER_LUCK_TODAY,
     }
 
-    public static String getWtGamerProfileUpdateCacheKey(String nickname) {
-        return "%s:%s".formatted(CACHE_PREFIX.GAMER_PROFILE_UPDATE.name(), nickname);
-    }
 
     public static String getKookBiliRoomRemindCacheKey(String channelId, String roomId) {
         return "%s:kook:%s:%s".formatted(CACHE_PREFIX.BILI_ROOM_REMIND.name(), channelId, roomId);
@@ -23,6 +26,10 @@ public class CacheKeyGenerator {
     }
 
     public static String getUserLuckKey(BotPlatform platform, String userId) {
-        return "%s:%s:%s".formatted(CACHE_PREFIX.USER_LUCK.name(), platform.name(), userId);
+        return "%s:%s:%s".formatted(CACHE_PREFIX.USER_LUCK_TODAY.name(), platform.name(), userId);
+    }
+
+    public static String getPubgPlayerSyncFrozenKey(String platform, String playerId) {
+        return "%s:%s:%s".formatted(CACHE_PREFIX.PUBG_PLAYER_SYNC_FROZEN.name(), platform, playerId);
     }
 }

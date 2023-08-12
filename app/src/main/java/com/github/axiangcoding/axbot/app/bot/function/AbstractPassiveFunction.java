@@ -24,6 +24,10 @@ public abstract class AbstractPassiveFunction {
         return StringUtils.trim(event.getMessageContent().getPlainText());
     }
 
+    protected ParamExtract getParamExtract(ChannelMessageEvent event) {
+        return new ParamExtract(getInput(event));
+    }
+
     protected String getGuildId(ChannelMessageEvent event) {
         return event.getSource().getGuild().getId().toString();
     }

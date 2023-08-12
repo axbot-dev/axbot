@@ -1,9 +1,9 @@
-package com.github.axiangcoding.axbot.app.bot.function.passive;
+package com.github.axiangcoding.axbot.app.bot.function.passive.enjoy;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
-import com.github.axiangcoding.axbot.app.bot.enums.UserCmd;
+import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.bot.message.template.QGContentTemplate;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-@AxPassiveFunc(command = UserCmd.DRAW_CARD)
+@AxPassiveFunc(command = FunctionType.DRAW_CARD)
 @Slf4j
 public class FuncDrawCard extends AbstractPassiveFunction {
     @Resource
