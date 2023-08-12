@@ -1,8 +1,7 @@
 package com.github.axiangcoding.axbot.app.server.data.entity;
 
 import com.github.axiangcoding.axbot.app.server.data.entity.basic.BasicEntity;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.PubgPlayerInfo;
-import jakarta.persistence.Embedded;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +16,9 @@ import lombok.experimental.Accessors;
 public class PubgPlayerSnapshot extends BasicEntity {
     String playerId;
 
-    @Embedded
-    PubgPlayerInfo info;
+    @Column(columnDefinition = "json")
+    String info;
+
+    @Column(columnDefinition = "json")
+    String lifetimeStats;
 }

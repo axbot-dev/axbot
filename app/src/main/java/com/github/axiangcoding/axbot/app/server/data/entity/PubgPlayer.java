@@ -1,7 +1,8 @@
 package com.github.axiangcoding.axbot.app.server.data.entity;
 
 import com.github.axiangcoding.axbot.app.server.data.entity.basic.BasicEntity;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.PubgPlayerInfo;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgLifetimeStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgPlayerInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -23,4 +24,7 @@ public class PubgPlayer extends BasicEntity {
 
     @Embedded
     PubgPlayerInfo info;
+
+    @Embedded
+    PubgLifetimeStats lifetimeStats;
 }

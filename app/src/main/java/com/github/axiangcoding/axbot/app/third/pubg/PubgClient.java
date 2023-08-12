@@ -2,10 +2,11 @@ package com.github.axiangcoding.axbot.app.third.pubg;
 
 
 import com.github.axiangcoding.axbot.app.third.pubg.service.PlayerService;
-import com.github.axiangcoding.axbot.app.third.pubg.service.entity.PubgResponse;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.PubgRespData;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.PubgRespDataList;
 import com.github.axiangcoding.axbot.app.third.pubg.service.entity.resp.Player;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.resp.PlayerSeason;
 import com.google.gson.GsonBuilder;
-import io.reactivex.Single;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -68,11 +69,12 @@ public class PubgClient {
         return builder.build();
     }
 
-    private <T> PubgResponse<T> execute(Single<PubgResponse<T>> apiCall) {
-        return apiCall.blockingGet();
+
+    public PubgRespDataList<Player> getPlayers(String platform, String playerNames, String playerIds) {
+        return playerService.getPlayers(platform, playerNames, playerIds).blockingGet();
     }
 
-    public PubgResponse<Player> getPlayers(String platform, String playerNames, String playerIds) {
-        return execute(playerService.getPlayers(platform, playerNames, playerIds));
+    public PubgRespData<PlayerSeason> getPlayerLifetime(String platform, String playerId, Boolean gamepad) {
+        return playerService.getPlayerLifetime(platform, playerId, gamepad).blockingGet();
     }
 }

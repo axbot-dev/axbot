@@ -32,7 +32,7 @@ public class Task extends BasicEntity {
     String type;
     String status;
     Double progress;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "json")
     String config;
     @Column(columnDefinition = "TEXT")
     String result;

@@ -34,6 +34,11 @@ public class KOOKCardTemplate {
         modules.add(KOOKCardMessage.quickMdSection(content));
     }
 
+    public void addModuleHeader(String header) {
+        List<KOOKCardMessage> modules = this.messages.get(0).getModules();
+        modules.add(KOOKCardMessage.newHeader(header));
+    }
+
     public void addModuleContentSection(String content) {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KOOKCardMessage.quickContent(content));

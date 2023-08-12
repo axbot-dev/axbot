@@ -5,14 +5,19 @@ import com.github.axiangcoding.axbot.app.server.data.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.app.server.data.entity.PubgPlayer;
 import com.github.axiangcoding.axbot.app.server.data.entity.PubgPlayerSnapshot;
 import com.github.axiangcoding.axbot.app.server.data.entity.Task;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.PubgPlayerInfo;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgGameStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgLifetimeStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgPlayerInfo;
 import com.github.axiangcoding.axbot.app.server.data.repo.PubgPlayerRepository;
 import com.github.axiangcoding.axbot.app.server.data.repo.PubgPlayerSnapshotRepository;
 import com.github.axiangcoding.axbot.app.server.service.entity.SyncPlayerTaskConfig;
 import com.github.axiangcoding.axbot.app.server.service.entity.SyncPlayerTaskResult;
 import com.github.axiangcoding.axbot.app.third.pubg.PubgClient;
-import com.github.axiangcoding.axbot.app.third.pubg.service.entity.PubgResponse;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.PubgRespData;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.PubgRespDataList;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.resp.GameStats;
 import com.github.axiangcoding.axbot.app.third.pubg.service.entity.resp.Player;
+import com.github.axiangcoding.axbot.app.third.pubg.service.entity.resp.PlayerSeason;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +27,7 @@ import org.springframework.stereotype.Service;
 import retrofit2.HttpException;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -68,29 +74,38 @@ public class PubgPlayerService {
     }
 
     public String startSyncTask(String platform, String playerId, String playerName) {
+        log.info("start a sync pubg player task");
         String taskId = taskService.startNewTask(new SyncPlayerTaskConfig()
                 .setPlatform(platform)
                 .setPlayerId(playerId)
                 .setPlayerName(playerName));
-        asyncSyncPlayer(taskId);
         return taskId;
     }
 
-    public void upsertInfo(String playerId, PubgPlayerInfo player) {
+    public void upsertInfo(String playerId, PubgPlayerInfo player, PubgLifetimeStats stats) {
         Optional<PubgPlayer> opt = repository.findByPlayerId(playerId);
         if (opt.isEmpty()) {
             repository.save(new PubgPlayer()
                     .setPlayerId(playerId)
                     .setPlayerName(player.getName())
-                    .setInfo(player));
+                    .setInfo(player)
+                    .setLifetimeStats(stats));
         } else {
             PubgPlayer pubgPlayer = opt.get();
+            pubgPlayer.setUpdateTime(LocalDateTime.now());
             repository.save(pubgPlayer
                     .setPlayerName(player.getName())
-                    .setInfo(player));
+                    .setInfo(player)
+                    .setLifetimeStats(stats)
+            );
         }
     }
 
+    /**
+     * 注意：异步方法不能在类里面调用，而应该通过spring的代理类调用
+     *
+     * @param taskId
+     */
     @Async
     public void asyncSyncPlayer(String taskId) {
         Optional<Task> opt = taskService.findByTaskId(taskId);
@@ -110,11 +125,12 @@ public class PubgPlayerService {
         }
         setFrozen(platform, playerName);
         try {
-            PubgResponse<Player> players = pubgClient.getPlayers(platform, playerName, playerId);
-            // TODO 集成玩家的生涯数据
-            //  https://documentation.pubg.com/en/lifetime-stats.html#lifetime-stats
+            PubgRespDataList<Player> players = pubgClient.getPlayers(platform, playerName, playerId);
             Player player = players.getData().get(0);
             String id = player.getId();
+
+            PubgRespData<PlayerSeason> playerLifetime = pubgClient.getPlayerLifetime(platform, id, null);
+
             String name = player.getAttributes().getName();
             PubgPlayerInfo playerInfo = new PubgPlayerInfo()
                     .setName(name)
@@ -123,10 +139,14 @@ public class PubgPlayerService {
                     .setPatchVersion(player.getAttributes().getPatchVersion())
                     .setTitleId(player.getAttributes().getTitleId())
                     .setBanType(player.getAttributes().getBanType());
+
+            PubgLifetimeStats pubgLifetimeStats = getFromResp(playerLifetime);
             PubgPlayerSnapshot snapshot = snapshotRepository.save(new PubgPlayerSnapshot()
                     .setPlayerId(id)
-                    .setInfo(playerInfo));
-            upsertInfo(id, playerInfo);
+                    .setInfo(JSONObject.toJSONString(playerInfo))
+                    .setLifetimeStats(JSONObject.toJSONString(pubgLifetimeStats))
+            );
+            upsertInfo(id, playerInfo, pubgLifetimeStats);
 
             taskService.finishedWithResult(taskId, new SyncPlayerTaskResult()
                     .setPlayerId(id)
@@ -140,5 +160,21 @@ public class PubgPlayerService {
             }
         }
 
+    }
+
+    private PubgLifetimeStats getFromResp(PubgRespData<PlayerSeason> respData) {
+        PubgLifetimeStats stats = new PubgLifetimeStats();
+        PlayerSeason.Attributes.GameModeStats gameModeStats = respData.getData().getAttributes().getGameModeStats();
+        stats.setDuo(convert(gameModeStats.getDuo()));
+        stats.setDuoFpp(convert(gameModeStats.getDuoFPP()));
+        stats.setSolo(convert(gameModeStats.getSolo()));
+        stats.setSoloFpp(convert(gameModeStats.getSoloFPP()));
+        stats.setSquad(convert(gameModeStats.getSquad()));
+        stats.setSquadFpp(convert(gameModeStats.getSquadFPP()));
+        return stats;
+    }
+
+    private PubgGameStats convert(GameStats gameStats) {
+        return JSONObject.from(gameStats).to(PubgGameStats.class);
     }
 }

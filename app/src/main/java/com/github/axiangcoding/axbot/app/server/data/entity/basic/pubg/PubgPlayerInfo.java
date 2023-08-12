@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.app.server.data.entity.basic;
+package com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -19,4 +19,6 @@ public class PubgPlayerInfo {
     String clanId;
     String name;
     // Object stats;
+
+
 }

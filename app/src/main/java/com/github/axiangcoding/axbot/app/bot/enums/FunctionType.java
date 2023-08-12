@@ -31,7 +31,7 @@ public enum FunctionType {
     WT_UNBIND_PROFILE(List.of("战雷", "战争雷霆", "wt"), List.of("解绑", "快捷解绑", "unbind")),
     WT_REPORT_GAMER(List.of("战雷", "战争雷霆", "wt"), List.of("举办", "举报", "举报玩家", "report")),
 
-    PUBG_QUERY_PLAYER(List.of("绝地求生", "pubg"), List.of("查询", "查找", "query")),
+    PUBG_QUERY_PLAYER(List.of("绝地求生", "吃鸡", "pubg"), List.of("查询", "查找", "query")),
 
     /*
     以下是娱乐类的交互

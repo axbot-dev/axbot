@@ -4,13 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
-@Getter
-@Setter
-@ToString
-public class PubgResponse<T> {
-    List<T> data;
+public class PubgBaseResponse {
     Links links;
     Meta meta;
 
@@ -35,4 +29,3 @@ public class PubgResponse<T> {
         // Integer limit;
     }
 }
-

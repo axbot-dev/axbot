@@ -4,10 +4,14 @@ import com.alibaba.fastjson2.JSONObject;
 import com.github.axiangcoding.axbot.app.bot.annotation.AxPassiveFunc;
 import com.github.axiangcoding.axbot.app.bot.enums.FunctionType;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractPassiveFunction;
+import com.github.axiangcoding.axbot.app.bot.function.ParamExtract;
+import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.server.data.entity.PubgPlayer;
 import com.github.axiangcoding.axbot.app.server.data.entity.Task;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.PubgPlayerInfo;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgGameStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgLifetimeStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgPlayerInfo;
 import com.github.axiangcoding.axbot.app.server.service.PubgPlayerService;
 import com.github.axiangcoding.axbot.app.server.service.TaskService;
 import com.github.axiangcoding.axbot.app.server.service.entity.SyncPlayerTaskResult;
@@ -15,12 +19,10 @@ import com.github.axiangcoding.axbot.app.third.pubg.PubgClient;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import love.forte.simbot.event.ChannelMessageEvent;
-import org.apache.commons.lang3.StringUtils;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @AxPassiveFunc(command = FunctionType.PUBG_QUERY_PLAYER)
 @Slf4j
@@ -31,46 +33,33 @@ public class FuncPUBGQueryPlayer extends AbstractPassiveFunction {
     @Resource
     TaskService taskService;
 
-    private String getPlatform(String[] params) {
-        if (params.length == 3) {
-            return PubgClient.PLATFORM.STEAM.getText();
-        } else if (params.length == 4) {
-            return params[2];
-        } else {
-            return null;
-        }
-    }
-
-    private String getPlayerName(String[] params) {
-        if (params.length == 3) {
-            return params[2];
-        } else if (params.length == 4) {
-            return params[3];
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public void processForKOOK(ChannelMessageEvent event) {
-        String[] split = StringUtils.split(getInput(event));
-        String playerName = getPlayerName(split);
-        String platform = getPlatform(split);
+        ParamExtract paramExtract = getParamExtract(event);
+
+        Optional<String> optPlayerName = paramExtract.getOrDefaultAtIndex(List.of("player", "id"), 2);
+        Optional<String> optPlatform = paramExtract.getOrDefaultValue(List.of("platform", "平台"), PubgClient.PLATFORM.STEAM.getText());
+        Optional<String> optMode = paramExtract.getOrDefaultValue(List.of("mode", "模式"), "solo");
         // 参数错误，直接返回错误信息
-        if (StringUtils.isBlank(playerName) || StringUtils.isBlank(platform)) {
+        if (optPlayerName.isEmpty() || optPlatform.isEmpty() || optMode.isEmpty()) {
             event.replyBlocking(toCardMessage(kookWrongInput().displayWithFooter()));
             return;
         }
+        String playerName = optPlayerName.get();
+        String platform = optPlatform.get();
+        String gameMode = optMode.get();
         // 如果找到数据，则返回账号数据。同时判断是否可用自动同步玩家数据，可用即自动同步玩家数据
         Optional<PubgPlayer> opt = pubgPlayerService.findByPlayerName(playerName);
         if (opt.isPresent()) {
             PubgPlayer pubgPlayer = opt.get();
             String additionInfo = null;
             if (pubgPlayerService.allowSync(platform, playerName)) {
-                pubgPlayerService.startSyncTask(platform, null, playerName);
-                additionInfo = "数据已过时，将自动和PUBG官方同步，稍后请重新查询最新数据";
+                String taskId = pubgPlayerService.startSyncTask(platform, null, playerName);
+                pubgPlayerService.asyncSyncPlayer(taskId);
+                additionInfo = "数据已过时，将自动和PUBG官方同步最新数据，同步进行中...";
             }
-            event.replyBlocking(toCardMessage(kookQueryFound(pubgPlayer, additionInfo).displayWithFooter()));
+            event.replyBlocking(toCardMessage(kookQueryFound(pubgPlayer, gameMode, additionInfo).displayWithFooter()));
             return;
         }
         // 如果没找到数据，则发起一个异步的同步任务
@@ -83,6 +72,7 @@ public class FuncPUBGQueryPlayer extends AbstractPassiveFunction {
         // 开始同步玩家数据流程
         event.replyBlocking(toCardMessage(kookQuerying().displayWithFooter()));
         String taskId = pubgPlayerService.startSyncTask(platform, null, playerName);
+        pubgPlayerService.asyncSyncPlayer(taskId);
         int i = 0;
         int maxRetry = 10;
         int duration = 3000;
@@ -99,7 +89,7 @@ public class FuncPUBGQueryPlayer extends AbstractPassiveFunction {
                         event.replyBlocking(toCardMessage(kookQueryFailed("数据丢失").displayWithFooter()));
                         break;
                     }
-                    event.replyBlocking(toCardMessage(kookQueryFound(optPP.get()).displayWithFooter()));
+                    event.replyBlocking(toCardMessage(kookQueryFound(optPP.get(), gameMode).displayWithFooter()));
                     break;
                 } else if (Task.STATUS.FAILED.name().equals(status)) {
                     event.replyBlocking(toCardMessage(kookQueryFailed(result).displayWithFooter()));
@@ -134,41 +124,74 @@ public class FuncPUBGQueryPlayer extends AbstractPassiveFunction {
         return ct;
     }
 
-    private KOOKCardTemplate kookQueryFound(PubgPlayer pubgPlayer) {
-        return kookQueryFound(pubgPlayer, null);
+    private KOOKCardTemplate kookQueryFound(PubgPlayer pubgPlayer, String gameMode) {
+        return kookQueryFound(pubgPlayer, gameMode, null);
     }
 
-    private KOOKCardTemplate kookQueryFound(PubgPlayer pubgPlayer, String additionInfo) {
+    private KOOKCardTemplate kookQueryFound(PubgPlayer pubgPlayer, String gameMode, String additionInfo) {
         PubgPlayerInfo info = pubgPlayer.getInfo();
+        PubgLifetimeStats lifetimeStats = pubgPlayer.getLifetimeStats();
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("用户ID", pubgPlayer.getPlayerId());
-        map.put("用户昵称", pubgPlayer.getPlayerName());
+        String playerName = pubgPlayer.getPlayerName();
+        map.put("用户昵称", playerName);
         map.put("平台", info.getShardId());
 
         String banStr = switch (info.getBanType()) {
-            case "Innocent" -> "无封禁";
-            case "TemporaryBan" -> "临时封禁";
-            case "PermanentBan" -> "永久封禁";
+            case "Innocent" -> KOOKMDMessage.colorful("无封禁", "success");
+            case "TemporaryBan" -> KOOKMDMessage.colorful("临时封禁", "warning");
+            case "PermanentBan" -> KOOKMDMessage.colorful("永久封禁", "danger");
             default -> "未知";
         };
 
         map.put("封禁状态", banStr);
-        map.put("联队ID", info.getClanId());
-        map.put("工作室和游戏", info.getTitleId());
-        map.put("游戏版本", info.getPatchVersion());
+        map.put("和官网的同步时间", new PrettyTime(Locale.CHINA).format(pubgPlayer.getUpdateTime()));
 
-
-        KOOKCardTemplate ct = new KOOKCardTemplate("查询完成", "success");
+        KOOKCardTemplate ct = new KOOKCardTemplate("绝地求生玩家 %s 的数据".formatted(playerName), "success");
 
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             ct.addKVLine(entry.getKey(), entry.getValue().toString());
         }
+
+        if (List.of("duo", "双排").contains(gameMode)) {
+            ct.addModuleDivider();
+            ct.addModuleHeader("双排数据");
+            generateStatsMap(lifetimeStats.getDuo()).forEach((k, v) -> ct.addKVLine(k, v.toString()));
+        } else if (List.of("duo-fpp", "第一人称双排").contains(gameMode)) {
+            ct.addModuleDivider();
+            ct.addModuleHeader("双排（第一人称）数据");
+            generateStatsMap(lifetimeStats.getDuoFpp()).forEach((k, v) -> ct.addKVLine(k, v.toString()));
+        } else if (List.of("solo", "单排").contains(gameMode)) {
+            ct.addModuleDivider();
+            ct.addModuleHeader("单排数据");
+            generateStatsMap(lifetimeStats.getSolo()).forEach((k, v) -> ct.addKVLine(k, v.toString()));
+        } else if (List.of("solo-fpp", "第一人称单排").contains(gameMode)) {
+            ct.addModuleDivider();
+            ct.addModuleHeader("单排（第一人称）数据");
+            generateStatsMap(lifetimeStats.getSoloFpp()).forEach((k, v) -> ct.addKVLine(k, v.toString()));
+        } else if (List.of("squad", "四排").contains(gameMode)) {
+            ct.addModuleDivider();
+            ct.addModuleHeader("四排数据");
+            generateStatsMap(lifetimeStats.getSquad()).forEach((k, v) -> ct.addKVLine(k, v.toString()));
+        } else if (List.of("squad-fpp", "第一人称四排").contains(gameMode)) {
+            ct.addModuleDivider();
+            ct.addModuleHeader("四排（第一人称）数据");
+            generateStatsMap(lifetimeStats.getSquad()).forEach((k, v) -> ct.addKVLine(k, v.toString()));
+        } else {
+            ct.addModuleDivider();
+            ct.addModuleMdSection("模式 %s 无数据可显示".formatted(KOOKMDMessage.code(gameMode)));
+        }
+
+        ct.addModuleDivider();
+        ct.addModuleMdSection("受限于文本长度，没法一次性展示全部数据");
+        ct.addModuleMdSection("你可以在指令中使用参数来切换不同模式的数据");
+
         if (additionInfo != null) {
             ct.addModuleDivider();
             ct.addModuleMdSection(additionInfo);
         }
         return ct;
     }
+
 
     private KOOKCardTemplate kookQueryFailed(String reason) {
         KOOKCardTemplate ct = new KOOKCardTemplate("查询失败", "warning");
@@ -179,5 +202,29 @@ public class FuncPUBGQueryPlayer extends AbstractPassiveFunction {
     @Override
     public void processForQG(ChannelMessageEvent event) {
         // TODO 集成到qq频道上
+    }
+
+    private Map<String, Object> generateStatsMap(PubgGameStats gameStats) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("比赛场次", gameStats.getRoundsPlayed());
+        map.put("前10场次", gameStats.getTop10s());
+        map.put("获胜场次", gameStats.getWins());
+        map.put("失败场次", gameStats.getLosses());
+
+        map.put("击杀数", gameStats.getKills());
+        map.put("击倒人数", gameStats.getDBNOs());
+        map.put("协助击杀", gameStats.getAssists());
+        map.put("爆头击杀数", gameStats.getHeadshotKills());
+        map.put("击杀队友数", gameStats.getTeamKills());
+        map.put("自尽次数", gameStats.getSuicides());
+        map.put("造成的总伤害", gameStats.getDamageDealt());
+        map.put("复活队友次数", gameStats.getRevives());
+
+        map.put("最近一天的击杀数", gameStats.getDailyKills());
+        map.put("最近一天比赛的胜场数", gameStats.getDailyWins());
+        map.put("最近一周击杀数", gameStats.getWeeklyKills());
+        map.put("最近一周比赛的胜场数", gameStats.getWeeklyWins());
+
+        return map;
     }
 }
