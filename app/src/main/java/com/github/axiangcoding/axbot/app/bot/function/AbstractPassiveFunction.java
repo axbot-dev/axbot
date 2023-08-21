@@ -3,7 +3,7 @@ package com.github.axiangcoding.axbot.app.bot.function;
 import love.forte.simbot.component.kook.message.KookCardMessage;
 import love.forte.simbot.component.qguild.message.QGContentText;
 import love.forte.simbot.event.ChannelMessageEvent;
-import love.forte.simbot.kook.objects.CardMessage;
+import love.forte.simbot.kook.objects.card.CardMessage;
 import org.apache.commons.lang3.StringUtils;
 
 public abstract class AbstractPassiveFunction {
