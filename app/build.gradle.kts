@@ -45,7 +45,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.38")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.39")
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.16.0")
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-spring
@@ -61,7 +61,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation("org.jsoup:jsoup:1.16.1")
     // https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-instrumentation-annotations
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.28.0")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.29.0")
 
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
