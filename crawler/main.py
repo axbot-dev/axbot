@@ -25,9 +25,9 @@ def get_page_source(url, xpath_condition) -> str:
     # options.add_argument("--auto-open-devtools-for-tabs")
     execute_path = os.getenv("DRIVER_EXECUTABLE_PATH")
     if execute_path is None:
-        driver = uc.Chrome(options=options, headless=False, use_subprocess=False)
+        driver = uc.Chrome(options=options, headless=True, use_subprocess=False)
     else:
-        driver = uc.Chrome(options=options, headless=False, use_subprocess=False,
+        driver = uc.Chrome(options=options, headless=True, use_subprocess=False,
                            driver_executable_path=execute_path)
     logger.info("chromedriver started")
     driver.get(url)
