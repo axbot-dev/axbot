@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.app.server.data.entity.basic;
+package com.github.axiangcoding.axbot.app.server.data.entity.field;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

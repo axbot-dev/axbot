@@ -1,6 +1,10 @@
 package com.github.axiangcoding.axbot.app.server.data.entity;
 
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.*;
+import com.github.axiangcoding.axbot.app.server.data.entity.basic.BasicEntity;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndGuildSetting;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndGuildStatus;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndGuildUsage;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.SponsorPlan;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;

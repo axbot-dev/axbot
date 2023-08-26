@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.app.server.data.entity.basic;
+package com.github.axiangcoding.axbot.app.server.data.entity.field;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -14,14 +14,14 @@ import lombok.experimental.Accessors;
 @ToString
 @Embeddable
 @Accessors(chain = true)
-public class EndGuildUsage {
+public class EndUserUsage {
     Integer inputToday;
     Long inputTotal;
     Integer queryWtToday;
     Long queryWtTotal;
 
-    public static EndGuildUsage init() {
-        return new EndGuildUsage()
+    public static EndUserUsage init() {
+        return new EndUserUsage()
                 .setInputToday(0)
                 .setInputTotal(0L)
                 .setQueryWtToday(0)

@@ -5,9 +5,9 @@ import com.github.axiangcoding.axbot.app.server.data.cache.CacheKeyGenerator;
 import com.github.axiangcoding.axbot.app.server.data.entity.PubgPlayer;
 import com.github.axiangcoding.axbot.app.server.data.entity.PubgPlayerSnapshot;
 import com.github.axiangcoding.axbot.app.server.data.entity.Task;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgGameStats;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgLifetimeStats;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgPlayerInfo;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.PubgGameStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.PubgLifetimeStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.PubgPlayerInfo;
 import com.github.axiangcoding.axbot.app.server.data.repo.PubgPlayerRepository;
 import com.github.axiangcoding.axbot.app.server.data.repo.PubgPlayerSnapshotRepository;
 import com.github.axiangcoding.axbot.app.server.service.entity.SyncPlayerTaskConfig;
@@ -88,15 +88,15 @@ public class PubgPlayerService {
             repository.save(new PubgPlayer()
                     .setPlayerId(playerId)
                     .setPlayerName(player.getName())
-                    .setInfo(player)
-                    .setLifetimeStats(stats));
+                    .setEncodeInfo(player)
+                    .setEncodeLifetimeStats(stats));
         } else {
             PubgPlayer pubgPlayer = opt.get();
             pubgPlayer.setUpdateTime(LocalDateTime.now());
             repository.save(pubgPlayer
                     .setPlayerName(player.getName())
-                    .setInfo(player)
-                    .setLifetimeStats(stats)
+                    .setEncodeInfo(player)
+                    .setEncodeLifetimeStats(stats)
             );
         }
     }
@@ -143,8 +143,8 @@ public class PubgPlayerService {
             PubgLifetimeStats pubgLifetimeStats = getFromResp(playerLifetime);
             PubgPlayerSnapshot snapshot = snapshotRepository.save(new PubgPlayerSnapshot()
                     .setPlayerId(id)
-                    .setInfo(JSONObject.toJSONString(playerInfo))
-                    .setLifetimeStats(JSONObject.toJSONString(pubgLifetimeStats))
+                    .setEncodeInfo(playerInfo)
+                    .setEncodeLifetimeStats(pubgLifetimeStats)
             );
             upsertInfo(id, playerInfo, pubgLifetimeStats);
 

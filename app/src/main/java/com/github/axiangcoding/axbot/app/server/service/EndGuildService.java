@@ -2,9 +2,9 @@ package com.github.axiangcoding.axbot.app.server.service;
 
 import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
 import com.github.axiangcoding.axbot.app.server.data.entity.EndGuild;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndGuildStatus;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndGuildUsage;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndUserStatus;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndGuildStatus;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndGuildUsage;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndUserStatus;
 import com.github.axiangcoding.axbot.app.server.data.repo.EndGuildRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
