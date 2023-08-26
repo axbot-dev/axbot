@@ -17,7 +17,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import love.forte.simbot.application.Application;
 import love.forte.simbot.bot.BotManager;
-import love.forte.simbot.component.kook.KookBotManager;
+import love.forte.simbot.component.kook.bot.KookBotManager;
 import love.forte.simbot.component.qguild.QQGuildBotManager;
 import love.forte.simbot.event.ChannelMessageEvent;
 import org.springframework.context.ApplicationContext;
