@@ -94,8 +94,6 @@ public class FuncPUBGQueryPlayer extends AbstractPassiveFunction {
                 } else if (Task.STATUS.FAILED.name().equals(status)) {
                     event.replyBlocking(toCardMessage(kookQueryFailed(result).displayWithFooter()));
                     break;
-                } else {
-                    continue;
                 }
             }
             try {
