@@ -1,9 +1,9 @@
 package com.github.axiangcoding.axbot.app.server.data.entity;
 
 import com.github.axiangcoding.axbot.app.server.data.entity.basic.BasicEntity;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndUserStatus;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndUserUsage;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.SponsorPlan;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndUserStatus;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndUserUsage;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.SponsorPlan;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;

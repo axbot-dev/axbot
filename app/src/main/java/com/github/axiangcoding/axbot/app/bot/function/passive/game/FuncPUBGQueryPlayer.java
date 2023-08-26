@@ -9,9 +9,9 @@ import com.github.axiangcoding.axbot.app.bot.message.KOOKMDMessage;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.server.data.entity.PubgPlayer;
 import com.github.axiangcoding.axbot.app.server.data.entity.Task;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgGameStats;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgLifetimeStats;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.pubg.PubgPlayerInfo;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.PubgGameStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.PubgLifetimeStats;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.PubgPlayerInfo;
 import com.github.axiangcoding.axbot.app.server.service.PubgPlayerService;
 import com.github.axiangcoding.axbot.app.server.service.TaskService;
 import com.github.axiangcoding.axbot.app.server.service.entity.SyncPlayerTaskResult;
@@ -127,8 +127,8 @@ public class FuncPUBGQueryPlayer extends AbstractPassiveFunction {
     }
 
     private KOOKCardTemplate kookQueryFound(PubgPlayer pubgPlayer, String gameMode, String additionInfo) {
-        PubgPlayerInfo info = pubgPlayer.getInfo();
-        PubgLifetimeStats lifetimeStats = pubgPlayer.getLifetimeStats();
+        PubgPlayerInfo info = pubgPlayer.getDecodeInfo();
+        PubgLifetimeStats lifetimeStats = pubgPlayer.getDecodeLifetimeStats();
         Map<String, Object> map = new LinkedHashMap<>();
         String playerName = pubgPlayer.getPlayerName();
         map.put("用户昵称", playerName);

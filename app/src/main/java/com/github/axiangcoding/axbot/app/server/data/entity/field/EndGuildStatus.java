@@ -1,4 +1,4 @@
-package com.github.axiangcoding.axbot.app.server.data.entity.basic;
+package com.github.axiangcoding.axbot.app.server.data.entity.field;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -13,9 +13,10 @@ import java.time.LocalDateTime;
 @ToString
 @Embeddable
 @Accessors(chain = true)
-public class EndUserStatus {
+public class EndGuildStatus {
     public enum STATUS {
         NORMAL,
+        DISABLED,
         LOCKED,
     }
 
@@ -24,7 +25,7 @@ public class EndUserStatus {
     LocalDateTime bannedAt;
     LocalDateTime bannedUntil;
 
-    public static EndUserStatus normal() {
-        return new EndUserStatus().setStatus(EndGuildStatus.STATUS.NORMAL.name());
+    public static EndGuildStatus normal() {
+        return new EndGuildStatus().setStatus(STATUS.NORMAL.name());
     }
 }

@@ -6,7 +6,7 @@ import com.github.axiangcoding.axbot.app.bot.enums.BotPlatform;
 import com.github.axiangcoding.axbot.app.bot.function.AbstractActiveFunction;
 import com.github.axiangcoding.axbot.app.bot.message.template.KOOKCardTemplate;
 import com.github.axiangcoding.axbot.app.bot.message.template.QGContentTemplate;
-import com.github.axiangcoding.axbot.app.server.data.entity.basic.EndGuildStatus;
+import com.github.axiangcoding.axbot.app.server.data.entity.field.EndGuildStatus;
 import com.github.axiangcoding.axbot.app.server.service.EndGuildService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
