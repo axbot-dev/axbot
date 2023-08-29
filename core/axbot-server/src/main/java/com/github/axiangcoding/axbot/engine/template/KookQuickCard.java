@@ -10,6 +10,7 @@ public class KookQuickCard {
     private final List<KookCardMessage> messages;
 
     KookCardMessage footer = KookCardMessage.quickTextLinkSection("Powered By AXBot.", "GitHub", "info", "https://github.com/axiangcoding/AXBot");
+    KookCardMessage tryV2 = KookCardMessage.quickTextLinkSection("尝试AXBot的新版本！目前内测中", "点击邀请", "info", "https://www.kookapp.cn/app/oauth2/authorize?id=18172&permissions=0&client_id=RnGyW8m5Vq8b35YD&redirect_uri=&scope=bot");
 
     public KookQuickCard(String title, String theme) {
         this.messages = KookCardMessage.defaultMsg(title, theme);
@@ -56,6 +57,7 @@ public class KookQuickCard {
         if (this.footer != null) {
             modules.add(KookCardMessage.newDivider());
             modules.add(this.footer);
+            modules.add(this.tryV2);
         }
         return JsonUtils.toJson(tempList);
     }
