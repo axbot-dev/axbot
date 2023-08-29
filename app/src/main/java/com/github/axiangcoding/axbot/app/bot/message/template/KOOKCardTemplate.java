@@ -13,7 +13,7 @@ import java.util.Map;
 public class KOOKCardTemplate {
     private final List<KOOKCardMessage> messages;
 
-    KOOKCardMessage footer = KOOKCardMessage.quickTextLinkSection("Powered By AXBot.", "GitHub", "info", "https://github.com/axbot-dev/axbot");
+    KOOKCardMessage footer = KOOKCardMessage.quickTextLinkSection("Powered By AXBot.", "Github仓库", "info", "https://github.com/axbot-dev/axbot");
 
     public KOOKCardTemplate(String title, String theme) {
         this.messages = KOOKCardMessage.defaultMsg(title, theme);
