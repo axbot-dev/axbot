@@ -31,7 +31,7 @@ AXBot的设计思路源自于https://github.com/axiangcoding/antonstar-bot ，�
 走过路过，点个`⭐`吧
 
 ## 文档
-AXBot V2的文档已经迁移到 https://axbot-dev.github.io/axbot-doc/，并以此为准。请移步查看
+AXBot V2的文档已经迁移到 https://axbot-dev.github.io/axbot-doc/ ，并以此为准。请移步查看
 
 ## 开源协议
 
