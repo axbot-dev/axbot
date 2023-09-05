@@ -62,7 +62,7 @@ public class KOOKCardTemplate {
     public void addInviteBot(String content) {
         List<KOOKCardMessage> modules = this.messages.get(0).getModules();
         modules.add(KOOKCardMessage.quickTextLinkSection(content, "邀请AXBot", "primary",
-                "https://www.kookapp.cn/app/oauth2/authorize?id=15253&permissions=924672&client_id=eXJ0-Ntgqw-q33Oe&redirect_uri=&scope=bot"));
+                "https://www.kookapp.cn/app/oauth2/authorize?id=18172&permissions=0&client_id=RnGyW8m5Vq8b35YD&redirect_uri=&scope=bot"));
     }
 
     public void addCountDown(String mode, LocalDateTime start, LocalDateTime end) {
