@@ -57,7 +57,7 @@ dependencies {
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-kook-core
     implementation("love.forte.simbot.component:simbot-component-kook-core:3.2.0.0-alpha.8")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
-    implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.2.0.0-alpha.10")
+    implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.2.0.0-beta.1")
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation("org.jsoup:jsoup:1.16.1")
     // https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-instrumentation-annotations
