@@ -1,10 +1,10 @@
-name: Build docker image
+name: Build docker image v1
 
 on:
   push:
-    branches: ["master"]
+    branches: ["v1"]
     tags:
-      - "v*.*.*"
+      - "v1.*.*"
 
 env:
   GHCR_APP_IMAGE_NAME: axbot-dev/axbot-app
@@ -58,7 +58,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./app
+          context: ./core
           push: true
           build-args: |
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
