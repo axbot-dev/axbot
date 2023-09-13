@@ -1,4 +1,4 @@
-name: Build docker image v1
+name: Build docker image and release v1
 
 on:
   push:
