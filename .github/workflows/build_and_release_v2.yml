@@ -1,4 +1,4 @@
-name: Build docker image v2
+name: Build docker image and release v2
 on:
   push:
     branches: ["master"]
