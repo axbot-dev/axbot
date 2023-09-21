@@ -4,7 +4,10 @@ COPY . /app
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar /app/tools/opentelemetry-javaagent.jar
 RUN gradle bootJar
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
+LABEL org.opencontainers.image.source=https://github.com/axbot-dev/axbot
+LABEL org.opencontainers.image.description="axbot app"
+LABEL org.opencontainers.image.licenses="GPL-3.0"
 ARG VERSION
 ENV APP_VERSION=${VERSION}
 ENV JAVA_TOOL_OPTIONS="-javaagent:/app/tools/opentelemetry-javaagent.jar"

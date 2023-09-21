@@ -1,4 +1,7 @@
 FROM python:3.11-alpine
+LABEL org.opencontainers.image.source=https://github.com/axbot-dev/axbot
+LABEL org.opencontainers.image.description="axbot crawler"
+LABEL org.opencontainers.image.licenses="GPL-3.0"
 WORKDIR /app
 RUN #sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 RUN apk update && apk upgrade
