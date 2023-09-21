@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-alpine
 LABEL org.opencontainers.image.source=https://github.com/axbot-dev/axbot
 LABEL org.opencontainers.image.description="axbot crawler"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
