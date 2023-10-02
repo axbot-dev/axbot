@@ -74,7 +74,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.qiniu/qiniu-java-sdk
     implementation("com.qiniu:qiniu-java-sdk:7.14.0")
     // https://mvnrepository.com/artifact/org.apache.commons/commons-pool2
-    implementation("org.apache.commons:commons-pool2:2.11.1")
+    implementation("org.apache.commons:commons-pool2:2.12.0")
     // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
     implementation("org.ocpsoft.prettytime:prettytime:5.0.7.Final")
 
