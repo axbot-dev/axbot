@@ -59,7 +59,6 @@ public class FuncReportBug extends AbstractPassiveFunction {
         String guildId = event.getChannel().getGuildId().toString();
         bugReportService.reportBug(BotPlatform.QQ_GUILD, userId, detail);
         for (EndUser admin : admins) {
-            // FIXME 发送私信的功能暂无明确
             Contact contact = event.getBot().getContact(Identifies.ID(admin.getUserId()));
             if (contact != null) {
                 contact.sendBlocking(
