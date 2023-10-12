@@ -53,7 +53,7 @@ dependencies {
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-provider-redis-spring
     implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:5.8.0")
     // https://mvnrepository.com/artifact/love.forte.simbot.boot/simboot-core-spring-boot-starter
-    implementation("love.forte.simbot.boot:simboot-core-spring-boot-starter:3.2.0")
+    implementation("love.forte.simbot.boot:simboot-core-spring-boot-starter:3.3.0")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-kook-core
     implementation("love.forte.simbot.component:simbot-component-kook-core:3.2.0.0-alpha.8")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
