@@ -1,7 +1,16 @@
+import platform
+
 from DrissionPage import ChromiumPage
-from DrissionPage.easy_set import set_paths
-def config_browser_path(path: str):
-    set_paths(browser_path=r'/usr/bin/chromedriver')
+from DrissionPage.easy_set import set_headless, set_argument
+
+
+def prepare_config():
+    if platform.system().lower() == "windows":
+        ...
+    elif platform.system().lower() == "linux":
+        set_headless(True)
+        set_argument("--no-sandbox")
+
 
 def get_page_html(url: str, wait_xpath: str) -> str:
     """使用DrissionPage获取网页的html内容
