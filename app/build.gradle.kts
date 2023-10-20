@@ -49,7 +49,7 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation("commons-codec:commons-codec:1.16.0")
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-spring
-    implementation("net.javacrumbs.shedlock:shedlock-spring:5.9.0")
+    implementation("net.javacrumbs.shedlock:shedlock-spring:5.9.1")
     // https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-provider-redis-spring
     implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:5.9.0")
     // https://mvnrepository.com/artifact/love.forte.simbot.boot/simboot-core-spring-boot-starter
