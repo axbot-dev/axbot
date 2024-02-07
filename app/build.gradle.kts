@@ -55,7 +55,7 @@ dependencies {
     // https://mvnrepository.com/artifact/love.forte.simbot.boot/simboot-core-spring-boot-starter
     implementation("love.forte.simbot.boot:simboot-core-spring-boot-starter:3.3.0")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-kook-core
-    implementation("love.forte.simbot.component:simbot-component-kook-core:3.2.0.0-alpha.8")
+    implementation("love.forte.simbot.component:simbot-component-kook-core:4.0.0-dev3")
     // https://mvnrepository.com/artifact/love.forte.simbot.component/simbot-component-qq-guild-core
     implementation("love.forte.simbot.component:simbot-component-qq-guild-core:3.2.0.0")
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
